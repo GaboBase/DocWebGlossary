@@ -37,6 +37,68 @@
         "Formatos y Metadatos",
         "Captura y Sensores"
       ]
+    },
+    {
+      "id": "audiovisual-production",
+      "slug": "audiovisual-production",
+      "title": "Producción Audiovisual & Terminología de Video",
+      "description": "Glosario canónico profesional de producción audiovisual, cinematografía, iluminación, sonido directo y postproducción, montaje, etalonaje y generación con inteligencia artificial multimodal.",
+      "dataPath": "./AudiovisualProduction/data/terms.json",
+      "metadataPath": "./AudiovisualProduction/data/glossary.json",
+      "domain": "Audiovisual Production, Cinematography, Sound Engineering, Video Postproduction, Multimodal AI",
+      "termCount": 212,
+      "categories": [
+        "preproduccion",
+        "direccion-narrativa",
+        "camara-movimiento",
+        "optica-lentes",
+        "iluminacion",
+        "audio-directo",
+        "edicion-montaje",
+        "color-etalonaje",
+        "audio-postproduccion",
+        "vfx-composicion",
+        "distribucion-formatos",
+        "tecnologia-infraestructura",
+        "ia-generacion-audiovisual"
+      ]
+    },
+    {
+      "id": "software-engineering-ontology",
+      "slug": "software-engineering-ontology",
+      "title": "Ingeniería de Software & Ontología de Sistemas",
+      "description": "Base conceptual rigurosa, taxonomía y modelo ontológico de seis niveles para artefactos computacionales, arquitectura de software, compiladores, sistemas distribuidos y patrones de conocimiento contextual.",
+      "dataPath": "./SoftwareEngineeringOntology/data/terms.json",
+      "metadataPath": "./SoftwareEngineeringOntology/data/glossary.json",
+      "domain": "Software Engineering, System Architecture, Ontologies, Compilers, Distributed Systems",
+      "termCount": 30,
+      "categories": [
+        "Taxonomía de Artefactos (L1-L6)",
+        "Arquitectura & Diseño Estructural",
+        "Semántica & Compilación",
+        "Sistemas Distribuidos & Persistencia",
+        "Seguridad & Calidad de Software",
+        "Agentes & Conocimiento Procedimental",
+        "Ingeniería de Conocimiento & Grafos",
+        "Ontología de Relaciones Semánticas"
+      ]
+    },
+    {
+      "id": "generative-ai-media",
+      "slug": "generative-ai-media",
+      "title": "IA Generativa & Modelos Multimodales para Medios",
+      "description": "Fundamentos teóricos, arquitecturas neuronales, modelos de difusión, mecanismos de atención y flujos de trabajo generativos para síntesis cinemática de imagen, video y audio.",
+      "dataPath": "./GenerativeAIMedia/data/terms.json",
+      "metadataPath": "./GenerativeAIMedia/data/glossary.json",
+      "domain": "Generative AI, Diffusion Models, Multimodal Media Synthesis, Neural Video, Transformer Architectures",
+      "termCount": 10,
+      "categories": [
+        "Arquitecturas de Difusión & Espacio Latente",
+        "Acondicionamiento & Control Espacial",
+        "Atención Multimodal & Embeddings",
+        "Síntesis Temporal & Video Neuronal",
+        "Alineación, Guía & Muestreo"
+      ]
     }
   ]
 }

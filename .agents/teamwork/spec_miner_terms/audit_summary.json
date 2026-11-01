@@ -1,0 +1,76 @@
+{
+  "totalTerms": 177,
+  "declaredTerms": 177,
+  "discrepancyCount": 0,
+  "effectiveUniqueConcepts": 175,
+  "uppercaseTitlesCount": 9,
+  "uppercaseTitles": [
+    "ACES",
+    "ISO",
+    "LUT",
+    "NDI",
+    "PRORES / H.264 / H.265",
+    "RAW",
+    "REC.709",
+    "SRT",
+    "XLR"
+  ],
+  "brokenRelLinksCount": 0,
+  "brokenDetails": [],
+  "alphabetDist": {
+    "A": 10,
+    "B": 6,
+    "C": 13,
+    "D": 10,
+    "E": 7,
+    "F": 5,
+    "G": 4,
+    "H": 4,
+    "I": 4,
+    "J": 1,
+    "K": 2,
+    "L": 9,
+    "M": 11,
+    "N": 4,
+    "O": 3,
+    "P": 16,
+    "R": 16,
+    "S": 18,
+    "T": 12,
+    "U": 5,
+    "V": 10,
+    "W": 3,
+    "X": 2,
+    "Z": 2
+  },
+  "duplicates": [
+    {
+      "type": "Bilingual Duplicate",
+      "termA": {
+        "index": 18,
+        "title": "Cámara Lenta (Slow Motion)",
+        "slug": "camara-lenta"
+      },
+      "termB": {
+        "index": 132,
+        "title": "SLOW MOTION (Cámara lenta)",
+        "slug": "slow-motion"
+      },
+      "note": "Exact same concept duplicated under Spanish-first title (#18) and English-first uppercase title (#132)."
+    },
+    {
+      "type": "Conceptual Duplicate",
+      "termA": {
+        "index": 51,
+        "title": "FPS / Frame Rate",
+        "slug": "fps-frame-rate"
+      },
+      "termB": {
+        "index": 145,
+        "title": "TASA DE FOTOGRAMAS (Frame rate)",
+        "slug": "tasa-de-fotogramas"
+      },
+      "note": "Exact same concept: FPS / Frame Rate (#51) and Tasa de fotogramas (Frame rate) (#145)."
+    }
+  ]
+}

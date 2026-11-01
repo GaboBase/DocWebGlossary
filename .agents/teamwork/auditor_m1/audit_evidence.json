@@ -1,0 +1,68 @@
+{
+  "checks": [
+    {
+      "name": "Catalog Registration",
+      "passed": true,
+      "details": "audiovisual-production correctly registered with termCount=185"
+    },
+    {
+      "name": "Glossary Categories",
+      "passed": true,
+      "details": "Exactly 13 canonical categories declared and matched"
+    },
+    {
+      "name": "Unique Identifiers",
+      "passed": true,
+      "details": "All 185 URNs and slugs are strictly unique"
+    },
+    {
+      "name": "Definition Authenticity",
+      "passed": true,
+      "details": "Zero placeholders, zero duplicated definitions. Avg concise len: 346 chars, avg extended len: 602 chars"
+    },
+    {
+      "name": "Technical Rigor & Standards Compliance",
+      "passed": true,
+      "details": "Identified 19 distinct standards/broadcast keywords with 132 total technical citations"
+    },
+    {
+      "name": "Relational Graph Integrity",
+      "passed": true,
+      "details": "882 total relations, 0 broken links, 0 self-loops, 28 cross-glossary relations"
+    },
+    {
+      "name": "Deep Structured Fields Completeness",
+      "passed": true,
+      "details": "100% of terms have components, applications, examples, and AI guidance (684 prompt tokens total)"
+    },
+    {
+      "name": "Zero Remote URLs in Data",
+      "passed": true,
+      "details": "No unauthorized HTTP/HTTPS URLs present in data files"
+    },
+    {
+      "name": "Duplicate Pairs Reconciliation",
+      "passed": true,
+      "details": "Source pairs #18/#132 and #51/#145 authentically preserved with distinct sourceIndex tags"
+    }
+  ],
+  "metrics": {
+    "termsCount": 185,
+    "termsFileSize": 1031374,
+    "glossaryFileSize": 4045,
+    "avgDefinitionLength": 346,
+    "minDefinitionLength": 149,
+    "maxDefinitionLength": 516,
+    "avgExtendedLength": 602,
+    "minExtendedLength": 282,
+    "maxExtendedLength": 831,
+    "foundStandardsCount": 19,
+    "totalStandardMentions": 132,
+    "totalRelations": 882,
+    "crossViLinks": 17,
+    "crossR3dLinks": 11,
+    "totalCrossLinks": 28,
+    "totalPromptTokens": 684
+  },
+  "anomalies": []
+}

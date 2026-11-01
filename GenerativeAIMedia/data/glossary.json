@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema/glossary.json",
+  "id": "generative-ai-media",
+  "slug": "generative-ai-media",
+  "title": "IA Generativa & Modelos Multimodales para Medios",
+  "description": "Fundamentos teóricos, arquitecturas neuronales, modelos de difusión, mecanismos de atención y flujos de trabajo generativos para síntesis cinemática de imagen, video y audio.",
+  "domain": "Generative AI, Diffusion Models, Multimodal Media Synthesis, Neural Video, Transformer Architectures",
+  "version": "1.0.0",
+  "termCount": 10,
+  "categories": [
+    "Arquitecturas de Difusión & Espacio Latente",
+    "Acondicionamiento & Control Espacial",
+    "Atención Multimodal & Embeddings",
+    "Síntesis Temporal & Video Neuronal",
+    "Alineación, Guía & Muestreo"
+  ],
+  "author": "DocWeb Knowledge Engineering Working Group",
+  "created": "2026-10-25",
+  "updated": "2026-11-01"
+}

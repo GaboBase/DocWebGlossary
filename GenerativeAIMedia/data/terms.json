@@ -1,0 +1,794 @@
+{
+  "$schema": "../../schema/terms.json",
+  "glossaryId": "generative-ai-media",
+  "canonicalTerms": [
+    {
+      "id": "urn:term:generative-ai-media:diffusion-models",
+      "slug": "diffusion-models",
+      "title": "Modelos de Difusión Probabilística (Denoising Diffusion Probabilistic Models / DDPM)",
+      "category": "arquitecturas-difusion",
+      "categoryLabel": "Arquitecturas de Difusión & Espacio Latente",
+      "definition": "Clase de modelos generativos basados en procesos estocásticos que aprenden a generar datos revirtiendo un proceso progresivo de difusión. En el paso directo (forward process) se añade gradualmente ruido gaussiano a los datos hasta destruirlos por completo; en el paso inverso (reverse process), una red neuronal aprende a remover dicho ruido secuencialmente para reconstruir o sintetizar muestras novedosas.",
+      "shortDefinition": "Arquitectura generativa que crea imágenes o audio de alta fidelidad eliminando iterativamente ruido gaussiano a través de una red neuronal entrenada.",
+      "extendedDefinition": "A diferencia de las GANs (que sufren colapso modal) y los VAEs estándar (que generan resultados borrosos), los modelos de difusión ofrecen estabilidad matemática de entrenamiento y una cobertura modal superior.",
+      "fullDefinition": "Paradigma generativo dominante en síntesis visual moderna. Modela el gradiente de la distribución de densidad de los datos (Score-based generative modeling) para guiar trayectorias desde el caos estocástico hacia la coherencia perceptual.",
+      "components": [
+        "Proceso directo markoviano de adición de ruido (Forward noise schedule / $\\beta_t$)",
+        "Red U-Net o DiT de predicción de ruido residual (Noise predictor $\\epsilon_\\theta(x_t, t)$)",
+        "Ecuaciones diferenciales estocásticas y ODEs de muestreo inverso (DDIM, DPM-Solver)",
+        "Función de pérdida variacional simplificada ($L_{\\text{simple}}$)"
+      ],
+      "applications": [
+        "Generación fotorrealista de imágenes cinematográficas y arte digital",
+        "Síntesis y extensión temporal de secuencias de video",
+        "Restauración, superresolución e inpainting de fotogramas degradados"
+      ],
+      "examples": [
+        "Midjourney, Stable Diffusion o Flux ejecutando 25 pasos de desruidado para materializar un retrato cinemático a partir de ruido puro."
+      ],
+      "synonyms": [
+        "DDPM",
+        "Diffusion models",
+        "Modelos de difusión",
+        "Proceso de desruidado estocástico"
+      ],
+      "attributes": {
+        "faseProduccion": "Generación / Inferencia",
+        "categoriaCanon": "Arquitecturas de Difusión & Espacio Latente",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "generalizes",
+          "target": "urn:term:generative-ai-media:latent-diffusion-models",
+          "note": "Los LDM aplican este proceso en el espacio latente comprimido"
+        },
+        {
+          "type": "relatesTo",
+          "target": "urn:term:audiovisual-production:rack-focus",
+          "note": "Afecta la nitidez y coherencia focal en fotogramas generados"
+        },
+        {
+          "type": "requires",
+          "target": "urn:term:generative-ai-media:classifier-free-guidance-cfg",
+          "note": "Requiere esquemas de guía para orientar el desruidado hacia el prompt"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Motor computacional base de todas las herramientas generativas modernas de imagen y video.",
+        "promptTokens": [
+          "denoising diffusion process",
+          "DDPM sampling trajectory",
+          "iterative noise removal",
+          "score-based synthesis"
+        ],
+        "negativeTokens": [
+          "GAN artifacts",
+          "mode collapse",
+          "blurry VAE reconstruction"
+        ],
+        "modelCompatibility": [
+          "Stable Diffusion",
+          "Midjourney",
+          "Flux",
+          "Runway Gen-3"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 1,
+        "originalTitle": "Modelos de Difusión Probabilística"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:latent-diffusion-models",
+      "slug": "latent-diffusion-models",
+      "title": "Modelos de Difusión en Espacio Latente (Latent Diffusion Models / LDM)",
+      "category": "arquitecturas-difusion",
+      "categoryLabel": "Arquitecturas de Difusión & Espacio Latente",
+      "definition": "Variante de los modelos de difusión que ejecuta el proceso de entrenamiento y muestreo de ruido dentro del espacio latente de baja dimensión de un autocodificador preentrenado (VAE), en lugar de operar directamente en el costoso espacio de píxeles.",
+      "shortDefinition": "Arquitectura que comprime la imagen a un espacio latente compacto para desruidar con alta velocidad y menor consumo computacional.",
+      "extendedDefinition": "Propuesta por Rombach et al. (Stable Diffusion). Al comprimir imágenes de alta resolución mediante un factor espacial (como $8\\times$ o $16\\times$), reduce el coste computacional entre 10 y 100 veces, preservando la fidelidad perceptiva y geométrica.",
+      "fullDefinition": "Base de la democratización de la IA generativa moderna. Separa la compresión perceptiva (responsabilidad del VAE) de la generación semántica (responsabilidad de la U-Net o DiT en espacio latente).",
+      "components": [
+        "Autocodificador variacional preentrenado (Encoder $\\mathcal{E}$ y Decoder $\\mathcal{D}$)",
+        "Espacio latente normalizado de tensores de dimensiones reducidas ($Z = \\mathcal{E}(x)$)",
+        "Red neuronal de difusión latente con condicionamiento multimodal",
+        "Decodificador de síntesis de píxeles de alta resolución"
+      ],
+      "applications": [
+        "Generación de imágenes en hardware de consumo y estaciones locales",
+        "Modelos de video neurónico en espacio latente espacio-temporal",
+        "Sistemas de inpainting y outpainting en tiempo real"
+      ],
+      "examples": [
+        "Stable Diffusion XL tomando un prompt, generando un tensor latente de 128x128x4 y proyectándolo a través del decodificador VAE a una imagen final de 1024x1024 píxeles."
+      ],
+      "synonyms": [
+        "LDM",
+        "Latent diffusion",
+        "Difusión latente",
+        "Stable Diffusion Architecture"
+      ],
+      "attributes": {
+        "faseProduccion": "Generación / Inferencia",
+        "categoriaCanon": "Arquitecturas de Difusión & Espacio Latente",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:generative-ai-media:diffusion-models",
+          "note": "Especialización de difusión optimizada en espacio comprimido"
+        },
+        {
+          "type": "requires",
+          "target": "urn:term:generative-ai-media:variational-autoencoder-vae",
+          "note": "Depende del VAE para codificar y decodificar entre píxeles y tensores latentes"
+        },
+        {
+          "type": "complements",
+          "target": "urn:term:generative-ai-media:cross-attention-mechanism",
+          "note": "Utiliza atención cruzada para inyectar condicionamiento de texto en el espacio latente"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Estructura interna que determina cómo las dimensiones y resoluciones afectan la coherencia de imagen.",
+        "promptTokens": [
+          "latent diffusion space",
+          "compressed latent representation",
+          "perceptual autoencoding",
+          "spatial compression 8x"
+        ],
+        "negativeTokens": [
+          "pixel space brute force",
+          "memory overflow"
+        ],
+        "modelCompatibility": [
+          "SDXL",
+          "Flux.1",
+          "Runway Gen-3",
+          "OpenAI Sora"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 2,
+        "originalTitle": "Modelos de Difusión en Espacio Latente"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:cross-attention-mechanism",
+      "slug": "cross-attention-mechanism",
+      "title": "Mecanismo de Atención Cruzada (Cross-Attention Mechanism / Text-to-Image Conditioning)",
+      "category": "atencion-multimodal",
+      "categoryLabel": "Atención Multimodal & Embeddings",
+      "definition": "Módulo de atención de transformadores que mapea información entre dos modalidades distintas: proyecta las características espaciales de la imagen en proceso de difusión (consultas / Queries) sobre las representaciones semánticas del texto codificadas por un modelo de lenguaje (claves / Keys y valores / Values).",
+      "shortDefinition": "Capa de red neuronal que guía la colocación y aspecto de los elementos visuales según las palabras del prompt del usuario.",
+      "extendedDefinition": "Es el puente responsable del alineamiento prompt-imagen. Permite que cada zona espacial de la imagen 'preste atención' a tokens específicos del texto (como asociar 'ojos verdes' exclusivamente a la región ocular del rostro).",
+      "fullDefinition": "Operación matemática fundamental $\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V$. Permite manipular mapas de atención cruzada para control fino de composición, sustitución de palabras (Prompt-to-Prompt) e inyección de tokens de referencia.",
+      "components": [
+        "Vectores Query ($Q$) proyectados desde los estados espaciales de la imagen",
+        "Vectores Key ($K$) proyectados desde los embeddings de tokens de texto",
+        "Vectores Value ($V$) portadores de las características semánticas contextualizadas",
+        "Matrices de mapas de atención espacial normalizadas por softmax"
+      ],
+      "applications": [
+        "Guiado fiel de texto a imagen y generación de planos audiovisuales",
+        "Técnicas de edición de imagen sin entrenamiento (Cross-attention control / Prompt-to-Prompt)",
+        "Focalización de objetos y coherencia de personajes recurrentes"
+      ],
+      "examples": [
+        "La palabra 'claqueta' en el prompt activa intensamente los valores de atención en la región central del plano donde la red dibuja los bordes y rayas del objeto."
+      ],
+      "synonyms": [
+        "Cross-attention",
+        "Atención cruzada",
+        "Mecanismo de atención texto-imagen",
+        "Cross-modal attention"
+      ],
+      "attributes": {
+        "faseProduccion": "Inferencia / Acondicionamiento",
+        "categoriaCanon": "Atención Multimodal & Embeddings",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "regulates",
+          "target": "urn:term:generative-ai-media:latent-diffusion-models",
+          "note": "Guía el proceso de desruidado del modelo latente hacia la intención del prompt"
+        },
+        {
+          "type": "requires",
+          "target": "urn:term:generative-ai-media:multimodal-embeddings-clip",
+          "note": "Toma como claves y valores los embeddings producidos por el codificador de texto"
+        },
+        {
+          "type": "usedBy",
+          "target": "urn:term:generative-ai-media:controlnet-spatial-conditioning",
+          "note": "Se combina con señales estructurales para doble condicionamiento semántico y espacial"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Mecanismo que determina el peso y fidelidad de cada adjetivo y sustantivo en la imagen generada.",
+        "promptTokens": [
+          "cross-attention conditioning",
+          "precise token attention map",
+          "query-key cross-modal binding",
+          "semantic alignment"
+        ],
+        "negativeTokens": [
+          "token bleed",
+          "concept bleeding",
+          "ignored prompt keywords"
+        ],
+        "modelCompatibility": [
+          "All Multimodal Diffusion & Transformer Models"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 3,
+        "originalTitle": "Mecanismo de Atención Cruzada"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:variational-autoencoder-vae",
+      "slug": "variational-autoencoder-vae",
+      "title": "Autoencoder Variacional Espacial (Variational Autoencoder / VAE / Autoencoder KL)",
+      "category": "arquitecturas-difusion",
+      "categoryLabel": "Arquitecturas de Difusión & Espacio Latente",
+      "definition": "Red neuronal compuesta por un codificador y un decodificador entrenada para mapear imágenes del espacio de píxeles a una distribución gaussiana regularizada en el espacio latente y viceversa, preservando la fidelidad de colores, contrastes y microtexturas de alta frecuencia.",
+      "shortDefinition": "Componente bidireccional que comprime imágenes a espacio latente para el modelo generativo y luego las descomprime a imagen final visible.",
+      "extendedDefinition": "En pipelines de video e imagen generativa, un VAE defectuoso o mal calibrado provoca colores apagados, tonos de piel lavados o artefactos de mosaico. Los VAEs modernos utilizan cuantización vectorial (VQ-VAE) o regularización KL (Kullback-Leibler).",
+      "fullDefinition": "Subsistema de compresión y descompresión analógica-digital en modelos de difusión. Su espacio latente condensa la información perceptiva de la imagen, permitiendo que la red principal opere sin saturación de memoria GPU.",
+      "components": [
+        "Encoder convolucional con capas de downsampling",
+        "Espacio latente continuo parametrizado por media ($\\mu$) y varianza ($\\sigma^2$)",
+        "Técnica de reparametrización estocástica (Reparameterization trick)",
+        "Decoder con capas de upsampling y convoluciones residuales"
+      ],
+      "applications": [
+        "Decodificación final de fotogramas generados en alta resolución",
+        "Codificación de imágenes de referencia para Image-to-Image y ControlNet",
+        "Compresión de video espacio-temporal en modelos neuronales"
+      ],
+      "examples": [
+        "El VAE de DaVinci o de SDXL reconstruyendo microcontrastes de piel y degradados tonales a partir del mapa de tensores latentes desruidado."
+      ],
+      "synonyms": [
+        "VAE",
+        "Autoencoder variacional",
+        "Autoencoder KL",
+        "Latent encoder/decoder"
+      ],
+      "attributes": {
+        "faseProduccion": "Codificación / Decodificación",
+        "categoriaCanon": "Arquitecturas de Difusión & Espacio Latente",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "enables",
+          "target": "urn:term:generative-ai-media:latent-diffusion-models",
+          "note": "Proporciona el sustrato del espacio latente donde opera la difusión"
+        },
+        {
+          "type": "relatesTo",
+          "target": "urn:term:video-image:color-gamut",
+          "note": "El VAE debe calibrarse para no recortar gamut cromático amplio como Rec.709 o DCI-P3"
+        },
+        {
+          "type": "influences",
+          "target": "urn:term:audiovisual-production:etalonaje-color-grading",
+          "note": "Define la neutralidad del color antes del etalonaje final"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Elemento clave para evitar colores lavados o artefactos de decodificación en imágenes IA.",
+        "promptTokens": [
+          "calibrated VAE decode",
+          "high-fidelity variational autoencoder",
+          "rich color saturation",
+          "clean microtextures"
+        ],
+        "negativeTokens": [
+          "washed out colors",
+          "tiled VAE artifacts",
+          "pixelated color banding"
+        ],
+        "modelCompatibility": [
+          "All Latent Diffusion Architectures"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 4,
+        "originalTitle": "Autoencoder Variacional (VAE)"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:lora-low-rank-adaptation",
+      "slug": "lora-low-rank-adaptation",
+      "title": "Adaptación de Bajo Rango (Low-Rank Adaptation / LoRA)",
+      "category": "acondicionamiento-control",
+      "categoryLabel": "Acondicionamiento & Control Espacial",
+      "definition": "Técnica de ajuste fino eficiente de parámetros (PEFT) que congela los pesos preentrenados del modelo base e inyecta matrices de descomposición de bajo rango ($A \\times B$) en las capas de atención del transformador, permitiendo aprender nuevos personajes, estilos o conceptos con archivos de pocos megabytes.",
+      "shortDefinition": "Módulo liviano acoplable que inyecta estilos, personajes o técnicas de iluminación específicas en un modelo generativo base sin reentrenarlo.",
+      "extendedDefinition": "Matemáticamente, descompone la matriz de actualización de pesos $\\Delta W$ de dimensiones $d \\times k$ en el producto de dos matrices de rango $r \\ll \\min(d, k)$. Reduce los requerimientos de memoria VRAM en más de un 80% durante el entrenamiento.",
+      "fullDefinition": "Método modular preferido de la industria para personalizar modelos generativos. Permite apilar múltiples LoRAs simultáneamente modulando sus ponderaciones o escalas de influencia (Alpha / Weight).",
+      "components": [
+        "Matriz de rango bajo A ($d \\times r$) inicializada con distribución normal",
+        "Matriz de rango bajo B ($r \\times k$) inicializada en cero",
+        "Factor de escala de rango (Rank $r$ y LoRA Alpha $\\alpha$)",
+        "Ponderación dinámica de inferencia (LoRA weight multiplier: 0.0 a 1.5)"
+      ],
+      "applications": [
+        "Consistencia de personajes recurrentes a través de múltiples tomas y escenas",
+        "Replicación de estilos cinematográficos de autor (p.ej. Wes Anderson, Film Noir)",
+        "Inyección de vestuarios corporativos, props o marcas registradas en sets generativos"
+      ],
+      "examples": [
+        "Cargar un LoRA de iluminación de tungsteno con peso 0.8 junto a un LoRA de lente anamórfico vintage con peso 0.6 para filmar una secuencia nocturna."
+      ],
+      "synonyms": [
+        "LoRA",
+        "Low-Rank Adaptation",
+        "Ajuste fino de bajo rango",
+        "Adaptador LoRA"
+      ],
+      "attributes": {
+        "faseProduccion": "Personalización / Inferencia",
+        "categoriaCanon": "Acondicionamiento & Control Espacial",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "modulates",
+          "target": "urn:term:generative-ai-media:cross-attention-mechanism",
+          "note": "Modifica los pesos de las proyecciones de atención cruzada"
+        },
+        {
+          "type": "complements",
+          "target": "urn:term:generative-ai-media:controlnet-spatial-conditioning",
+          "note": "El LoRA aporta identidad y estilo mientras ControlNet aporta composición geométrica"
+        },
+        {
+          "type": "usedFor",
+          "target": "urn:term:audiovisual-production:continuidad-cinematografica",
+          "note": "Garantiza coherencia física del rostro y vestuario en planos sucesivos"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Herramienta obligatoria para mantener continuidad visual de protagonistas en preproducción cinemática con IA.",
+        "promptTokens": [
+          "character consistency LoRA",
+          "stylistic adapter",
+          "low-rank weight blend",
+          "coherent cinematic aesthetic"
+        ],
+        "negativeTokens": [
+          "overcooked LoRA artifacts",
+          "burned contrast",
+          "distorted face anatomy"
+        ],
+        "modelCompatibility": [
+          "SDXL",
+          "Flux",
+          "Midjourney Style Reference",
+          "Runway Gen-3"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 5,
+        "originalTitle": "Adaptación de Bajo Rango (LoRA)"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:controlnet-spatial-conditioning",
+      "slug": "controlnet-spatial-conditioning",
+      "title": "ControlNet y Acondicionamiento Espacial Estructural (ControlNet / Spatial Conditioning)",
+      "category": "acondicionamiento-control",
+      "categoryLabel": "Acondicionamiento & Control Espacial",
+      "definition": "Arquitectura neuronal que añade condicionamiento espacial explícito a modelos de difusión mediante el bloqueo de los pesos originales y la duplicación de una copia entrenable comunicada mediante capas de convolución cero (Zero Convolutions). Permite guiar la generación con mapas de profundidad, bordes Canny, poses humanas (OpenPose) o líneas normales.",
+      "shortDefinition": "Red complementaria que obliga al modelo generativo a respetar exactamente la geometría, pose o perspectiva provista por una imagen guía.",
+      "extendedDefinition": "Resuelve la incapacidad del texto puro para dictar composiciones espaciales exactas. Permite a los directores de fotografía transferir un encuadre preciso, el escorzo de un actor o la perspectiva de un pasillo al cuadro generado.",
+      "fullDefinition": "Infraestructura de control compositivo en producción visual con IA. Sus variantes incluyen Canny (líneas duras), Depth (mapa de profundidad Z), OpenPose (esqueleto anatómico de 18 articulaciones) y SoftEdge/Lineart.",
+      "components": [
+        "Bloques bloqueados del modelo base (Locked original blocks)",
+        "Bloques entrenables duplicados (Trainable cloned blocks)",
+        "Capas de convolución cero de entrada y salida (Zero Convolutions con pesos iniciales en cero)",
+        "Preprocesadores de señal visual (Canny detector, MiDaS/ZoeDepth, OpenPose estimator)"
+      ],
+      "applications": [
+        "Composición de encuadres cinematográficos según storyboards y bocetos",
+        "Control estricto de postura corporal en planos americanos y primeros planos",
+        "Mapeo de arquitectura y perspectivas sin deformación de líneas de fuga"
+      ],
+      "examples": [
+        "Alimentar un render 3D alámbrico a través de ControlNet Depth para que la IA genere un set fotorrealista respetando con exactitud la posición de las columnas y la cámara."
+      ],
+      "synonyms": [
+        "ControlNet",
+        "Acondicionamiento espacial",
+        "Control de estructura",
+        "Red de control geométrico"
+      ],
+      "attributes": {
+        "faseProduccion": "Previsualización / Composición",
+        "categoriaCanon": "Acondicionamiento & Control Espacial",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "guides",
+          "target": "urn:term:generative-ai-media:latent-diffusion-models",
+          "note": "Inyecta tensores espaciales en las etapas residuales del modelo latente"
+        },
+        {
+          "type": "complements",
+          "target": "urn:term:audiovisual-production:angulo-de-camara",
+          "note": "Fija con precisión matemática el punto de vista y ángulo de encuadre"
+        },
+        {
+          "type": "usedFor",
+          "target": "urn:term:audiovisual-production:storyboard",
+          "note": "Convierte bocetos del guion gráfico en planos cinemáticos fotorrealistas"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Herramienta definitiva para sustituir la aleatoriedad de composición por control de director.",
+        "promptTokens": [
+          "ControlNet depth guided",
+          "strict pose adherence",
+          "zero convolution structural guidance",
+          "perspective aligned composition"
+        ],
+        "negativeTokens": [
+          "misaligned limbs",
+          "perspective distortion",
+          "random framing"
+        ],
+        "modelCompatibility": [
+          "Stable Diffusion",
+          "SDXL",
+          "Flux Tools",
+          "ComfyUI Pipelines"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 6,
+        "originalTitle": "ControlNet / Acondicionamiento Espacial"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:classifier-free-guidance-cfg",
+      "slug": "classifier-free-guidance-cfg",
+      "title": "Guía Libre de Clasificador y Escala CFG (Classifier-Free Guidance / CFG Scale)",
+      "category": "alineacion-muestreo",
+      "categoryLabel": "Alineación, Guía & Muestreo",
+      "definition": "Técnica de muestreo para modelos de difusión que combina linealmente una predicción de ruido condicionada por el prompt ($e_\\theta(x_t, c)$) con una predicción incondicionada ($e_\\theta(x_t, \\emptyset)$), modulada por un escalar de guía ($w$ o CFG Scale): $\\tilde{e} = e_\\theta(x_t, \\emptyset) + w \\cdot (e_\\theta(x_t, c) - e_\\theta(x_t, \\emptyset))$.",
+      "shortDefinition": "Factor numérico que regula cuán estrictamente la imagen generada debe obedecer al prompt frente a la creatividad o naturalidad orgánica.",
+      "extendedDefinition": "Un valor bajo de CFG (1 a 4) otorga naturalidad y libertad plástica pero puede ignorar detalles del prompt. Un valor moderado (5 a 8) es el punto dulce estándar. Valores excesivos (>12) provocan saturación agresiva de color, halos y contraste quemado.",
+      "fullDefinition": "Mecanismo matemático que prescinde de un clasificador externo preentrenado. Al extrapolar en la dirección indicada por la diferencia entre la estimación con texto y sin texto, amplifica selectivamente las probabilidades de los modos semánticos deseados.",
+      "components": [
+        "Paso condicionado con prompt positivo ($e_\\theta(x_t, c)$)",
+        "Paso incondicionado con prompt vacío o negativo ($e_\\theta(x_t, \\emptyset)$)",
+        "Escala escalar de guía ($w$ o CFG Scale)",
+        "Técnicas de reescalado dinámico (Dynamic Thresholding / CFG Rescale) para evitar sobreexposición"
+      ],
+      "applications": [
+        "Calibración de fidelidad compositiva en motores de render generativo",
+        "Uso de prompts negativos para suprimir aberraciones cromáticas o deformaciones",
+        "Control de equilibrio entre hiperrealismo y fidelidad literal"
+      ],
+      "examples": [
+        "Ajustar CFG en 6.5 con prompt negativo 'oversaturated, high contrast, blurry' para obtener una estética cinematográfica natural y balanceada."
+      ],
+      "synonyms": [
+        "CFG Scale",
+        "Classifier-Free Guidance",
+        "Escala de guía",
+        "Guía incondicionada"
+      ],
+      "attributes": {
+        "faseProduccion": "Inferencia / Muestreo",
+        "categoriaCanon": "Alineación, Guía & Muestreo",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "controls",
+          "target": "urn:term:generative-ai-media:diffusion-models",
+          "note": "Modula la trayectoria de predicción de ruido durante todo el bucle de muestreo"
+        },
+        {
+          "type": "influences",
+          "target": "urn:term:audiovisual-production:dynamic-range-latitude",
+          "note": "Valores desmedidos de CFG colapsan el rango dinámico empastando sombras o quemando altas luces"
+        },
+        {
+          "type": "interactsWith",
+          "target": "urn:term:generative-ai-media:cross-attention-mechanism",
+          "note": "Pondera la fuerza con la que las capas de atención cruzada tiran del desruidado"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Parámetro numérico clave en la generación para evitar el 'aspecto IA plástico y sobrecontrastado'.",
+        "promptTokens": [
+          "CFG scale 6.0",
+          "balanced prompt adherence",
+          "natural dynamic range",
+          "subtle text guidance"
+        ],
+        "negativeTokens": [
+          "burnt pixels",
+          "high CFG artifacts",
+          "deep-fried contrast",
+          "neon oversaturation"
+        ],
+        "modelCompatibility": [
+          "All Diffusion Samplers"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 7,
+        "originalTitle": "Guía Libre de Clasificador (CFG)"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:transformer-dit-diffusion-transformer",
+      "slug": "transformer-dit-diffusion-transformer",
+      "title": "Transformador de Difusión (Diffusion Transformer / DiT Architecture)",
+      "category": "arquitecturas-difusion",
+      "categoryLabel": "Arquitecturas de Difusión & Espacio Latente",
+      "definition": "Arquitectura neuronal que sustituye la tradicional red convolucional U-Net en los modelos de difusión por una estructura basada enteramente en Transformadores. Las imágenes o volúmenes de video latentes se dividen en parches secuenciales (patches) procesados mediante bloques de autoatención y atención cruzada escalables.",
+      "shortDefinition": "Arquitectura moderna que reemplaza las redes convolucionales por transformers puros para lograr un escalado masivo en modelos de video e imagen.",
+      "extendedDefinition": "Formulada por Peebles y Xie (2023), y base de sistemas de frontera como OpenAI Sora, Flux y Runway Gen-3. Demuestra leyes de escala (Scaling Laws): a mayor capacidad de cómputo y parámetros, la calidad física y coherencia espacial mejoran de forma predecible sin estancarse.",
+      "fullDefinition": "Evolución paradigmática en IA generativa multimodal. Al unificar la generación de medios bajo el mecanismo de transformadores, permite procesar conjuntamente texto, parches de imagen y fotogramas de video con atención global unificada.",
+      "components": [
+        "Operador de parcheado espacial y temporal (Patchify layer: divide latentes en parches $p \\times p$)",
+        "Embeddings de posición espacio-temporal aprendidos (3D Positional Embeddings)",
+        "Bloques de transformador con modulación adaptativa (adaLN / adaptive layer norm)",
+        "Capas de desparcheado final para reconstruir el tensor latente (Unpatchify)"
+      ],
+      "applications": [
+        "Generación de video cinematográfico continuo a alta resolución (Sora, Kling, Luma)",
+        "Modelos fundacionales de síntesis de imagen de última generación (Flux.1)",
+        "Modelado de físicas de fluidos, colisiones e iluminación consistente en video"
+      ],
+      "examples": [
+        "Flux o Sora procesando una secuencia de 10 segundos como una secuencia masiva de parches espacio-temporales acoplados por autoatención completa."
+      ],
+      "synonyms": [
+        "DiT",
+        "Diffusion Transformer",
+        "Transformador de difusión",
+        "Arquitectura DiT"
+      ],
+      "attributes": {
+        "faseProduccion": "Arquitectura / Entrenamiento",
+        "categoriaCanon": "Arquitecturas de Difusión & Espacio Latente",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "generalizes",
+          "target": "urn:term:generative-ai-media:diffusion-models",
+          "note": "Representa el estado del arte de las redes de desruidado en difusión"
+        },
+        {
+          "type": "enables",
+          "target": "urn:term:generative-ai-media:text-to-video-motion-vector",
+          "note": "Permite modelar coherencia temporal fluida mediante atención espacio-temporal"
+        },
+        {
+          "type": "differentiatesFrom",
+          "target": "urn:term:software-engineering-ontology:runtime-motor-ejecucion",
+          "note": "Infraestructura de red neuronal frente a motor de ejecución de software"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Arquitectura detrás de los modelos de video más avanzados capaces de comprender movimiento cinemático realista.",
+        "promptTokens": [
+          "Diffusion Transformer DiT",
+          "patch-based neural synthesis",
+          "spatio-temporal transformer blocks",
+          "scaling laws visual model"
+        ],
+        "negativeTokens": [
+          "convolutive blur",
+          "temporal flicker",
+          "jello effect"
+        ],
+        "modelCompatibility": [
+          "Flux.1",
+          "OpenAI Sora",
+          "Kling AI",
+          "Runway Gen-3"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 8,
+        "originalTitle": "Transformador de Difusión (DiT)"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:text-to-video-motion-vector",
+      "slug": "text-to-video-motion-vector",
+      "title": "Vectores de Movimiento e Inferencia Temporal T2V (Temporal Motion Vectors / Neural Video Dynamics)",
+      "category": "sintesis-temporal",
+      "categoryLabel": "Síntesis Temporal & Video Neuronal",
+      "definition": "Mecanismo computacional y representacional en modelos neuronales de generación de video (Text-to-Video / Image-to-Video) que modela el flujo óptico, trayectorias de cámara y cinemática de objetos a lo largo de la dimensión temporal, garantizando coherencia entre fotogramas consecutivos sin metamorfosis involuntarias.",
+      "shortDefinition": "Parámetros y capas de atención temporal que controlan la velocidad, dirección y física del movimiento en videos generados por IA.",
+      "extendedDefinition": "Integra módulos de atención temporal unidimensionales o tridimensionales que correlacionan características entre frames adyacentes. Permite condicionar el video mediante directivas cinemáticas como 'travelling in', 'paneo horizontal' o 'velocidad orbital'.",
+      "fullDefinition": "Subsistema que transforma la síntesis de fotogramas estáticos en un flujo audiovisual continuo. Previene el parpadeo (flickering), preserva las identidades de personajes y simula comportamientos dinámicos coherentes con las leyes de la física.",
+      "components": [
+        "Capas de atención temporal (1D Temporal Attention Blocks a lo largo del eje T)",
+        "Condicionamiento de velocidad de fotogramas (FPS conditioning / Motion Bucket ID)",
+        "Inyección de trayectorias de cámara 6DoF (Camera Motion Controls: Pan, Tilt, Zoom, Roll)",
+        "Módulos de interpolación temporal y flujo óptico latente"
+      ],
+      "applications": [
+        "Generación de tomas cinemáticas de ficción con movimientos de cámara complejos",
+        "Animación de imágenes estáticas fijando vectores de desplazamiento específicos",
+        "Extensión y bucle de videos de fondo para entornos virtuales"
+      ],
+      "examples": [
+        "Configurar un Camera Motion Pan Right a velocidad constante de 3.0 en Runway Gen-3 para revelar un paisaje montañoso al amanecer."
+      ],
+      "synonyms": [
+        "Motion vector T2V",
+        "Dinámica de video neural",
+        "Atención temporal",
+        "Camera motion control"
+      ],
+      "attributes": {
+        "faseProduccion": "Generación Cinemática / Animación",
+        "categoriaCanon": "Síntesis Temporal & Video Neuronal",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:audiovisual-production:travelling",
+          "note": "Permite materializar un movimiento de travelling sobre rieles mediante vector de cámara virtual"
+        },
+        {
+          "type": "regulates",
+          "target": "urn:term:audiovisual-production:continuidad-cinematografica",
+          "note": "Evita mutaciones o teletransportaciones espaciales entre fotogramas"
+        },
+        {
+          "type": "requires",
+          "target": "urn:term:generative-ai-media:transformer-dit-diffusion-transformer",
+          "note": "Se beneficia de la atención espacio-temporal de arquitecturas DiT"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Instrucción primordial para dirigir movimiento de cámara profesional en modelos como Sora, Runway y Kling.",
+        "promptTokens": [
+          "smooth directional motion vector",
+          "fluid 24fps camera move",
+          "coherent physical momentum",
+          "temporal attention stability"
+        ],
+        "negativeTokens": [
+          "morphing faces",
+          "chaotic jitter",
+          "jittery camera",
+          "flickering background"
+        ],
+        "modelCompatibility": [
+          "Runway Gen-3",
+          "OpenAI Sora",
+          "Kling AI",
+          "Luma Dream Machine"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 9,
+        "originalTitle": "Vectores de Movimiento e Inferencia Temporal T2V"
+      }
+    },
+    {
+      "id": "urn:term:generative-ai-media:multimodal-embeddings-clip",
+      "slug": "multimodal-embeddings-clip",
+      "title": "Incrustaciones Multimodales de Texto e Imagen (Multimodal CLIP Embeddings / Contrastive Language-Image Pretraining)",
+      "category": "atencion-multimodal",
+      "categoryLabel": "Atención Multimodal & Embeddings",
+      "definition": "Espacio vectorial matemático compartido y de alta dimensión (típicamente 768 o 1024 dimensiones) entrenado mediante aprendizaje contrastivo por OpenAI CLIP para proyectar tanto descripciones textuales como imágenes en puntos contiguos cuando representan el mismo concepto semántico.",
+      "shortDefinition": "Representación matemática compartida donde el texto y las imágenes se ubican en el mismo espacio geométrico según su significado.",
+      "extendedDefinition": "Es la brújula conceptual de los modelos generativos. Permite medir cuantitativamente la similitud semántica mediante la distancia coseno entre un vector de texto y un vector visual, habilitando búsquedas cross-modales y alineamiento de prompts.",
+      "fullDefinition": "Piedra angular de la visión artificial contemporánea. Al sincronizar las representaciones del lenguaje natural con el mundo visual, permite que un modelo generativo entienda que el token 'anamórfico' corresponde a un bokeh ovalado y reflejos horizontales azulados.",
+      "components": [
+        "Codificador de texto (Text Transformer Encoder)",
+        "Codificador de visión (Vision Transformer / ViT o ResNet)",
+        "Espacio de proyección lineal normalizado en esfera unitaria",
+        "Métrica de similitud del coseno (Cosine similarity loss function)"
+      ],
+      "applications": [
+        "Acondicionamiento semántico primario para generadores de imagen y video",
+        "Clasificación Zero-Shot y búsqueda de imágenes por lenguaje natural",
+        "Filtrado estético y evaluación de calidad de datos sintéticos (CLIP Score)"
+      ],
+      "examples": [
+        "El cálculo del CLIP Score para verificar que un fotograma generado coincide al 92% con la directiva 'plano contraplano en clave baja'."
+      ],
+      "synonyms": [
+        "CLIP",
+        "CLIP embeddings",
+        "Incrustaciones multimodales",
+        "Contrastive Language-Image Pretraining"
+      ],
+      "attributes": {
+        "faseProduccion": "Inferencia / Evaluación",
+        "categoriaCanon": "Atención Multimodal & Embeddings",
+        "fuenteIndice": "DocWeb AI Media Synthesis Catalog"
+      },
+      "relations": [
+        {
+          "type": "feeds",
+          "target": "urn:term:generative-ai-media:cross-attention-mechanism",
+          "note": "Suministra los vectores clave y valor para la atención cruzada"
+        },
+        {
+          "type": "evaluates",
+          "target": "urn:term:audiovisual-production:narrativa-visual",
+          "note": "Permite auditar la fidelidad narrativa entre el guion técnico y la imagen generada"
+        },
+        {
+          "type": "relatesTo",
+          "target": "urn:term:software-engineering-ontology:graphrag-recuperacion-semantica",
+          "note": "Base vectorial complementaria a grafos estructurados en sistemas de búsqueda híbrida"
+        }
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "aiPromptGuidance": {
+        "relevance": "Espacio semántico que interpreta el vocabulario visual y estilístico en prompts multimodales.",
+        "promptTokens": [
+          "multimodal CLIP embedding alignment",
+          "contrastive vision-language representation",
+          "high cosine similarity",
+          "semantic fidelity"
+        ],
+        "negativeTokens": [
+          "semantic mismatch",
+          "unrelated visual concepts"
+        ],
+        "modelCompatibility": [
+          "All Vision-Language Models"
+        ]
+      },
+      "metadata": {
+        "source": "docweb_genai_media_v1",
+        "sourceIndex": 10,
+        "originalTitle": "Incrustaciones Multimodales CLIP"
+      }
+    }
+  ]
+}

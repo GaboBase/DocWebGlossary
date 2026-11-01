@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DOCWEB MULTIGLOSSARY — Base de Conocimiento Local</title>
   <meta name="description" content="Sistema multiglosario semántico, local, persistente y extensible para consulta, exploración e investigación técnica.">
-  <!-- Estilos Locales Autónomos (Cero dependencias remotas) -->
+  <!-- Paquete Canónico de Datos Local (Cero dependencias remotas, soporte offline file:///) -->
+  <script src="./app/data/bundle.js"></script>
+  <!-- Estilos Locales Autónomos -->
   <link rel="stylesheet" href="./app/css/app.css">
 </head>
 <body>
@@ -21,7 +23,35 @@
       <span class="brand-badge" id="system-status-indicator">Iniciando motor local...</span>
     </div>
 
+    <!-- Navegación Superior por Vistas / Pestañas Principales -->
+    <nav class="app-nav-tabs" aria-label="Vistas principales del sistema">
+      <button type="button" class="nav-tab-btn" data-target-view="homepage-view" id="nav-btn-homepage" title="Portal de inicio y explorador transversal">
+        <span>🏠 Portal Hub</span>
+      </button>
+      <button type="button" class="nav-tab-btn active" data-target-view="glossary-view" id="nav-btn-glossary" title="Explorador detallado de términos por glosario">
+        <span>📚 Glosarios & Términos</span>
+      </button>
+      <button type="button" class="nav-tab-btn" data-target-view="diagram-view" id="nav-btn-diagram" title="Diagrama contextual de relaciones semánticas">
+        <span>🗺️ Diagrama Contextual</span>
+      </button>
+      <button type="button" class="nav-tab-btn" data-target-view="orientator-view" id="nav-btn-orientator" title="Orientador técnico de prompts y directivas IA">
+        <span>🎬 Orientador IA</span>
+      </button>
+    </nav>
+
     <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" id="btn-toggle-hover-mode" title="Alternar información flotante al pasar el cursor (Hover: Completo / Simple / OFF). Atajo: Alt+H">
+        <span id="hover-mode-label">💡 Hover: Completo</span>
+      </button>
+      <button class="btn btn-secondary btn-sm" id="btn-toggle-inspector" title="Activar/Desactivar el Inspector DOM Semántico en tiempo real (Atajo: Alt+I)">
+        <span>🔍 Inspector DOM</span>
+      </button>
+      <button class="btn btn-secondary btn-sm" id="btn-random-term" title="Seleccionar y explorar un término aleatorio del glosario activo">
+        <span>🎲 Término Aleatorio</span>
+      </button>
+      <button class="btn btn-secondary btn-sm" id="btn-orientator" title="Orientador de Intenciones Audiovisuales para IA">
+        <span>🎬 Orientador Audiovisual IA</span>
+      </button>
       <button class="btn btn-sm btn-primary" id="btn-new-term">
         <span>➕ Nuevo Término</span>
       </button>
@@ -35,8 +65,147 @@
     </div>
   </header>
 
-  <!-- Disposición Principal de la Aplicación -->
-  <div class="app-layout">
+  <!-- ===================================================================== -->
+  <!-- VISTA 1: HOMEPAGE & PORTAL HUB CROSS-GLOSARIO                          -->
+  <!-- ===================================================================== -->
+  <section id="homepage-view" class="main-view-panel" style="display: none;" aria-label="Portal de Inicio y Explorador Transversal">
+    <div class="homepage-container">
+      
+      <!-- Hero Banner y Búsqueda Global -->
+      <header class="hero-section">
+        <div class="hero-badge">⚡ PLATAFORMA DE CONOCIMIENTO TÉCNICO & MODELADO IA</div>
+        <h1 class="hero-title">DOCWEB MULTIGLOSSARY</h1>
+        <p class="hero-subtitle">Base ontológica canónica, navegación relacional multimodal y generador de directivas para modelos de lenguaje y síntesis generativa.</p>
+        
+        <div class="hero-search-wrapper">
+          <span class="hero-search-icon">🔍</span>
+          <input type="text" id="hero-global-search" class="hero-search-input" placeholder="Buscar conceptos, fórmulas, algoritmos, normas o parámetros en todos los glosarios..." aria-label="Búsqueda global transversal">
+          <span class="hero-search-kbd">ESC limpiar</span>
+          <div id="hero-search-suggestions" class="hero-search-suggestions" style="display: none;"></div>
+        </div>
+      </header>
+
+      <!-- Métricas Globales de la Red Semántica -->
+      <section class="metrics-dashboard" aria-label="Métricas del Sistema">
+        <div class="metric-card">
+          <div class="metric-icon">📚</div>
+          <div class="metric-value" id="stat-total-terms">257</div>
+          <div class="metric-label">Términos Canónicos</div>
+          <div class="metric-sub">Definiciones rigurosas y verificadas</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">🌐</div>
+          <div class="metric-value" id="stat-total-glossaries">5</div>
+          <div class="metric-label">Glosarios Especializados</div>
+          <div class="metric-sub">Dominios técnicos interconectados</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">🔗</div>
+          <div class="metric-value" id="stat-total-relations">1,085+</div>
+          <div class="metric-label">Relaciones Semánticas</div>
+          <div class="metric-sub">15 pares ontológicos bidireccionales</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">🛡️</div>
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Autónomo & Offline</div>
+          <div class="metric-sub">Cero CDNs, persistencia local IndexedDB</div>
+        </div>
+      </section>
+
+      <!-- Vitrina de Glosarios Especializados -->
+      <section class="portal-section" aria-label="Glosarios Canónicos">
+        <div class="portal-section-header">
+          <div>
+            <h2 class="portal-section-title">Glosarios Temáticos Canónicos</h2>
+            <p class="portal-section-desc">Selecciona un dominio técnico para explorar su taxonomía especializada, ontología y diagramas.</p>
+          </div>
+          <span class="term-badge-primary">5 Ecosistemas Activos</span>
+        </div>
+
+        <div class="glossary-cards-grid" id="homepage-glossary-cards">
+          <!-- Inyectado dinámicamente por app.js -->
+        </div>
+      </section>
+
+      <!-- Explorador Transversal Multifacético -->
+      <section class="portal-section" aria-label="Explorador Transversal">
+        <div class="portal-section-header">
+          <div>
+            <h2 class="portal-section-title">Explorador Transversal Multifacético</h2>
+            <p class="portal-section-desc">Filtra y descubre conceptos cruzando dominios, cotas ontológicas L1-L6, fases de ciclo de vida y modalidades operativas.</p>
+          </div>
+          <div class="explorer-results-count" id="explorer-results-counter">Cargando catálogo...</div>
+        </div>
+
+        <!-- Matriz de Filtros Multifacéticos -->
+        <div class="faceted-filter-bar">
+          <div class="filter-group">
+            <label for="filter-hub-domain" class="filter-group-label">Dominio / Glosario</label>
+            <select id="filter-hub-domain" class="form-select filter-select">
+              <option value="all">Todos los Dominios (Transversal)</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-hub-level" class="filter-group-label">Nivel Ontológico (L1–L6)</label>
+            <select id="filter-hub-level" class="form-select filter-select">
+              <option value="all">Todos los Niveles (L1 a L6)</option>
+              <option value="L1">L1 — Axiomático / Meta-Ontología</option>
+              <option value="L2">L2 — Dominio / Sistema Global</option>
+              <option value="L3">L3 — Arquitectura / Módulo</option>
+              <option value="L4">L4 — Concepto Canónico / Entidad</option>
+              <option value="L5">L5 — Técnica / Proceso / Algoritmo</option>
+              <option value="L6">L6 — Instancia / Parámetro Concreto</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-hub-phase" class="filter-group-label">Fase de Ciclo de Vida</label>
+            <select id="filter-hub-phase" class="form-select filter-select">
+              <option value="all">Todas las Fases</option>
+              <option value="preproduccion">Preproducción / Planificación / Guion</option>
+              <option value="produccion">Rodaje / Captura / Construcción</option>
+              <option value="postproduccion">Postproducción / Montaje / Etalonaje</option>
+              <option value="distribucion">Masterización / Distribución / Runtime</option>
+              <option value="arquitectura">Arquitectura / Modelado / Compilación</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-hub-modality" class="filter-group-label">Modalidad Operativa</label>
+            <select id="filter-hub-modality" class="form-select filter-select">
+              <option value="all">Todas las Modalidades</option>
+              <option value="visual">Visual / Óptica / Cámara</option>
+              <option value="auditiva">Auditiva / Microfonía / Acústica</option>
+              <option value="codigo">Código / Sintaxis / Compilación</option>
+              <option value="ia">Hiperdimensional / Modelos IA</option>
+              <option value="color">Colorimetría / Rango Dinámico</option>
+            </select>
+          </div>
+
+          <div class="filter-group" style="flex: 1 1 200px;">
+            <label for="filter-hub-text" class="filter-group-label">Búsqueda Rápida</label>
+            <input type="text" id="filter-hub-text" class="form-input filter-text-input" placeholder="Filtrar por texto o sinónimo...">
+          </div>
+
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-hub-filters" title="Restablecer todos los filtros">
+            🔄 Limpiar
+          </button>
+        </div>
+
+        <!-- Rejilla de Resultados del Explorador -->
+        <div class="explorer-cards-grid" id="explorer-cards-container">
+          <!-- Inyectado dinámicamente por app.js -->
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- VISTA 2: DISPOSICIÓN PRINCIPAL DE GLOSARIOS & TÉRMINOS                -->
+  <!-- ===================================================================== -->
+  <div class="app-layout" id="glossary-view">
     
     <!-- Barra Lateral: Selector de Glosario, Filtros y Lista de Términos -->
     <aside class="sidebar">
@@ -49,6 +218,13 @@
         <div class="search-container">
           <span class="search-icon">🔍</span>
           <input type="text" id="search-input" class="search-input" placeholder="Buscar términos, definiciones, sinónimos..." aria-label="Buscar en el glosario">
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <div class="sidebar-title">Filtro Alfabético (A–Z)</div>
+          <nav class="az-nav" id="az-nav" aria-label="Navegación alfabética">
+            <!-- Botones A-Z inyectados dinámicamente por app.js -->
+          </nav>
         </div>
 
         <div style="margin-top: 0.75rem;">
@@ -73,10 +249,160 @@
     </main>
 
   </div>
+ 
+  <!-- Modal Orientador Audiovisual IA (M4) -->
+  <div id="orientator-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="orientator-modal-title" style="display: none;">
+    <div class="modal-content orientator-modal-content">
+      <header class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.5rem;" aria-hidden="true">🎬</span>
+          <div>
+            <h2 id="orientator-modal-title" style="font-size: 1.15rem; font-weight: 700; margin: 0;">Orientador de Intenciones Audiovisuales para IA</h2>
+            <p style="font-size: 0.78rem; color: var(--muted-foreground); margin: 0;">Formulación técnica estructurada de productos y prompts para modelos generativos</p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm" id="btn-close-orientator" aria-label="Cerrar modal de Orientador">✕</button>
+      </header>
+
+      <form id="orientator-form" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Selector de Producto Audiovisual Adaptado al Glosario Activo -->
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <label for="orientator-product-select" class="form-label" style="margin-bottom:0;">Producto Audiovisual Objetivo</label>
+            <span id="orientator-glossary-badge" class="term-badge-primary" style="font-size:0.75rem;">📚 Glosario Activo</span>
+          </div>
+          <select id="orientator-product-select" class="form-select" aria-label="Seleccionar producto audiovisual">
+            <option value="trailer">Trailer Cinematográfico</option>
+            <option value="teaser">Teaser Promocional</option>
+            <option value="reel">Reel / Short Vertical</option>
+            <option value="corporate-video">Video Corporativo</option>
+            <option value="explainer">Video Explicativo</option>
+            <option value="storyboard">Storyboard Ilustrado</option>
+            <option value="animatic">Animatic con Timing</option>
+            <option value="shot-list">Lista de Planos (Shot List)</option>
+            <option value="take">Toma / Registro Único</option>
+            <option value="shot">Plano Cinematográfico</option>
+            <option value="sequence">Secuencia Narrativa</option>
+            <option value="scene">Escena Dramática</option>
+            <option value="montage">Montaje / Secuencia de Enlace</option>
+            <option value="export-formats">Formatos de Exportación y Master</option>
+          </select>
+          <div id="orientator-product-desc" style="font-size: 0.75rem; color: var(--muted-foreground); font-style: italic; margin-top: 0.25rem;"></div>
+        </div>
+
+        <!-- Atributos Determinantes de Producción Específicos por Producto -->
+        <fieldset class="orientator-attributes-grid" id="orientator-attributes-fieldset" style="border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.75rem;">
+          <legend id="orientator-legend-title" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); padding: 0 0.4rem;">Atributos Determinantes de Producción</legend>
+          
+          <div id="orientator-dynamic-attributes" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem;">
+            <!-- Contenido dinámico renderizado por app.js -->
+            <div class="form-group">
+              <label for="attr-duration" class="form-label">Duración Prevista</label>
+              <input type="text" id="attr-duration" class="form-input" placeholder="Ej. 2 minutos, 30 segundos">
+            </div>
+            <div class="form-group">
+              <label for="attr-aspectRatio" class="form-label">Relación de Aspecto</label>
+              <input type="text" id="attr-aspectRatio" class="form-input" placeholder="Ej. 2.39:1, 16:9, 9:16">
+            </div>
+            <div class="form-group">
+              <label for="attr-resolution" class="form-label">Resolución y Formato</label>
+              <input type="text" id="attr-resolution" class="form-input" placeholder="Ej. 4K DCI, UHD 3840x2160">
+            </div>
+            <div class="form-group">
+              <label for="attr-style" class="form-label">Estilo Visual y Estética</label>
+              <input type="text" id="attr-style" class="form-input" placeholder="Ej. Cinematic anamorphic 35mm">
+            </div>
+          </div>
+
+          <!-- Previsualización de Verbos de Acción y Fases de Trabajo -->
+          <div id="orientator-action-verbs-container" style="border-top: 1px dashed var(--border); padding-top: 0.5rem; display: none;"></div>
+          <div id="orientator-workflow-tasks-container" style="border-top: 1px dashed var(--border); padding-top: 0.5rem; display: none;"></div>
+        </fieldset>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+          <button type="button" class="btn" id="btn-reset-orientator">Restablecer Valores</button>
+          <button type="button" class="btn btn-primary" id="btn-generate-spec">✨ Generar Especificación IA</button>
+        </div>
+      </form>
+
+      <!-- Contenedor de Resultados -->
+      <section id="orientator-results" class="orientator-results-panel" aria-label="Especificación Técnica Generada" style="display: none; border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 0.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--primary); margin: 0;">Especificación Técnica y Prompts Generados</h3>
+          <span id="spec-product-badge" class="term-badge-primary"></span>
+        </div>
+
+        <!-- Positive Prompt -->
+        <div class="spec-block">
+          <div class="spec-block-header">
+            <span class="spec-block-title">Positive Prompt (Generador de Video / Imagen IA)</span>
+            <button type="button" class="btn btn-sm" id="btn-copy-positive">📋 Copiar Prompt</button>
+          </div>
+          <pre id="spec-positive-prompt" class="spec-prompt-content" tabindex="0"></pre>
+        </div>
+
+        <!-- Negative Prompt -->
+        <div class="spec-block" style="margin-top: 0.75rem;">
+          <div class="spec-block-header">
+            <span class="spec-block-title">Negative Prompt (Mitigación de Artefactos y Coherencia Temporal)</span>
+            <button type="button" class="btn btn-sm" id="btn-copy-negative">📋 Copiar Negative</button>
+          </div>
+          <pre id="spec-negative-prompt" class="spec-prompt-content" tabindex="0"></pre>
+        </div>
+
+        <!-- Directivas de Acción para Modelos de IA Generativa -->
+        <div class="spec-block" style="margin-top: 0.75rem;">
+          <div class="spec-block-header">
+            <span class="spec-block-title">⚡ Directivas de Acción para Modelos de IA Generativa</span>
+            <button type="button" class="btn btn-sm" id="btn-copy-directives">📋 Copiar Directivas</button>
+          </div>
+          <pre id="spec-action-directives" class="spec-prompt-content" tabindex="0" style="white-space: pre-wrap; font-family: inherit; font-size: 0.82rem; line-height: 1.5;"></pre>
+        </div>
+
+        <!-- Plan de Tareas y Flujo de Trabajo Operativo por Fases -->
+        <div class="spec-block" style="margin-top: 0.75rem;">
+          <div class="spec-block-header">
+            <span class="spec-block-title">📋 Plan de Tareas y Flujo de Trabajo Operativo (Fases)</span>
+          </div>
+          <div id="spec-workflow-tasks" style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.4rem;"></div>
+        </div>
+
+        <!-- Camera & Lighting Directives -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem; margin-top: 0.75rem;">
+          <div class="spec-block">
+            <div class="spec-block-header">
+              <span class="spec-block-title">Directivas de Cámara y Óptica / Viewport</span>
+            </div>
+            <p id="spec-camera-directives" class="spec-text-content"></p>
+          </div>
+          <div class="spec-block">
+            <div class="spec-block-header">
+              <span class="spec-block-title">Directivas de Iluminación y Colorimetría</span>
+            </div>
+            <p id="spec-lighting-directives" class="spec-text-content"></p>
+          </div>
+        </div>
+
+        <!-- Términos Canónicos Vinculados -->
+        <div class="spec-block" style="margin-top: 0.75rem;">
+          <div class="spec-block-header">
+            <span class="spec-block-title">Términos Técnicos Canónicos Vinculados en DocWeb</span>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-bottom: 0.5rem;">Haz clic en cualquier término para explorar su definición rigurosa, relaciones ontológicas y diagrama contextual:</p>
+          <div id="spec-referenced-terms" class="spec-terms-container" style="display: flex; flex-wrap: wrap; gap: 0.4rem;"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Tooltip Flotante Global de Información al Pasar el Cursor (Simple / Completo) -->
+  <div id="global-hover-tooltip" class="global-hover-tooltip" role="tooltip" aria-hidden="true" style="display: none;"></div>
 
   <!-- Scripts Locales Autónomos -->
+  <script src="./app/data/bundle.js"></script>
   <script src="./app/js/storage.js"></script>
   <script src="./app/js/semantic-engine.js"></script>
+  <script src="./app/js/prompt-orientator.js"></script>
   <script src="./app/js/app.js"></script>
 </body>
 </html>

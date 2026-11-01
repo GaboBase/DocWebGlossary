@@ -1,0 +1,82 @@
+{
+  "id": "audiovisual-production",
+  "slug": "audiovisual-production",
+  "title": "Producción Audiovisual & Terminología de Video",
+  "version": "1.0.0",
+  "description": "Glosario canónico profesional de producción audiovisual, dirección cinematográfica, iluminación, sonido directo y postproducción, montaje, etalonaje y generación con inteligencia artificial multimodal.",
+  "created": "2026-11-01T02:00:00Z",
+  "updated": "2026-11-01T02:00:00Z",
+  "license": "Local Knowledge Base - Internal Project Use",
+  "author": "DocWeb Knowledge Engineering Team",
+  "domain": "Audiovisual Production, Cinematography, Sound Engineering, Video Postproduction, Multimodal AI",
+  "termCount": 212,
+  "categories": [
+    "preproduccion",
+    "direccion-narrativa",
+    "camara-movimiento",
+    "optica-lentes",
+    "iluminacion",
+    "audio-directo",
+    "edicion-montaje",
+    "color-etalonaje",
+    "audio-postproduccion",
+    "vfx-composicion",
+    "distribucion-formatos",
+    "tecnologia-infraestructura",
+    "ia-generacion-audiovisual"
+  ],
+  "categoryDetails": {
+    "preproduccion": {
+      "name": "Preproducción & Planificación",
+      "description": "Fase analítica y estratégica previa al rodaje: guion literario y técnico, desglose, presupuesto, casting y cronograma."
+    },
+    "direccion-narrativa": {
+      "name": "Dirección, Rodaje & Gestión de Set",
+      "description": "Puesta en escena dramática, coordinación del set, manejo de actores, orden de rodaje y autoridad cinematográfica."
+    },
+    "camara-movimiento": {
+      "name": "Cámara, Encuadre & Movimiento",
+      "description": "Gramática del lenguaje cinematográfico visual, escala de planos, trayectorias espaciales, dolly, grúa y steadicam."
+    },
+    "optica-lentes": {
+      "name": "Óptica, Enfoque & Composición",
+      "description": "Distancia focal, campo de visión, profundidad de campo, enfoque selectivo, bokeh y principios de composición geométrica."
+    },
+    "iluminacion": {
+      "name": "Iluminación, Exposición & Fotometría",
+      "description": "Modelado volumétrico de luz, ratio de contraste, iluminación de tres puntos, fotometría y triángulo de exposición."
+    },
+    "audio-directo": {
+      "name": "Audio Directo & Microfonía",
+      "description": "Captura acústica en set, micrófonos de caña y solapa, preamplificación, código de tiempo y sincronización fónica."
+    },
+    "edicion-montaje": {
+      "name": "Edición, Montaje & Flujo Editorial",
+      "description": "Corte de metraje, continuidad espaciotemporal (raccord), ritmo narrativo, NLE y sincronización de material A-Roll/B-Roll."
+    },
+    "color-etalonaje": {
+      "name": "Colorimetría, Espacios de Color & Etalonaje",
+      "description": "Gradación de color, curvas tonales, tablas de consulta (LUT), curvas Log y espacios amplios (ACES, Rec.709, Rec.2020)."
+    },
+    "audio-postproduccion": {
+      "name": "Postproducción de Sonido & Acústica",
+      "description": "Diseño sonoro, efectos de sala (Foley), regrabación de diálogo (ADR), mezclas multicanal inmersivas y estándares LUFS."
+    },
+    "vfx-composicion": {
+      "name": "Efectos Visuales (VFX) & Composición",
+      "description": "Integración fotográfica de elementos CGI y acción real, rotoscopia, chroma key, tracking 3D y pintura mate digital."
+    },
+    "distribucion-formatos": {
+      "name": "Entrega, Formatos Digitales & Distribución",
+      "description": "Paquetes finales de entrega (deliverables), especificaciones técnicas para streaming, accesibilidad y formatos verticales."
+    },
+    "tecnologia-infraestructura": {
+      "name": "Tecnología de Video, Señal & Códecs",
+      "description": "Estructuras de compresión intra/intercuadro, tasa de bits, contenedores multimedia, transporte de video y muestreo cromático."
+    },
+    "ia-generacion-audiovisual": {
+      "name": "Inteligencia Artificial Audiovisual & Generación",
+      "description": "Diffusion Transformers, condicionamiento multimodal, vectores de movimiento, interpolación neuronal y modelos generativos."
+    }
+  }
+}

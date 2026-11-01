@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema/glossary.json",
+  "id": "software-engineering-ontology",
+  "slug": "software-engineering-ontology",
+  "title": "Ingeniería de Software & Ontología de Sistemas",
+  "description": "Base conceptual rigurosa, taxonomía y modelo ontológico de seis niveles para artefactos computacionales, arquitectura de software, compiladores, sistemas distribuidos y patrones de conocimiento contextual.",
+  "domain": "Software Engineering, System Architecture, Ontologies, Compilers, Distributed Systems",
+  "version": "1.0.0",
+  "termCount": 30,
+  "categories": [
+    "Taxonomía de Artefactos (L1-L6)",
+    "Arquitectura & Diseño Estructural",
+    "Semántica & Compilación",
+    "Sistemas Distribuidos & Persistencia",
+    "Ingeniería de Conocimiento & Grafos"
+  ],
+  "author": "DocWeb Knowledge Engineering Working Group",
+  "created": "2026-10-22",
+  "updated": "2026-11-01"
+}
