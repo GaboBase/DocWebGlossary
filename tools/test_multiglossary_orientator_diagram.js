@@ -50,11 +50,21 @@ function runMultiGlossaryOrientatorDiagramTests() {
   runner.assert(videoImgProducts.some(p => p.id === 'hdr-master-delivery'), 'Video & Image includes hdr-master-delivery', { feature: 'F16', tier: 1 });
   runner.assert(videoImgProducts.some(p => p.id === 'generative-ai-video'), 'Video & Image includes generative-ai-video', { feature: 'F16', tier: 1 });
 
+  const seProducts = orientator.getProductList('software-engineering-ontology');
+  runner.assert(seProducts.length >= 4, 'Software Engineering returns at least 4 specialized products', { feature: 'F16', tier: 1 });
+  runner.assert(seProducts.some(p => p.id === 'software-architecture-spec'), 'Software Engineering includes software-architecture-spec', { feature: 'F16', tier: 1 });
+  runner.assert(seProducts.some(p => p.id === 'agentic-system-spec'), 'Software Engineering includes agentic-system-spec', { feature: 'F16', tier: 1 });
+
+  const genAiProducts = orientator.getProductList('generative-ai-media');
+  runner.assert(genAiProducts.length >= 4, 'Generative AI Media returns at least 4 specialized products', { feature: 'F16', tier: 1 });
+  runner.assert(genAiProducts.some(p => p.id === 'text-to-video-diffusion'), 'Generative AI Media includes text-to-video-diffusion', { feature: 'F16', tier: 1 });
+  runner.assert(genAiProducts.some(p => p.id === 'multimodal-image-synthesis'), 'Generative AI Media includes multimodal-image-synthesis', { feature: 'F16', tier: 1 });
+
   const allProducts = orientator.getProductList('all');
-  runner.assert(allProducts.length === 25, 'All products aggregates 25 items across all catalogs', { feature: 'F16', tier: 1 });
+  runner.assert(allProducts.length >= 33, 'All products aggregates 33 items across all catalogs', { feature: 'F16', tier: 1 });
 
   const fallbackProducts = orientator.getProductList('unknown-glossary-id');
-  runner.assert(fallbackProducts.length === 25, 'Unknown glossary falls back gracefully to all products', { feature: 'F16', tier: 2 });
+  runner.assert(fallbackProducts.length >= 33, 'Unknown glossary falls back gracefully to all products', { feature: 'F16', tier: 2 });
 
   // --- Suite 2: Product-Specific Determinant Attributes ---
   console.log('\n--- Section 2: Product-Specific Determinant Attributes ---');

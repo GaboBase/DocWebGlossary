@@ -61,7 +61,7 @@
       <button class="btn btn-sm" id="btn-import-capsule" title="Importar cápsula JSON con verificación criptográfica">
         <span>📥 Importar Cápsula</span>
       </button>
-      <input type="file" id="input-import-file" accept=".json" style="display: none;">
+      <input type="file" id="input-import-file" name="input-import-file" accept=".json" style="display: none;">
     </div>
   </header>
 
@@ -79,7 +79,7 @@
         
         <div class="hero-search-wrapper">
           <span class="hero-search-icon">🔍</span>
-          <input type="text" id="hero-global-search" class="hero-search-input" placeholder="Buscar conceptos, fórmulas, algoritmos, normas o parámetros en todos los glosarios..." aria-label="Búsqueda global transversal">
+          <input type="text" id="hero-global-search" name="hero-global-search" class="hero-search-input" placeholder="Buscar conceptos, fórmulas, algoritmos, normas o parámetros en todos los glosarios..." aria-label="Búsqueda global transversal">
           <span class="hero-search-kbd">ESC limpiar</span>
           <div id="hero-search-suggestions" class="hero-search-suggestions" style="display: none;"></div>
         </div>
@@ -142,14 +142,14 @@
         <div class="faceted-filter-bar">
           <div class="filter-group">
             <label for="filter-hub-domain" class="filter-group-label">Dominio / Glosario</label>
-            <select id="filter-hub-domain" class="form-select filter-select">
+            <select id="filter-hub-domain" name="filter-hub-domain" class="form-select filter-select">
               <option value="all">Todos los Dominios (Transversal)</option>
             </select>
           </div>
 
           <div class="filter-group">
             <label for="filter-hub-level" class="filter-group-label">Nivel Ontológico (L1–L6)</label>
-            <select id="filter-hub-level" class="form-select filter-select">
+            <select id="filter-hub-level" name="filter-hub-level" class="form-select filter-select">
               <option value="all">Todos los Niveles (L1 a L6)</option>
               <option value="L1">L1 — Axiomático / Meta-Ontología</option>
               <option value="L2">L2 — Dominio / Sistema Global</option>
@@ -162,7 +162,7 @@
 
           <div class="filter-group">
             <label for="filter-hub-phase" class="filter-group-label">Fase de Ciclo de Vida</label>
-            <select id="filter-hub-phase" class="form-select filter-select">
+            <select id="filter-hub-phase" name="filter-hub-phase" class="form-select filter-select">
               <option value="all">Todas las Fases</option>
               <option value="preproduccion">Preproducción / Planificación / Guion</option>
               <option value="produccion">Rodaje / Captura / Construcción</option>
@@ -174,7 +174,7 @@
 
           <div class="filter-group">
             <label for="filter-hub-modality" class="filter-group-label">Modalidad Operativa</label>
-            <select id="filter-hub-modality" class="form-select filter-select">
+            <select id="filter-hub-modality" name="filter-hub-modality" class="form-select filter-select">
               <option value="all">Todas las Modalidades</option>
               <option value="visual">Visual / Óptica / Cámara</option>
               <option value="auditiva">Auditiva / Microfonía / Acústica</option>
@@ -186,7 +186,7 @@
 
           <div class="filter-group" style="flex: 1 1 200px;">
             <label for="filter-hub-text" class="filter-group-label">Búsqueda Rápida</label>
-            <input type="text" id="filter-hub-text" class="form-input filter-text-input" placeholder="Filtrar por texto o sinónimo...">
+            <input type="text" id="filter-hub-text" name="filter-hub-text" class="form-input filter-text-input" placeholder="Filtrar por texto o sinónimo...">
           </div>
 
           <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-hub-filters" title="Restablecer todos los filtros">
@@ -211,13 +211,13 @@
     <aside class="sidebar">
       <div class="sidebar-section">
         <label for="glossary-select" class="sidebar-title">Glosario Activo</label>
-        <select id="glossary-select" class="glossary-selector" aria-label="Seleccionar glosario temático">
+        <select id="glossary-select" name="glossary-select" class="glossary-selector" aria-label="Seleccionar glosario temático">
           <!-- Opciones dinámicas inyectadas por app.js -->
         </select>
 
         <div class="search-container">
           <span class="search-icon">🔍</span>
-          <input type="text" id="search-input" class="search-input" placeholder="Buscar términos, definiciones, sinónimos..." aria-label="Buscar en el glosario">
+          <input type="text" id="search-input" name="search-input" class="search-input" placeholder="Buscar términos, definiciones, sinónimos..." aria-label="Buscar en el glosario">
         </div>
 
         <div style="margin-top: 0.75rem;">
@@ -265,29 +265,25 @@
       </header>
 
       <form id="orientator-form" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 1rem;">
-        <!-- Selector de Producto Audiovisual Adaptado al Glosario Activo -->
-        <div class="form-group">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-            <label for="orientator-product-select" class="form-label" style="margin-bottom:0;">Producto Audiovisual Objetivo</label>
-            <span id="orientator-glossary-badge" class="term-badge-primary" style="font-size:0.75rem;">📚 Glosario Activo</span>
+        <!-- Selectores de Dominio y Producto Objetivo Adaptados al Glosario Activo -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem;">
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+              <label for="orientator-glossary-picker" class="form-label" style="margin-bottom:0;">Dominio / Glosario Activo</label>
+              <span id="orientator-glossary-badge" class="term-badge-primary" style="font-size:0.75rem;">📚 Glosario Activo</span>
+            </div>
+            <select id="orientator-glossary-picker" name="orientator-glossary-picker" class="form-select" aria-label="Seleccionar dominio técnico del orientador">
+              <!-- Opciones dinámicas de glosarios -->
+            </select>
           </div>
-          <select id="orientator-product-select" class="form-select" aria-label="Seleccionar producto audiovisual">
-            <option value="trailer">Trailer Cinematográfico</option>
-            <option value="teaser">Teaser Promocional</option>
-            <option value="reel">Reel / Short Vertical</option>
-            <option value="corporate-video">Video Corporativo</option>
-            <option value="explainer">Video Explicativo</option>
-            <option value="storyboard">Storyboard Ilustrado</option>
-            <option value="animatic">Animatic con Timing</option>
-            <option value="shot-list">Lista de Planos (Shot List)</option>
-            <option value="take">Toma / Registro Único</option>
-            <option value="shot">Plano Cinematográfico</option>
-            <option value="sequence">Secuencia Narrativa</option>
-            <option value="scene">Escena Dramática</option>
-            <option value="montage">Montaje / Secuencia de Enlace</option>
-            <option value="export-formats">Formatos de Exportación y Master</option>
-          </select>
-          <div id="orientator-product-desc" style="font-size: 0.75rem; color: var(--muted-foreground); font-style: italic; margin-top: 0.25rem;"></div>
+
+          <div class="form-group">
+            <label for="orientator-product-select" class="form-label" style="margin-bottom:0.25rem;">Producto Objetivo</label>
+            <select id="orientator-product-select" name="orientator-product-select" class="form-select" aria-label="Seleccionar producto audiovisual u ontológico">
+              <!-- Opciones dinámicas de productos inyectadas por app.js -->
+            </select>
+            <div id="orientator-product-desc" style="font-size: 0.75rem; color: var(--muted-foreground); font-style: italic; margin-top: 0.25rem;"></div>
+          </div>
         </div>
 
         <!-- Atributos Determinantes de Producción Específicos por Producto -->
@@ -298,19 +294,19 @@
             <!-- Contenido dinámico renderizado por app.js -->
             <div class="form-group">
               <label for="attr-duration" class="form-label">Duración Prevista</label>
-              <input type="text" id="attr-duration" class="form-input" placeholder="Ej. 2 minutos, 30 segundos">
+              <input type="text" id="attr-duration" name="attr-duration" class="form-input" placeholder="Ej. 2 minutos, 30 segundos">
             </div>
             <div class="form-group">
               <label for="attr-aspectRatio" class="form-label">Relación de Aspecto</label>
-              <input type="text" id="attr-aspectRatio" class="form-input" placeholder="Ej. 2.39:1, 16:9, 9:16">
+              <input type="text" id="attr-aspectRatio" name="attr-aspectRatio" class="form-input" placeholder="Ej. 2.39:1, 16:9, 9:16">
             </div>
             <div class="form-group">
               <label for="attr-resolution" class="form-label">Resolución y Formato</label>
-              <input type="text" id="attr-resolution" class="form-input" placeholder="Ej. 4K DCI, UHD 3840x2160">
+              <input type="text" id="attr-resolution" name="attr-resolution" class="form-input" placeholder="Ej. 4K DCI, UHD 3840x2160">
             </div>
             <div class="form-group">
               <label for="attr-style" class="form-label">Estilo Visual y Estética</label>
-              <input type="text" id="attr-style" class="form-input" placeholder="Ej. Cinematic anamorphic 35mm">
+              <input type="text" id="attr-style" name="attr-style" class="form-input" placeholder="Ej. Cinematic anamorphic 35mm">
             </div>
           </div>
 

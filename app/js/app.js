@@ -198,6 +198,13 @@ window.DocWebApp = {
       }
     });
 
+    const orientatorGlossaryPicker = document.getElementById('orientator-glossary-picker');
+    if (orientatorGlossaryPicker) {
+      orientatorGlossaryPicker.addEventListener('change', (e) => {
+        this.populateOrientatorProductSelect(e.target.value);
+      });
+    }
+
     const orientatorSelect = document.getElementById('orientator-product-select');
     if (orientatorSelect) {
       orientatorSelect.addEventListener('change', (e) => {
@@ -256,8 +263,10 @@ window.DocWebApp = {
 
     if (viewId === 'diagram-view') {
       this.switchView('glossary-view');
-      const diagramTabBtn = document.querySelector('.tab-btn[data-tab="diagram"]');
-      if (diagramTabBtn) diagramTabBtn.click();
+      const diagramEl = document.getElementById('diagram-section-container');
+      if (diagramEl) {
+        diagramEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       const navBtnDiagram = document.getElementById('nav-btn-diagram');
       document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
       if (navBtnDiagram) navBtnDiagram.classList.add('active');
@@ -1227,7 +1236,7 @@ window.DocWebApp = {
           </div>
 
           <!-- Filtro de Familia de Relación -->
-          <select class="form-select form-select-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; height:auto; width:auto;" onchange="window.DocWebApp.setDiagramFilterFamily(this.value)" aria-label="Filtrar por familia de relación">
+          <select id="diagram-filter-family" name="diagram-filter-family" class="form-select form-select-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; height:auto; width:auto;" onchange="window.DocWebApp.setDiagramFilterFamily(this.value)" aria-label="Filtrar por familia de relación">
             <option value="all" ${this.diagramFilterFamily === 'all' ? 'selected' : ''}>Todas las Familias</option>
             <option value="taxonomy" ${this.diagramFilterFamily === 'taxonomy' ? 'selected' : ''}>Taxonomía</option>
             <option value="mereology" ${this.diagramFilterFamily === 'mereology' ? 'selected' : ''}>Composición / Mereología</option>
@@ -1240,7 +1249,7 @@ window.DocWebApp = {
           </select>
 
           <!-- Filtro de Nivel Ontológico -->
-          <select class="form-select form-select-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; height:auto; width:auto;" onchange="window.DocWebApp.setDiagramFilterLevel(this.value)" aria-label="Filtrar por nivel de jerarquía">
+          <select id="diagram-filter-level" name="diagram-filter-level" class="form-select form-select-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; height:auto; width:auto;" onchange="window.DocWebApp.setDiagramFilterLevel(this.value)" aria-label="Filtrar por nivel de jerarquía">
             <option value="all" ${this.diagramFilterLevel === 'all' ? 'selected' : ''}>Nivel: Todos</option>
             <option value="L1" ${this.diagramFilterLevel === 'L1' ? 'selected' : ''}>L1 Dominio</option>
             <option value="L2" ${this.diagramFilterLevel === 'L2' ? 'selected' : ''}>L2 Familia</option>
@@ -1797,17 +1806,37 @@ window.DocWebApp = {
     if (btn) btn.focus();
   },
 
-  populateOrientatorProductSelect() {
+  populateOrientatorProductSelect(forcedGlossaryId = null) {
     const select = document.getElementById('orientator-product-select');
     if (!select || !window.DocWebPromptOrientator) return;
 
-    const currentGlossary = this.currentGlossaryId || 'all';
+    const currentGlossary = forcedGlossaryId !== null ? forcedGlossaryId : (this.currentGlossaryId || 'all');
+    
+    // Sincronizar selector de glosario dentro del modal si existe
+    const picker = document.getElementById('orientator-glossary-picker');
+    if (picker && window.DocWebSemantics && picker.children.length === 0) {
+      const optAll = document.createElement('option');
+      optAll.value = 'all';
+      optAll.textContent = '🔍 Todos los Dominios (Catálogo Completo)';
+      picker.appendChild(optAll);
+      window.DocWebSemantics.glossaries.forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g.id;
+        opt.textContent = `📚 ${g.title}`;
+        picker.appendChild(opt);
+      });
+    }
+    if (picker && forcedGlossaryId === null) {
+      picker.value = currentGlossary;
+    }
+
     const products = window.DocWebPromptOrientator.getProductList(currentGlossary);
     const badge = document.getElementById('orientator-glossary-badge');
     if (badge) {
-      const glossaryName = currentGlossary === 'audiovisual-production' ? 'Producción Audiovisual' :
-                           currentGlossary === 'render-3d-animations' ? 'Render 3D & Animación' :
-                           currentGlossary === 'video-image' ? 'Video & Imagen Digital' : 'Todos los Glosarios';
+      let glossaryName = 'Todos los Glosarios';
+      if (window.DocWebSemantics && window.DocWebSemantics.glossaries.has(currentGlossary)) {
+        glossaryName = window.DocWebSemantics.glossaries.get(currentGlossary).title;
+      }
       badge.textContent = `📚 Glosario: ${glossaryName}`;
     }
 
@@ -1859,6 +1888,7 @@ window.DocWebApp = {
         if (Array.isArray(attr.options) && attr.options.length > 0) {
           const sel = document.createElement('select');
           sel.id = `attr-${attr.key}`;
+          sel.name = `attr-${attr.key}`;
           sel.className = 'form-select';
           attr.options.forEach(opt => {
             const optEl = document.createElement('option');
@@ -1872,6 +1902,7 @@ window.DocWebApp = {
           const inp = document.createElement('input');
           inp.type = 'text';
           inp.id = `attr-${attr.key}`;
+          inp.name = `attr-${attr.key}`;
           inp.className = 'form-input';
           inp.value = val;
           inp.placeholder = attr.description || attr.label;
@@ -2010,7 +2041,11 @@ window.DocWebApp = {
 
     const actEl = document.getElementById('spec-action-directives');
     if (actEl) {
-      actEl.textContent = spec.actionDirectives || 'Sin directivas de acción específicas.';
+      if (Array.isArray(spec.actionDirectives)) {
+        actEl.textContent = spec.actionDirectives.map((d, i) => `${i + 1}. ${d}`).join('\n');
+      } else {
+        actEl.textContent = spec.actionDirectives || 'Sin directivas de acción específicas.';
+      }
     }
 
     const wfEl = document.getElementById('spec-workflow-tasks');

@@ -1491,6 +1491,489 @@
         { id: 'urn:term:video-image:hdr-image', title: 'Imagen de Alto Rango Dinámico (HDR)' },
         { id: 'urn:term:video-image:color-gamut', title: 'Gama de Color (Color Gamut)' }
       ]
+    },
+
+    // =========================================================
+    // GLOSARIO: Ingeniería de Software & Ontología de Sistemas
+    // =========================================================
+    'software-architecture-spec': {
+      id: 'software-architecture-spec',
+      name: 'Especificación de Arquitectura de Software & C4 Model',
+      glossaryId: 'software-engineering-ontology',
+      description: 'Diseño arquitectónico formal desacoplado con límites de contexto (DDD), puertos y adaptadores, métricas de estabilidad de Martin (I) y diagramas C4.',
+      targetDuration: 'Documento de Especificación / Arquitectura L1-L3',
+      recommendedAspectRatios: ['16:9 (Diagramas C4)', 'Documento A4'],
+      recommendedResolutions: ['Vectorial SVG / C4 Structurizr', 'Markdown Técnico'],
+      determinantAttributes: [
+        { key: 'architecturePattern', label: 'Patrón Arquitectónico', options: ['Hexagonal (Ports & Adapters)', 'Microservicios Orientados a Eventos', 'Modular Monolith Limpio', 'Arquitectura Cebolla / Onion'] },
+        { key: 'boundedContexts', label: 'Límites de Dominio & DDD', placeholder: 'Ej. Catálogo de Conocimiento, Motor Semántico, Persistencia Local' },
+        { key: 'couplingMetricTarget', label: 'Métrica de Inestabilidad (Martin I)', options: ['I <= 0.15 (Núcleo Altamente Estable)', 'I <= 0.35 (Servicios de Aplicación)', 'I >= 0.8 (Adaptadores Flexibles)'] },
+        { key: 'persistenceStrategy', label: 'Estrategia de Persistencia', options: ['IndexedDB Transaccional con SHA-256', 'Event Sourcing + CQRS', 'Base Relacional ACID', 'WAL Secuencial'] },
+        { key: 'testingContract', label: 'Estrategia de Verificación', options: ['TDD con Pirámide de Pruebas Completa', 'Pruebas de Contrato CDC', 'Fakes Herméticos en Memoria'] }
+      ],
+      defaultAttributes: {
+        duration: 'Especificación completa de sistema',
+        aspectRatio: '16:9 C4 Model',
+        resolution: 'Vectorial SVG / Markdown',
+        targetAudience: 'Arquitectos de software, desarrolladores senior y agentes de código autónomos',
+        intent: 'Garantizar bajo acoplamiento, alta cohesión y verificabilidad determinista',
+        platform: 'Navegador local autónomo, Node.js runtime, Git monorepo',
+        style: 'Diseño defensivo con interfaces explícitas y ausencia de dependencias circulares',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'Desarrollo iterativo guiado por pruebas (TDD)',
+        camera: 'C4 Model Nivel 1 a Nivel 3 con límites explícitos'
+      },
+      actionVerbs: [
+        'Desacoplar el núcleo de dominio de la infraestructura externa',
+        'Modelar los límites de contexto mediante Domain-Driven Design',
+        'Minimizar la inestabilidad de Martin (I) en paquetes fundamentales',
+        'Encapsular dependencias tras interfaces y puertos formales',
+        'Verificar contratos de interfaz mediante pruebas de integración herméticas'
+      ],
+      actionDirectives: [
+        'Aplicar la regla de dependencia hacia adentro: las capas de dominio nunca deben importar adaptadores de infraestructura.',
+        'Definir puertos explícitos (interfaces tipadas) para todo acceso a bases de datos o servicios externos.',
+        'Documentar los contenedores y componentes mediante notación C4 Model nivel 2 y nivel 3.',
+        'Garantizar que todo módulo de negocio pueda probarse de forma 100% aislada mediante fakes en memoria.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Modelado de Dominio y Bounded Contexts', description: 'Definir el lenguaje ubicuo y los límites del subdominio.', termId: 'urn:term:software-engineering-ontology:domain-driven-design', termTitle: 'Domain-Driven Design (DDD)' },
+          { name: 'Diseño de Puertos y Contratos de Interfaz', description: 'Especificar firmas de métodos independientes del almacenamiento.', termId: 'urn:term:software-engineering-ontology:arquitectura-hexagonal-puertos-adaptadores', termTitle: 'Arquitectura Hexagonal' }
+        ],
+        production: [
+          { name: 'Implementación del Dominio y Entidades', description: 'Escribir la lógica pura de negocio sin dependencias externas.', termId: 'urn:term:software-engineering-ontology:entidad-agregado-ddd', termTitle: 'Entidad y Agregado de Dominio' },
+          { name: 'Construcción de Adaptadores de Infraestructura', description: 'Implementar el almacenamiento y la interfaz de usuario.', termId: 'urn:term:software-engineering-ontology:arista-semantica-tipada', termTitle: 'Arista Semántica Tipada' }
+        ],
+        postproduction: [
+          { name: 'Auditoría de Inestabilidad y Acoplamiento', description: 'Calcular métricas de Martin I y verificar pirámide de pruebas.', termId: 'urn:term:software-engineering-ontology:metrica-de-inestabilidad-martin', termTitle: 'Métrica de Inestabilidad de Martin' },
+          { name: 'Verificación de Integridad de Diagramas C4', description: 'Validar trazabilidad entre la arquitectura y el código ejecutable.', termId: 'urn:term:software-engineering-ontology:c4-model-architecture', termTitle: 'C4 Model' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:software-engineering-ontology:arquitectura-hexagonal-puertos-adaptadores', title: 'Arquitectura Hexagonal (Ports and Adapters)' },
+        { id: 'urn:term:software-engineering-ontology:domain-driven-design', title: 'Diseño Guiado por el Dominio (DDD)' },
+        { id: 'urn:term:software-engineering-ontology:metrica-de-inestabilidad-martin', title: 'Métrica de Inestabilidad de Martin (I)' },
+        { id: 'urn:term:software-engineering-ontology:c4-model-architecture', title: 'C4 Model para Arquitectura de Software' }
+      ]
+    },
+
+    'agentic-system-spec': {
+      id: 'agentic-system-spec',
+      name: 'Sistema Multi-Agente Autónomo & Orquestador BDI',
+      glossaryId: 'software-engineering-ontology',
+      description: 'Arquitectura de agentes autónomos deliberativos y reactivos con recuperación contextual presupuestada (GraphRAG), herramientas y evidencia epistémica.',
+      targetDuration: 'Sesión Autónoma / Ciclo de Misión',
+      recommendedAspectRatios: ['16:9 Diagrama de Flujo Agéntico', 'Logs JSONL'],
+      recommendedResolutions: ['Monitoreo en Tiempo Real', 'Transcripts JSONL'],
+      determinantAttributes: [
+        { key: 'agentParadigm', label: 'Paradigma del Agente', options: ['BDI (Belief-Desire-Intention)', 'ReAct (Reasoning + Acting)', 'Orquestador Squad Jerárquico', 'Especialistas Autónomos'] },
+        { key: 'retrievalBudget', label: 'Presupuesto de Recuperación Contextual', options: ['⚡ Rápido (Top-5 conceptos inmediatos)', '🔍 Detallado (Grafo relacional de 2 saltos)', '🧠 Exhaustivo (Cierre transitivo completo)'] },
+        { key: 'permissionMatrix', label: 'Matriz de Autorización P0-P4', options: ['P0/P1 Autónomo (Lectura y Diagnóstico)', 'P2 Reversible (Modificación de código)', 'P4 Crítico (Consentimiento explícito)'] },
+        { key: 'epistemicProtocol', label: 'Protocolo de Rigor Epistémico', options: ['Evidencia Empírica Estricta (Exit Code 0)', 'Verificación Formal con Pruebas E2E', 'Cascada de Invalidación Activa'] }
+      ],
+      defaultAttributes: {
+        duration: 'Ciclo de ejecución autónomo reactivo',
+        aspectRatio: '16:9',
+        resolution: 'Eventos estructurados JSONL',
+        targetAudience: 'Sistemas autónomos, desarrolladores de IA y frameworks de orquestación',
+        intent: 'Ejecutar planes complejos con contención de radio de impacto y evidencia verificable',
+        platform: 'Runtime multi-agente, MCP Servers, Sandbox local',
+        style: 'Separación estricta de intenciones, hipótesis y hechos comprobados',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'Espera reactiva con cero sondeo activo (zero polling)',
+        camera: 'Observabilidad total de logs y estado de conversación'
+      },
+      actionVerbs: [
+        'Presupuestar la recuperación contextual para no saturar la ventana de atención',
+        'Restringir operaciones destructivas bajo la matriz de permisos P0-P4',
+        'Invalidar hipótesis en cascada cuando una evidencia sea refutada',
+        'Aislar el espacio de trabajo de cada subagente mediante el principio de escritor único',
+        'Exigir evidencia observable antes de certificar la finalización de un hito'
+      ],
+      actionDirectives: [
+        'Implementar espera reactiva ante tareas asíncronas sin incurrir en bucles de sondeo activo.',
+        'Registrar el estado epistémico de cada afirmación como observado, inferido o hipotético.',
+        'Generar checkpoints atómicos con hash criptográfico SHA-256 antes de mutaciones críticas.',
+        'Garantizar que ningún subagente modifique recursos sin asignación formal de permisos.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Definición de Misión y Objetivos Inmutables', description: 'Establecer metas, restricciones y presupuesto de contexto.', termId: 'urn:term:software-engineering-ontology:presupuesto-recuperacion-contextual', termTitle: 'Presupuesto de Recuperación Contextual' },
+          { name: 'Recuperación Semántica con GraphRAG', description: 'Consultar subgrafo relevante según la intención de la tarea.', termId: 'urn:term:software-engineering-ontology:graphrag-recuperacion-contextual', termTitle: 'GraphRAG' }
+        ],
+        production: [
+          { name: 'Despacho de Subagentes y Ejecución Segura', description: 'Invocar especialistas con contratos claros de entrada y salida.', termId: 'urn:term:software-engineering-ontology:agente-autonomo-deliberativo', termTitle: 'Agente Autónomo Deliberativo' },
+          { name: 'Supervisión de Matriz de Autorización P0-P4', description: 'Bloquear acciones destructivas sin confirmación explícita.', termId: 'urn:term:software-engineering-ontology:matriz-autorizacion-p0-p4', termTitle: 'Matriz de Autorización P0-P4' }
+        ],
+        postproduction: [
+          { name: 'Auditoría de Evidencia y Validación Empírica', description: 'Ejecutar suites de pruebas y validar códigos de salida.', termId: 'urn:term:software-engineering-ontology:rigor-epistemico-cascada-invalidacion', termTitle: 'Rigor Epistémico' },
+          { name: 'Generación de Checkpoint Criptográfico SHA-256', description: 'Crear cápsula inmutable de estado para continuidad.', termId: 'urn:term:software-engineering-ontology:checkpoint-atomico-sha256', termTitle: 'Checkpoint Atómico SHA-256' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:software-engineering-ontology:agente-autonomo-deliberativo', title: 'Agente Autónomo Deliberativo y Reactivo (BDI)' },
+        { id: 'urn:term:software-engineering-ontology:presupuesto-recuperacion-contextual', title: 'Presupuesto de Recuperación Contextual' },
+        { id: 'urn:term:software-engineering-ontology:graphrag-recuperacion-contextual', title: 'GraphRAG' },
+        { id: 'urn:term:software-engineering-ontology:matriz-autorizacion-p0-p4', title: 'Matriz de Autorización P0-P4' }
+      ]
+    },
+
+    'distributed-service-spec': {
+      id: 'distributed-service-spec',
+      name: 'Servicio Distribuido Resiliente & Sagas Transaccionales',
+      glossaryId: 'software-engineering-ontology',
+      description: 'Arquitectura distribuida con consistencia eventual, registro por adelantado (WAL), transacciones distribuidas compensatorias (Sagas) y tolerancia a fallos.',
+      targetDuration: 'Flujo Transaccional Asíncrono',
+      recommendedAspectRatios: ['16:9 Diagrama de Estados', 'Flujo de Eventos'],
+      recommendedResolutions: ['Especificación OpenAPI / AsyncAPI'],
+      determinantAttributes: [
+        { key: 'coordinationPattern', label: 'Patrón de Coordinación', options: ['Saga Orquestada Centralizada', 'Saga Coreografiada por Eventos', 'Outbox Pattern Transaccional'] },
+        { key: 'storageEngine', label: 'Motor de Registro y Durabilidad', options: ['Write-Ahead Logging (WAL) Estricto', 'LSM-Tree con MemTable y SSTables', 'B-Tree con Registro Doble'] },
+        { key: 'capTradeoff', label: 'Compromiso Teorema CAP', options: ['CP (Consistencia Fuerte y Tolerancia a Partición)', 'AP (Alta Disponibilidad y Consistencia Eventual)'] },
+        { key: 'resiliencePattern', label: 'Estrategia de Resiliencia', options: ['Circuit Breaker + Exponential Backoff con Jitter', 'Bulkhead Isolation', 'Dead-Letter Queue con Reintento Automático'] }
+      ],
+      defaultAttributes: {
+        duration: 'Transacción asíncrona de escala milisegundos a minutos',
+        aspectRatio: '16:9',
+        resolution: 'JSON / Protocol Buffers',
+        targetAudience: 'Ingenieros de sistemas distribuidos y arquitectos backend',
+        intent: 'Asegurar tolerancia a caídas de nodos y consistencia de datos sin bloqueos globales',
+        platform: 'Kubernetes, Service Mesh, Kafka / RabbitMQ, Cloud Storage',
+        style: 'Comunicaciones asíncronas con garantías de entrega at-least-once e idempotencia',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'Procesamiento en flujo y colas desacopladas',
+        camera: 'Trazabilidad distribuida OpenTelemetry de extremo a extremo'
+      },
+      actionVerbs: [
+        'Escribir secuencialmente en el log antes de aplicar mutaciones en disco (WAL)',
+        'Ejecutar transacciones compensatorias en orden inverso ante fallos en la Saga',
+        'Garantizar la idempotencia estricta en todos los manejadores de eventos distribuidos',
+        'Contener fallos en cascada mediante interruptores de circuito (Circuit Breakers)',
+        'Linearizar operaciones críticas preservando el ordenamiento causal de eventos'
+      ],
+      actionDirectives: [
+        'Todo mensaje o comando distribuido debe incorporar un identificador de idempotencia unívoco (UUID v4 / SHA-256).',
+        'Alinear la tolerancia a fallos con el teorema CAP según los requisitos de negocio.',
+        'Diseñar cada paso de la Saga acompañado de su correspondiente acción compensatoria verificable.',
+        'Monitorear latencias P99 y tasas de error con métricas de observabilidad distribuida.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Modelado Causal y Definición de Transacciones Compensatorias', description: 'Diagramar estados de la Saga y acciones de marcha atrás.', termId: 'urn:term:software-engineering-ontology:patron-saga-transaccional', termTitle: 'Patrón Saga Transaccional' },
+          { name: 'Definición de Compromiso CAP y Consistencia', description: 'Establecer si el servicio prioriza consistencia o disponibilidad.', termId: 'urn:term:software-engineering-ontology:teorema-cap', termTitle: 'Teorema CAP' }
+        ],
+        production: [
+          { name: 'Implementación del Registro WAL e Idempotencia', description: 'Persistir operaciones en log secuencial antes de mutar estado.', termId: 'urn:term:software-engineering-ontology:write-ahead-logging-wal', termTitle: 'Write-Ahead Logging (WAL)' },
+          { name: 'Configuración de Interruptores de Circuito (Circuit Breakers)', description: 'Aislar servicios inestables para evitar sobrecargas en cascada.', termId: 'urn:term:software-engineering-ontology:propiedad-acid-transaccional', termTitle: 'Propiedad ACID Transaccional' }
+        ],
+        postproduction: [
+          { name: 'Pruebas de Inyección de Caos (Chaos Testing)', description: 'Simular particiones de red y validar convergencia de datos.', termId: 'urn:term:software-engineering-ontology:patron-saga-transaccional', termTitle: 'Patrón Saga Transaccional' },
+          { name: 'Validación de Recuperación ante Caídas (Crash Recovery)', description: 'Probar reinicio súbito y reconstrucción desde el log WAL.', termId: 'urn:term:software-engineering-ontology:write-ahead-logging-wal', termTitle: 'Write-Ahead Logging (WAL)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:software-engineering-ontology:patron-saga-transaccional', title: 'Patrón Saga Transaccional' },
+        { id: 'urn:term:software-engineering-ontology:write-ahead-logging-wal', title: 'Write-Ahead Logging (WAL)' },
+        { id: 'urn:term:software-engineering-ontology:teorema-cap', title: 'Teorema CAP' },
+        { id: 'urn:term:software-engineering-ontology:propiedad-acid-transaccional', title: 'Propiedades ACID Transaccionales' }
+      ]
+    },
+
+    'ast-compiler-pipeline': {
+      id: 'ast-compiler-pipeline',
+      name: 'Pipeline de Compilación, AST & Análisis Semántico',
+      glossaryId: 'software-engineering-ontology',
+      description: 'Pipeline de transformación de código: análisis léxico, parsing a AST, comprobación de tipos, optimización de representaciones intermedias y generación de código.',
+      targetDuration: 'Cómputo en tiempo de compilación / build',
+      recommendedAspectRatios: ['16:9 Grafo AST', 'Gramática BNF'],
+      recommendedResolutions: ['EBNF / AST JSON / LLVM IR'],
+      determinantAttributes: [
+        { key: 'parserTechnique', label: 'Técnica de Parsing', options: ['Recursive Descent Parser con AST tipado', 'LALR(1) / GLR', 'Combinators Funcionales', 'Earley Parser'] },
+        { key: 'typeSystem', label: 'Sistema de Tipos Formal', options: ['Tipado Estático Fuerte con Inferencia Hindley-Milner', 'Tipado Gradual con Comprobación Dinámica', 'Tipos Dependientes'] },
+        { key: 'targetRepresentation', label: 'Representación Intermedia (IR)', options: ['Static Single Assignment (SSA Form)', 'Three-Address Code (TAC)', 'Bytecode de Pila (Stack VM)', 'AST Desugared'] }
+      ],
+      defaultAttributes: {
+        duration: 'Transformación determinista por archivo',
+        aspectRatio: '16:9',
+        resolution: 'Árbol tipado AST',
+        targetAudience: 'Desarrolladores de herramientas de desarrollo, transpiladores y compiladores',
+        intent: 'Garantizar corrección sintáctica, comprobación semántica estricta y código optimizado',
+        platform: 'LLVM, V8 Engine, Rust Compiler, Babel / SWC',
+        style: 'Recorrido inmutable de árboles mediante patrón Visitor o Catamorfismos',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'Fases secuenciales de compilación sin saltos',
+        camera: 'Inspección profunda de nodos gramaticales'
+      },
+      actionVerbs: [
+        'Tokenizar el flujo de caracteres ignorando espacios no significativos',
+        'Construir el Árbol de Sintaxis Abstracta (AST) resolviendo precedencias',
+        'Comprobar la concordancia de tipos y alcances (scopes) en la tabla de símbolos',
+        'Reescribir el árbol mediante optimizaciones semánticas libres de efectos secundarios',
+        'Transpilar la representación intermedia a código ejecutable o bytecode'
+      ],
+      actionDirectives: [
+        'Preservar la información de posición de código fuente (línea, columna, archivo) para reportes de error comprensibles.',
+        'Desacoplar la fase de análisis léxico y sintáctico de la fase de análisis semántico.',
+        'Implementar recorridos mediante patrón Visitor fuertemente tipado para evitar downcasting inseguro.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Diseño de la Gramática Formal y Lexer', description: 'Definir tokens y reglas sintácticas en notación EBNF.', termId: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', termTitle: 'AST' }
+        ],
+        production: [
+          { name: 'Generación del Árbol de Sintaxis Abstracta (AST)', description: 'Convertir la secuencia de tokens en estructura jerárquica.', termId: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', termTitle: 'AST' },
+          { name: 'Análisis Semántico y Comprobación de Tipos', description: 'Verificar tipos, asignaciones válidas y alcances.', termId: 'urn:term:software-engineering-ontology:sistema-de-tipos-formal', termTitle: 'Sistema de Tipos Formal' }
+        ],
+        postproduction: [
+          { name: 'Optimización de Representación Intermedia (IR)', description: 'Eliminación de código muerto y propagación de constantes.', termId: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', termTitle: 'AST' },
+          { name: 'Generación y Emisión de Código Destino', description: 'Emitir bytecode o código ejecutable con verificación de salida.', termId: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', termTitle: 'AST' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', title: 'Árbol de Sintaxis Abstracta (AST)' },
+        { id: 'urn:term:software-engineering-ontology:sistema-de-tipos-formal', title: 'Sistema de Tipos Formal' }
+      ]
+    },
+
+    // =========================================================
+    // GLOSARIO: IA Generativa & Modelos Multimodales para Medios
+    // =========================================================
+    'text-to-video-diffusion': {
+      id: 'text-to-video-diffusion',
+      name: 'Secuencia Generativa Text-to-Video (T2V) con DiT',
+      glossaryId: 'generative-ai-media',
+      description: 'Generación de secuencias de video fotorrealistas mediante transformadores de difusión (DiT) con guiado CFG, atención espaciotemporal y estabilidad cinemática.',
+      targetDuration: '5s - 10s por toma generativa',
+      recommendedAspectRatios: ['16:9 (Cinematic)', '2.39:1 (Widescreen)', '9:16 (Vertical Reels)'],
+      recommendedResolutions: ['1080p Full HD a 24fps', '4K Upscaled'],
+      determinantAttributes: [
+        { key: 'modelArchitecture', label: 'Arquitectura del Modelo Base', options: ['Diffusion Transformer (DiT)', 'U-Net 3D Espaciotemporal', 'Factorized Spatial-Temporal Attention'] },
+        { key: 'cfgScale', label: 'Escala de Guiado CFG (Classifier-Free Guidance)', options: ['5.0 (Movimiento Natural y Fotorrealismo)', '6.5 (Equilibrio de Prompt y Estilo)', '8.0 (Fuerte Adherencia al Texto)'] },
+        { key: 'samplingSteps', label: 'Pasos de Muestreo (Denoising Steps)', options: ['30 pasos (Muestreo rápido DPM++)', '50 pasos (Máxima convergencia textural)', '20 pasos (Euler Ancestral)'] },
+        { key: 'temporalConsistency', label: 'Mecanismo de Coherencia Temporal', options: ['Cross-Frame Self-Attention con Regularización', 'ControlNet Temporal', 'Latent Motion Vectors'] },
+        { key: 'motionMagnitude', label: 'Magnitud de Movimiento', options: ['Sutil / Micro-movimientos de aire', 'Cinemático Fluido (Travelling / Pan)', 'Dinámico Acelerado'] }
+      ],
+      defaultAttributes: {
+        duration: '5 segundos',
+        aspectRatio: '16:9',
+        resolution: '1080p a 24fps',
+        targetAudience: 'Creadores audiovisuales, postproductores y cineastas con IA',
+        intent: 'Sintetizar tomas en movimiento continuo sin morphing ni deformaciones de anatomía',
+        platform: 'Runway Gen-3, Sora, Kling, Luma Dream Machine, ComfyUI',
+        style: 'Cinematografía de 35mm con iluminación volumétrica y grano orgánico sutil',
+        audio: 'Audio ambiental sincronizado generado por modelo neuronal',
+        subtitles: 'N/A',
+        pacing: 'Cadencia cinematográfica regular de 24 fps',
+        camera: 'Travelling continuo frontal con lente 50mm f/1.8 y suave desenfoque de fondo'
+      },
+      actionVerbs: [
+        'Condicionar el muestreo latente con embeddings de texto y atención cruzada',
+        'Modular la escala CFG para equilibrar adherencia al prompt y naturalidad visual',
+        'Preservar la consistencia de identidad y geometrías a lo largo de los fotogramas',
+        'Eliminar artefactos de parpadeo temporal (flicker) mediante atención espaciotemporal',
+        'Decodificar el volumen latente a través del Autoencoder KL espacial a resolución nativa'
+      ],
+      actionDirectives: [
+        'Especificar descriptores de movimiento claros y continuos para evitar saltos o congelamientos temporales.',
+        'Fijar la escala CFG entre 5.0 y 6.5 para preservar texturas dérmicas orgánicas sin sobreexposición ni saturación plástica.',
+        'Utilizar semillas deterministas para posibilitar ajustes incrementales del plano generado.',
+        'Aplicar prompt negativo estricto contra mutaciones de extremidades y morphing de fondo.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Ingeniería de Prompt Textual y Selección de Embedding', description: 'Redactar tokens visuales descriptivos sin ambigüedad sintáctica.', termId: 'urn:term:generative-ai-media:text-to-video-t2v', termTitle: 'Text-to-Video (T2V)' },
+          { name: 'Calibración de la Escala de Guiado CFG', description: 'Ajustar la fuerza de guiado para concordancia con el concepto.', termId: 'urn:term:generative-ai-media:classifier-free-guidance-cfg', termTitle: 'Classifier-Free Guidance (CFG)' }
+        ],
+        production: [
+          { name: 'Inferencia de Desruidizado con Diffusion Transformer', description: 'Generar los parches espaciotemporales en el espacio latente.', termId: 'urn:term:generative-ai-media:diffusion-transformer-dit', termTitle: 'Diffusion Transformer (DiT)' },
+          { name: 'Decodificación Latente a Través del VAE', description: 'Reconstruir el flujo de fotogramas RGB desde la representación latente.', termId: 'urn:term:generative-ai-media:variational-autoencoder-vae', termTitle: 'Autoencoder Variacional (VAE)' }
+        ],
+        postproduction: [
+          { name: 'Superresolución Perceptual e Interpolación Temporal', description: 'Escalar a 4K e interpolar vectores a 60 fps si se requiere.', termId: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', termTitle: 'Latent Diffusion Models (LDM)' },
+          { name: 'Verificación de Artefactos y Coherencia de Cuadro', description: 'Auditar ausencia de parpadeos y deformaciones anatómicas.', termId: 'urn:term:generative-ai-media:text-to-video-t2v', termTitle: 'Text-to-Video (T2V)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:generative-ai-media:text-to-video-t2v', title: 'Text-to-Video (T2V / Síntesis Generativa de Video)' },
+        { id: 'urn:term:generative-ai-media:diffusion-transformer-dit', title: 'Diffusion Transformer (DiT)' },
+        { id: 'urn:term:generative-ai-media:classifier-free-guidance-cfg', title: 'Classifier-Free Guidance (CFG Scale)' },
+        { id: 'urn:term:generative-ai-media:variational-autoencoder-vae', title: 'Autoencoder Variacional (VAE)' }
+      ]
+    },
+
+    'multimodal-image-synthesis': {
+      id: 'multimodal-image-synthesis',
+      name: 'Síntesis de Imagen Latente Guiada por ControlNet',
+      glossaryId: 'generative-ai-media',
+      description: 'Generación de imágenes fotorrealistas de alta fidelidad espacial guiadas por mapas estructurales (Canny, Depth, OpenPose) y atención cruzada multimodal.',
+      targetDuration: 'Imagen Estática / Fotograma de Referencia',
+      recommendedAspectRatios: ['16:9', '2.39:1', '1:1', '4:5'],
+      recommendedResolutions: ['UHD 4K (3840x2160)', '2048x2048 Master'],
+      determinantAttributes: [
+        { key: 'controlNetConditioning', label: 'Modalidad de ControlNet', options: ['Mapa de Profundidad (MiDaS Depth)', 'Bordes Canny (Canny Edge Detection)', 'Pose Humana (OpenPose)', 'LineArt / Boceto'] },
+        { key: 'latentDiffusionModel', label: 'Modelo de Difusión Latente', options: ['SDXL 1.0 Base + Refiner', 'Flux.1 Schnell / Dev', 'Stable Diffusion 1.5 Photorealism'] },
+        { key: 'aspectRatio', label: 'Relación de Aspecto', options: ['16:9', '2.39:1', '1:1', '4:5', '9:16'] },
+        { key: 'denoisingStrength', label: 'Fuerza de Desruidizado (Denoising)', options: ['0.45 (Preservar estructura original)', '0.70 (Equilibrio de creatividad y guía)', '0.90 (Reinterpretación profunda)'] }
+      ],
+      defaultAttributes: {
+        duration: 'Fotograma de alta resolución',
+        aspectRatio: '16:9',
+        resolution: 'UHD 4K',
+        targetAudience: 'Directores de arte, ilustradores conceptuales y fotógrafos virtuales',
+        intent: 'Controlar al milímetro la composición visual y la geometría espacial del encuadre',
+        platform: 'ComfyUI, Automatic1111, Midjourney con Image Reference',
+        style: 'Fotorrealismo cinematográfico con texturas de microporos y lente 85mm portrait',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'N/A',
+        camera: 'Primer plano o plano medio con bokeh circular natural en segundo término'
+      },
+      actionVerbs: [
+        'Inyectar condicionamiento geométrico estricto mediante el módulo ControlNet',
+        'Proyectar descriptores semánticos en capas de atención cruzada (cross-attention)',
+        'Comprimir la imagen de entrada al espacio latente utilizando el Autoencoder KL',
+        'Refinar las microtexturas y poros mediante escalado latente (Hi-Res Fix)',
+        'Contener la saturación y aberraciones cromáticas en altas luces'
+      ],
+      actionDirectives: [
+        'Alinear la escala del mapa de profundidad con la distancia focal especificada en el prompt.',
+        'Verificar la fidelidad anatómica en manos y extremidades mediante penalizaciones en prompt negativo.',
+        'Exportar tensores en coma flotante de 16 bits para balance idóneo de rendimiento y fidelidad.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Generación o Extracción del Mapa de Profundidad / Canny', description: 'Extraer geometrías de referencia desde boceto o foto base.', termId: 'urn:term:generative-ai-media:controlnet-spatial-control', termTitle: 'ControlNet' },
+          { name: 'Codificación de Texto con CLIP / T5', description: 'Transformar descriptores visuales en embeddings espaciales.', termId: 'urn:term:generative-ai-media:clip-contrastive-language-image-pretraining', termTitle: 'CLIP' }
+        ],
+        production: [
+          { name: 'Desruidizado Guiado en Modelo de Difusión Latente', description: 'Ejecutar sampling condicionado por las capas de ControlNet.', termId: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', termTitle: 'Latent Diffusion Models (LDM)' },
+          { name: 'Inyección de Atención Cruzada Multimodal', description: 'Alinear los vectores de texto con los mapas de características latentes.', termId: 'urn:term:generative-ai-media:cross-attention-mechanism', termTitle: 'Mecanismo de Cross-Attention' }
+        ],
+        postproduction: [
+          { name: 'Decodificación con VAE y Corrección de Color', description: 'Convertir tensores latentes a RGB y contrastar en espacio de color.', termId: 'urn:term:generative-ai-media:variational-autoencoder-vae', termTitle: 'Autoencoder Variacional (VAE)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:generative-ai-media:controlnet-spatial-control', title: 'ControlNet (Control Espacial Preciso)' },
+        { id: 'urn:term:generative-ai-media:cross-attention-mechanism', title: 'Mecanismo de Cross-Attention' },
+        { id: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', title: 'Modelos de Difusión Latente (LDM)' },
+        { id: 'urn:term:generative-ai-media:clip-contrastive-language-image-pretraining', title: 'CLIP (Contrastive Language-Image Pretraining)' }
+      ]
+    },
+
+    'consistent-character-generation': {
+      id: 'consistent-character-generation',
+      name: 'Generación de Personaje Consistente con LoRA & VAE',
+      glossaryId: 'generative-ai-media',
+      description: 'Pipeline para síntesis repetible del mismo sujeto en múltiples ángulos, iluminaciones y situaciones utilizando pesos de bajo rango (LoRA).',
+      targetDuration: 'Conjunto de Planos / Serie Narrativa',
+      recommendedAspectRatios: ['16:9', '9:16', '1:1'],
+      recommendedResolutions: ['UHD 4K Master', '2048x1152'],
+      determinantAttributes: [
+        { key: 'loraWeight', label: 'Peso del Adaptador LoRA', options: ['0.75 (Equilibrio de Parecido y Flexibilidad)', '0.85 (Fuerte Similitud Facial)', '0.65 (Estilización Dinámica)'] },
+        { key: 'triggerToken', label: 'Token Disparador (Trigger Word)', placeholder: 'Ej. cxx_character_v1, ohwx_actress' },
+        { key: 'cameraFramingVariation', label: 'Variación de Encuadre', options: ['Plano Entero (Full Shot)', 'Plano Medio (Medium Shot)', 'Primer Plano (Close-up)'] }
+      ],
+      defaultAttributes: {
+        duration: 'Tomas individuales para secuencia',
+        aspectRatio: '16:9',
+        resolution: 'UHD 4K',
+        targetAudience: 'Narradores visuales de ficción, agencias publicitarias y directores de animación',
+        intent: 'Mantener consistencia fisionómica y textural del protagonista en toda la serie',
+        platform: 'ComfyUI, Kohya SS, WebUI Forge',
+        style: 'Iluminación motivada coherente con el entorno narrativo',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'N/A',
+        camera: 'Cobertura multicámara con planos de reacción y acción'
+      },
+      actionVerbs: [
+        'Ajustar el peso de los adaptadores LoRA para preservar la identidad facial sin sobreajuste',
+        'Variar las directivas de cámara manteniendo invariantes las facciones del personaje',
+        'Armonizar la iluminación del sujeto con el entorno ambiental de la escena',
+        'Modular la paleta cromática sin alterar los tonos de piel identificatorios'
+      ],
+      actionDirectives: [
+        'Colocar el token disparador de identidad al comienzo del prompt positivo.',
+        'Asegurar que la vestimenta y accesorios respondan contextualmente al entorno narrativo.',
+        'Utilizar prompt negativo para descartar artefactos plásticos y deformaciones de silueta.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Calibración del Token Disparador y Adaptador LoRA', description: 'Fijar el multiplicador de rango bajo (rank) en la atención.', termId: 'urn:term:generative-ai-media:lora-low-rank-adaptation', termTitle: 'LoRA' }
+        ],
+        production: [
+          { name: 'Muestreo Latente con Inyección de Pesos LoRA', description: 'Generar los planos garantizando invariancia fisonómica.', termId: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', termTitle: 'Latent Diffusion Models (LDM)' }
+        ],
+        postproduction: [
+          { name: 'Inpainting Facial y Corrección de Iluminación', description: 'Refinar ojos y detalles en resolución completa.', termId: 'urn:term:generative-ai-media:variational-autoencoder-vae', termTitle: 'Autoencoder Variacional (VAE)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:generative-ai-media:lora-low-rank-adaptation', title: 'Adaptación de Bajo Rango (LoRA)' },
+        { id: 'urn:term:generative-ai-media:variational-autoencoder-vae', title: 'Autoencoder Variacional (VAE)' },
+        { id: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', title: 'Modelos de Difusión Latente (LDM)' }
+      ]
+    },
+
+    'latent-video-extension': {
+      id: 'latent-video-extension',
+      name: 'Extensión & Transición Cinemática en Espacio Latente',
+      glossaryId: 'generative-ai-media',
+      description: 'Extensión temporal continua hacia adelante o transición entre dos fotogramas clave (First & Last Frame) mediante modelos de difusión latente I2V.',
+      targetDuration: '3s a 8s por extensión',
+      recommendedAspectRatios: ['16:9 (Widescreen)', '2.39:1 (CinemaScope)'],
+      recommendedResolutions: ['1080p a 24fps', '4K Upscaled'],
+      determinantAttributes: [
+        { key: 'conditioningMode', label: 'Modo de Acondicionamiento', options: ['First Frame Conditioning (I2V Inicio)', 'First & Last Frame Transition (Empalme de 2 fotogramas)', 'Temporal Inpainting'] },
+        { key: 'motionProfile', label: 'Perfil de Trayectoria de Movimiento', options: ['Travelling Frontal Continuo', 'Paneo Horizontal Calibrado', 'Órbita 180° Alrededor del Sujeto'] },
+        { key: 'extensionSeconds', label: 'Longitud de Extensión', options: ['3 segundos (Alta coherencia)', '5 segundos (Movimiento moderado)', '8 segundos (Transición suave)'] }
+      ],
+      defaultAttributes: {
+        duration: '4 segundos',
+        aspectRatio: '16:9',
+        resolution: '1080p 24fps',
+        targetAudience: 'Editores de video generativo y directores de fotografía digital',
+        intent: 'Alargar un plano existente o transicionar sin cortes bruscos entre dos tomas clave',
+        platform: 'ComfyUI, Runway Gen-3 Alpha, Kling Video, Luma Dream Machine',
+        style: 'Continuidad fotográfica estricta con el fotograma inicial',
+        audio: 'Diseño sonoro continuo con reverberación espacial',
+        subtitles: 'N/A',
+        pacing: 'Movimiento fluido y orgánico sin tirones (microstuttering)',
+        camera: 'Trayectoria coordinada que respeta la velocidad focal previa'
+      },
+      actionVerbs: [
+        'Anclar el primer fotograma en el espacio latente como condición de frontera temporal',
+        'Calcular la trayectoria de cámara óptima entre los fotogramas clave de inicio y fin',
+        'Preservar la coherencia de fondo durante la interpolación temporal continua',
+        'Sincronizar el final del movimiento de cámara con el corte o siguiente escena'
+      ],
+      actionDirectives: [
+        'Mantener el mismo seed o vector de ruido inicial en extensiones consecutivas para evitar saltos.',
+        'Evitar cambios bruscos de iluminación entre fotogramas ancla.',
+        'Supervisar el flujo óptico para garantizar ausencia de estiramientos o warping en bordes.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Preparación y Corrección de Fotogramas Clave', description: 'Igualar niveles de exposición y balance cromático.', termId: 'urn:term:generative-ai-media:variational-autoencoder-vae', termTitle: 'Autoencoder Variacional (VAE)' }
+        ],
+        production: [
+          { name: 'Inferencia de Transición con Diffusion Transformer', description: 'Calcular el túnel latente entre los estados temporales.', termId: 'urn:term:generative-ai-media:diffusion-transformer-dit', termTitle: 'Diffusion Transformer (DiT)' }
+        ],
+        postproduction: [
+          { name: 'Fusión Temporal y Suavizado de Flujo Óptico', description: 'Garantizar empalme indetectable con el plano previo.', termId: 'urn:term:generative-ai-media:text-to-video-t2v', termTitle: 'Text-to-Video (T2V)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:generative-ai-media:text-to-video-t2v', title: 'Text-to-Video (T2V / Síntesis Generativa de Video)' },
+        { id: 'urn:term:generative-ai-media:diffusion-transformer-dit', title: 'Diffusion Transformer (DiT)' },
+        { id: 'urn:term:generative-ai-media:variational-autoencoder-vae', title: 'Autoencoder Variacional (VAE)' }
+      ]
     }
   };
 
@@ -1590,6 +2073,10 @@
         cameraDirectives = `Camera Movement & Optics: ${attrs.cameraVectors || ''}; ${attrs.focalOptics || ''}; calibrated framing, composition axes.`;
       } else if (productDef.glossaryId === 'render-3d-animations') {
         cameraDirectives = `Camera & Viewport: Virtual 3D Cine Camera, physical aperture f/2.8, focal length 50mm, perspective distortion corrected, orbital smooth turntable vectors.`;
+      } else if (productDef.glossaryId === 'software-engineering-ontology') {
+        cameraDirectives = `Architecture Viewport: C4 Model System Context & Container diagrams, clear boundary isolation, strict interface contracts, hierarchical decomposition.`;
+      } else if (productDef.glossaryId === 'generative-ai-media') {
+        cameraDirectives = `Latent Camera Dynamics: Cross-attention motion vectors, calibrated focal distance, smooth spatial translation, zero temporal jitter.`;
       } else {
         cameraDirectives = `Camera Movement & Optics: cinematic 35mm prime lens framing, stabilized tracking push-in motion vector, balanced rule-of-thirds composition, shallow depth of field with organic background bokeh.`;
       }
@@ -1606,6 +2093,10 @@
         lightingAndColorDirectives = 'Lighting & Shading: Physically Based Rendering (PBR), HDRI ambient radiance map, ray-traced Global Illumination (GI) with multiple diffuse bounces, subsurface scattering (SSS) on translucent elements, calibrated metallic-roughness BRDF.';
       } else if (productDef.glossaryId === 'video-image') {
         lightingAndColorDirectives = 'Color Science & Tone Mapping: ACEScc unified wide color gamut workflow, SMPTE ST 2084 PQ electro-optical transfer function up to 1000 nits peak, P3-D65 gamut containment, vectorscope calibrated skin tone alignment.';
+      } else if (productDef.glossaryId === 'software-engineering-ontology') {
+        lightingAndColorDirectives = 'Architectural Rigor & Quality: Strict decoupling (Martin I <= 0.2), ACID/BASE consistency boundaries, formal API contracts, high cohesion, zero circular dependencies.';
+      } else if (productDef.glossaryId === 'generative-ai-media') {
+        lightingAndColorDirectives = 'Diffusion & Latent Guidance: Classifier-Free Guidance (CFG: 5.0 - 7.0), VAE 32-bit latent decoding, high dynamic range color fidelity, temporal denoising scheduling.';
       } else {
         lightingAndColorDirectives = 'Lighting & Color Scheme: Naturalistic motivated illumination, soft diffuse source lighting, balanced neutral color grading, calibrated skin tone vector alignment, pristine dynamic range highlights.';
       }
@@ -1657,6 +2148,10 @@
         positiveTokens.push('physically based rendering, octane render style, ray tracing reflections, ambient occlusion, clean quad mesh topology, 8k textures, photorealistic materials, subsurface scattering');
       } else if (productDef.glossaryId === 'video-image') {
         positiveTokens.push('professional color grading, ACES color science, pristine dynamic range, high fidelity bit-depth, crisp spatial frequency, film print emulation, VMAF 95+ master fidelity');
+      } else if (productDef.glossaryId === 'software-engineering-ontology') {
+        positiveTokens.push('rigorous software architecture, domain-driven design, hexagonal ports and adapters, test-driven development, idempotent operations, high cohesion, low coupling, C4 model compliant');
+      } else if (productDef.glossaryId === 'generative-ai-media') {
+        positiveTokens.push('photorealistic diffusion transformer DiT, classifier-free guidance, cross-attention alignment, latent consistency, cinematic lighting, 8k textures, pristine spatiotemporal coherence');
       } else {
         positiveTokens.push('photorealistic cinematography, 35mm film scan, natural motion cadence 24fps, high dynamic range, crisp texture rendering, Sora and Runway Gen-3 coherent spatiotemporal stability, cinematic color grading, masterwork quality, 8k resolution textures');
       }
@@ -1669,6 +2164,10 @@
         negativePrompt += ', non-manifold geometry, inverted normals, pinching polygons, texture seams, low polygon count, baking artifacts';
       } else if (productDef.glossaryId === 'video-image') {
         negativePrompt += ', color banding, chroma noise, gamut clipping, posterization, ringing artifacts, interlace comb lines';
+      } else if (productDef.glossaryId === 'software-engineering-ontology') {
+        negativePrompt += ', circular dependencies, tight coupling, leaky abstractions, monolithic spaghetti code, race conditions, silent failures, unhandled exceptions, dirty reads';
+      } else if (productDef.glossaryId === 'generative-ai-media') {
+        negativePrompt += ', temporal flicker, frame morphing, limb duplication, deformed anatomy, uncanny valley, latent drift, oversaturated chromatic noise, motion warping';
       }
 
       // 7. Enlace con Términos Canónicos del Glosario
@@ -1785,6 +2284,489 @@
         }
       }
       return [...ATTRIBUTES];
+    },
+
+    // =========================================================
+    // GLOSARIO: Ingeniería de Software & Ontología de Sistemas
+    // =========================================================
+    'software-architecture-spec': {
+      id: 'software-architecture-spec',
+      name: 'Especificación de Arquitectura de Software & C4 Model',
+      glossaryId: 'software-engineering-ontology',
+      description: 'Diseño arquitectónico formal desacoplado con límites de contexto (DDD), puertos y adaptadores, métricas de estabilidad de Martin (I) y diagramas C4.',
+      targetDuration: 'Documento de Especificación / Arquitectura L1-L3',
+      recommendedAspectRatios: ['16:9 (Diagramas C4)', 'Documento A4'],
+      recommendedResolutions: ['Vectorial SVG / C4 Structurizr', 'Markdown Técnico'],
+      determinantAttributes: [
+        { key: 'architecturePattern', label: 'Patrón Arquitectónico', options: ['Hexagonal (Ports & Adapters)', 'Microservicios Orientados a Eventos', 'Modular Monolith Limpio', 'Arquitectura Cebolla / Onion'] },
+        { key: 'boundedContexts', label: 'Límites de Dominio & DDD', placeholder: 'Ej. Catálogo de Conocimiento, Motor Semántico, Persistencia Local' },
+        { key: 'couplingMetricTarget', label: 'Métrica de Inestabilidad (Martin I)', options: ['I <= 0.15 (Núcleo Altamente Estable)', 'I <= 0.35 (Servicios de Aplicación)', 'I >= 0.8 (Adaptadores Flexibles)'] },
+        { key: 'persistenceStrategy', label: 'Estrategia de Persistencia', options: ['IndexedDB Transaccional con SHA-256', 'Event Sourcing + CQRS', 'Base Relacional ACID', 'WAL Secuencial'] },
+        { key: 'testingContract', label: 'Estrategia de Verificación', options: ['TDD con Pirámide de Pruebas Completa', 'Pruebas de Contrato CDC', 'Fakes Herméticos en Memoria'] }
+      ],
+      defaultAttributes: {
+        duration: 'Especificación completa de sistema',
+        aspectRatio: '16:9 C4 Model',
+        resolution: 'Vectorial SVG / Markdown',
+        targetAudience: 'Arquitectos de software, desarrolladores senior y agentes de código autónomos',
+        intent: 'Garantizar bajo acoplamiento, alta cohesión y verificabilidad determinista',
+        platform: 'Navegador local autónomo, Node.js runtime, Git monorepo',
+        style: 'Diseño defensivo con interfaces explícitas y ausencia de dependencias circulares',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'Desarrollo iterativo guiado por pruebas (TDD)',
+        camera: 'C4 Model Nivel 1 a Nivel 3 con límites explícitos'
+      },
+      actionVerbs: [
+        'Desacoplar el núcleo de dominio de la infraestructura externa',
+        'Modelar los límites de contexto mediante Domain-Driven Design',
+        'Minimizar la inestabilidad de Martin (I) en paquetes fundamentales',
+        'Encapsular dependencias tras interfaces y puertos formales',
+        'Verificar contratos de interfaz mediante pruebas de integración herméticas'
+      ],
+      actionDirectives: [
+        'Aplicar la regla de dependencia hacia adentro: las capas de dominio nunca deben importar adaptadores de infraestructura.',
+        'Definir puertos explícitos (interfaces tipadas) para todo acceso a bases de datos o servicios externos.',
+        'Documentar los contenedores y componentes mediante notación C4 Model nivel 2 y nivel 3.',
+        'Garantizar que todo módulo de negocio pueda probarse de forma 100% aislada mediante fakes en memoria.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Modelado de Dominio y Bounded Contexts', description: 'Definir el lenguaje ubicuo y los límites del subdominio.', termId: 'urn:term:software-engineering-ontology:domain-driven-design', termTitle: 'Domain-Driven Design (DDD)' },
+          { name: 'Diseño de Puertos y Contratos de Interfaz', description: 'Especificar firmas de métodos independientes del almacenamiento.', termId: 'urn:term:software-engineering-ontology:arquitectura-hexagonal-puertos-adaptadores', termTitle: 'Arquitectura Hexagonal' }
+        ],
+        production: [
+          { name: 'Implementación del Dominio y Entidades', description: 'Escribir la lógica pura de negocio sin dependencias externas.', termId: 'urn:term:software-engineering-ontology:entidad-agregado-ddd', termTitle: 'Entidad y Agregado de Dominio' },
+          { name: 'Construcción de Adaptadores de Infraestructura', description: 'Implementar el almacenamiento y la interfaz de usuario.', termId: 'urn:term:software-engineering-ontology:arista-semantica-tipada', termTitle: 'Arista Semántica Tipada' }
+        ],
+        postproduction: [
+          { name: 'Auditoría de Inestabilidad y Acoplamiento', description: 'Calcular métricas de Martin I y verificar pirámide de pruebas.', termId: 'urn:term:software-engineering-ontology:metrica-de-inestabilidad-martin', termTitle: 'Métrica de Inestabilidad de Martin' },
+          { name: 'Verificación de Integridad de Diagramas C4', description: 'Validar trazabilidad entre la arquitectura y el código ejecutable.', termId: 'urn:term:software-engineering-ontology:c4-model-architecture', termTitle: 'C4 Model' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:software-engineering-ontology:arquitectura-hexagonal-puertos-adaptadores', title: 'Arquitectura Hexagonal (Ports and Adapters)' },
+        { id: 'urn:term:software-engineering-ontology:domain-driven-design', title: 'Diseño Guiado por el Dominio (DDD)' },
+        { id: 'urn:term:software-engineering-ontology:metrica-de-inestabilidad-martin', title: 'Métrica de Inestabilidad de Martin (I)' },
+        { id: 'urn:term:software-engineering-ontology:c4-model-architecture', title: 'C4 Model para Arquitectura de Software' }
+      ]
+    },
+
+    'agentic-system-spec': {
+      id: 'agentic-system-spec',
+      name: 'Sistema Multi-Agente Autónomo & Orquestador BDI',
+      glossaryId: 'software-engineering-ontology',
+      description: 'Arquitectura de agentes autónomos deliberativos y reactivos con recuperación contextual presupuestada (GraphRAG), herramientas y evidencia epistémica.',
+      targetDuration: 'Sesión Autónoma / Ciclo de Misión',
+      recommendedAspectRatios: ['16:9 Diagrama de Flujo Agéntico', 'Logs JSONL'],
+      recommendedResolutions: ['Monitoreo en Tiempo Real', 'Transcripts JSONL'],
+      determinantAttributes: [
+        { key: 'agentParadigm', label: 'Paradigma del Agente', options: ['BDI (Belief-Desire-Intention)', 'ReAct (Reasoning + Acting)', 'Orquestador Squad Jerárquico', 'Especialistas Autónomos'] },
+        { key: 'retrievalBudget', label: 'Presupuesto de Recuperación Contextual', options: ['⚡ Rápido (Top-5 conceptos inmediatos)', '🔍 Detallado (Grafo relacional de 2 saltos)', '🧠 Exhaustivo (Cierre transitivo completo)'] },
+        { key: 'permissionMatrix', label: 'Matriz de Autorización P0-P4', options: ['P0/P1 Autónomo (Lectura y Diagnóstico)', 'P2 Reversible (Modificación de código)', 'P4 Crítico (Consentimiento explícito)'] },
+        { key: 'epistemicProtocol', label: 'Protocolo de Rigor Epistémico', options: ['Evidencia Empírica Estricta (Exit Code 0)', 'Verificación Formal con Pruebas E2E', 'Cascada de Invalidación Activa'] }
+      ],
+      defaultAttributes: {
+        duration: 'Ciclo de ejecución autónomo reactivo',
+        aspectRatio: '16:9',
+        resolution: 'Eventos estructurados JSONL',
+        targetAudience: 'Sistemas autónomos, desarrolladores de IA y frameworks de orquestación',
+        intent: 'Ejecutar planes complejos con contención de radio de impacto y evidencia verificable',
+        platform: 'Runtime multi-agente, MCP Servers, Sandbox local',
+        style: 'Separación estricta de intenciones, hipótesis y hechos comprobados',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'Espera reactiva con cero sondeo activo (zero polling)',
+        camera: 'Observabilidad total de logs y estado de conversación'
+      },
+      actionVerbs: [
+        'Presupuestar la recuperación contextual para no saturar la ventana de atención',
+        'Restringir operaciones destructivas bajo la matriz de permisos P0-P4',
+        'Invalidar hipótesis en cascada cuando una evidencia sea refutada',
+        'Aislar el espacio de trabajo de cada subagente mediante el principio de escritor único',
+        'Exigir evidencia observable antes de certificar la finalización de un hito'
+      ],
+      actionDirectives: [
+        'Implementar espera reactiva ante tareas asíncronas sin incurrir en bucles de sondeo activo.',
+        'Registrar el estado epistémico de cada afirmación como observado, inferido o hipotético.',
+        'Generar checkpoints atómicos con hash criptográfico SHA-256 antes de mutaciones críticas.',
+        'Garantizar que ningún subagente modifique recursos sin asignación formal de permisos.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Definición de Misión y Objetivos Inmutables', description: 'Establecer metas, restricciones y presupuesto de contexto.', termId: 'urn:term:software-engineering-ontology:presupuesto-recuperacion-contextual', termTitle: 'Presupuesto de Recuperación Contextual' },
+          { name: 'Recuperación Semántica con GraphRAG', description: 'Consultar subgrafo relevante según la intención de la tarea.', termId: 'urn:term:software-engineering-ontology:graphrag-recuperacion-contextual', termTitle: 'GraphRAG' }
+        ],
+        production: [
+          { name: 'Despacho de Subagentes y Ejecución Segura', description: 'Invocar especialistas con contratos claros de entrada y salida.', termId: 'urn:term:software-engineering-ontology:agente-autonomo-deliberativo', termTitle: 'Agente Autónomo Deliberativo' },
+          { name: 'Supervisión de Matriz de Autorización P0-P4', description: 'Bloquear acciones destructivas sin confirmación explícita.', termId: 'urn:term:software-engineering-ontology:matriz-autorizacion-p0-p4', termTitle: 'Matriz de Autorización P0-P4' }
+        ],
+        postproduction: [
+          { name: 'Auditoría de Evidencia y Validación Empírica', description: 'Ejecutar suites de pruebas y validar códigos de salida.', termId: 'urn:term:software-engineering-ontology:rigor-epistemico-cascada-invalidacion', termTitle: 'Rigor Epistémico' },
+          { name: 'Generación de Checkpoint Criptográfico SHA-256', description: 'Crear cápsula inmutable de estado para continuidad.', termId: 'urn:term:software-engineering-ontology:checkpoint-atomico-sha256', termTitle: 'Checkpoint Atómico SHA-256' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:software-engineering-ontology:agente-autonomo-deliberativo', title: 'Agente Autónomo Deliberativo y Reactivo (BDI)' },
+        { id: 'urn:term:software-engineering-ontology:presupuesto-recuperacion-contextual', title: 'Presupuesto de Recuperación Contextual' },
+        { id: 'urn:term:software-engineering-ontology:graphrag-recuperacion-contextual', title: 'GraphRAG' },
+        { id: 'urn:term:software-engineering-ontology:matriz-autorizacion-p0-p4', title: 'Matriz de Autorización P0-P4' }
+      ]
+    },
+
+    'distributed-service-spec': {
+      id: 'distributed-service-spec',
+      name: 'Servicio Distribuido Resiliente & Sagas Transaccionales',
+      glossaryId: 'software-engineering-ontology',
+      description: 'Arquitectura distribuida con consistencia eventual, registro por adelantado (WAL), transacciones distribuidas compensatorias (Sagas) y tolerancia a fallos.',
+      targetDuration: 'Flujo Transaccional Asíncrono',
+      recommendedAspectRatios: ['16:9 Diagrama de Estados', 'Flujo de Eventos'],
+      recommendedResolutions: ['Especificación OpenAPI / AsyncAPI'],
+      determinantAttributes: [
+        { key: 'coordinationPattern', label: 'Patrón de Coordinación', options: ['Saga Orquestada Centralizada', 'Saga Coreografiada por Eventos', 'Outbox Pattern Transaccional'] },
+        { key: 'storageEngine', label: 'Motor de Registro y Durabilidad', options: ['Write-Ahead Logging (WAL) Estricto', 'LSM-Tree con MemTable y SSTables', 'B-Tree con Registro Doble'] },
+        { key: 'capTradeoff', label: 'Compromiso Teorema CAP', options: ['CP (Consistencia Fuerte y Tolerancia a Partición)', 'AP (Alta Disponibilidad y Consistencia Eventual)'] },
+        { key: 'resiliencePattern', label: 'Estrategia de Resiliencia', options: ['Circuit Breaker + Exponential Backoff con Jitter', 'Bulkhead Isolation', 'Dead-Letter Queue con Reintento Automático'] }
+      ],
+      defaultAttributes: {
+        duration: 'Transacción asíncrona de escala milisegundos a minutos',
+        aspectRatio: '16:9',
+        resolution: 'JSON / Protocol Buffers',
+        targetAudience: 'Ingenieros de sistemas distribuidos y arquitectos backend',
+        intent: 'Asegurar tolerancia a caídas de nodos y consistencia de datos sin bloqueos globales',
+        platform: 'Kubernetes, Service Mesh, Kafka / RabbitMQ, Cloud Storage',
+        style: 'Comunicaciones asíncronas con garantías de entrega at-least-once e idempotencia',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'Procesamiento en flujo y colas desacopladas',
+        camera: 'Trazabilidad distribuida OpenTelemetry de extremo a extremo'
+      },
+      actionVerbs: [
+        'Escribir secuencialmente en el log antes de aplicar mutaciones en disco (WAL)',
+        'Ejecutar transacciones compensatorias en orden inverso ante fallos en la Saga',
+        'Garantizar la idempotencia estricta en todos los manejadores de eventos distribuidos',
+        'Contener fallos en cascada mediante interruptores de circuito (Circuit Breakers)',
+        'Linearizar operaciones críticas preservando el ordenamiento causal de eventos'
+      ],
+      actionDirectives: [
+        'Todo mensaje o comando distribuido debe incorporar un identificador de idempotencia unívoco (UUID v4 / SHA-256).',
+        'Alinear la tolerancia a fallos con el teorema CAP según los requisitos de negocio.',
+        'Diseñar cada paso de la Saga acompañado de su correspondiente acción compensatoria verificable.',
+        'Monitorear latencias P99 y tasas de error con métricas de observabilidad distribuida.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Modelado Causal y Definición de Transacciones Compensatorias', description: 'Diagramar estados de la Saga y acciones de marcha atrás.', termId: 'urn:term:software-engineering-ontology:patron-saga-transaccional', termTitle: 'Patrón Saga Transaccional' },
+          { name: 'Definición de Compromiso CAP y Consistencia', description: 'Establecer si el servicio prioriza consistencia o disponibilidad.', termId: 'urn:term:software-engineering-ontology:teorema-cap', termTitle: 'Teorema CAP' }
+        ],
+        production: [
+          { name: 'Implementación del Registro WAL e Idempotencia', description: 'Persistir operaciones en log secuencial antes de mutar estado.', termId: 'urn:term:software-engineering-ontology:write-ahead-logging-wal', termTitle: 'Write-Ahead Logging (WAL)' },
+          { name: 'Configuración de Interruptores de Circuito (Circuit Breakers)', description: 'Aislar servicios inestables para evitar sobrecargas en cascada.', termId: 'urn:term:software-engineering-ontology:propiedad-acid-transaccional', termTitle: 'Propiedad ACID Transaccional' }
+        ],
+        postproduction: [
+          { name: 'Pruebas de Inyección de Caos (Chaos Testing)', description: 'Simular particiones de red y validar convergencia de datos.', termId: 'urn:term:software-engineering-ontology:patron-saga-transaccional', termTitle: 'Patrón Saga Transaccional' },
+          { name: 'Validación de Recuperación ante Caídas (Crash Recovery)', description: 'Probar reinicio súbito y reconstrucción desde el log WAL.', termId: 'urn:term:software-engineering-ontology:write-ahead-logging-wal', termTitle: 'Write-Ahead Logging (WAL)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:software-engineering-ontology:patron-saga-transaccional', title: 'Patrón Saga Transaccional' },
+        { id: 'urn:term:software-engineering-ontology:write-ahead-logging-wal', title: 'Write-Ahead Logging (WAL)' },
+        { id: 'urn:term:software-engineering-ontology:teorema-cap', title: 'Teorema CAP' },
+        { id: 'urn:term:software-engineering-ontology:propiedad-acid-transaccional', title: 'Propiedades ACID Transaccionales' }
+      ]
+    },
+
+    'ast-compiler-pipeline': {
+      id: 'ast-compiler-pipeline',
+      name: 'Pipeline de Compilación, AST & Análisis Semántico',
+      glossaryId: 'software-engineering-ontology',
+      description: 'Pipeline de transformación de código: análisis léxico, parsing a AST, comprobación de tipos, optimización de representaciones intermedias y generación de código.',
+      targetDuration: 'Cómputo en tiempo de compilación / build',
+      recommendedAspectRatios: ['16:9 Grafo AST', 'Gramática BNF'],
+      recommendedResolutions: ['EBNF / AST JSON / LLVM IR'],
+      determinantAttributes: [
+        { key: 'parserTechnique', label: 'Técnica de Parsing', options: ['Recursive Descent Parser con AST tipado', 'LALR(1) / GLR', 'Combinators Funcionales', 'Earley Parser'] },
+        { key: 'typeSystem', label: 'Sistema de Tipos Formal', options: ['Tipado Estático Fuerte con Inferencia Hindley-Milner', 'Tipado Gradual con Comprobación Dinámica', 'Tipos Dependientes'] },
+        { key: 'targetRepresentation', label: 'Representación Intermedia (IR)', options: ['Static Single Assignment (SSA Form)', 'Three-Address Code (TAC)', 'Bytecode de Pila (Stack VM)', 'AST Desugared'] }
+      ],
+      defaultAttributes: {
+        duration: 'Transformación determinista por archivo',
+        aspectRatio: '16:9',
+        resolution: 'Árbol tipado AST',
+        targetAudience: 'Desarrolladores de herramientas de desarrollo, transpiladores y compiladores',
+        intent: 'Garantizar corrección sintáctica, comprobación semántica estricta y código optimizado',
+        platform: 'LLVM, V8 Engine, Rust Compiler, Babel / SWC',
+        style: 'Recorrido inmutable de árboles mediante patrón Visitor o Catamorfismos',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'Fases secuenciales de compilación sin saltos',
+        camera: 'Inspección profunda de nodos gramaticales'
+      },
+      actionVerbs: [
+        'Tokenizar el flujo de caracteres ignorando espacios no significativos',
+        'Construir el Árbol de Sintaxis Abstracta (AST) resolviendo precedencias',
+        'Comprobar la concordancia de tipos y alcances (scopes) en la tabla de símbolos',
+        'Reescribir el árbol mediante optimizaciones semánticas libres de efectos secundarios',
+        'Transpilar la representación intermedia a código ejecutable o bytecode'
+      ],
+      actionDirectives: [
+        'Preservar la información de posición de código fuente (línea, columna, archivo) para reportes de error comprensibles.',
+        'Desacoplar la fase de análisis léxico y sintáctico de la fase de análisis semántico.',
+        'Implementar recorridos mediante patrón Visitor fuertemente tipado para evitar downcasting inseguro.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Diseño de la Gramática Formal y Lexer', description: 'Definir tokens y reglas sintácticas en notación EBNF.', termId: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', termTitle: 'AST' }
+        ],
+        production: [
+          { name: 'Generación del Árbol de Sintaxis Abstracta (AST)', description: 'Convertir la secuencia de tokens en estructura jerárquica.', termId: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', termTitle: 'AST' },
+          { name: 'Análisis Semántico y Comprobación de Tipos', description: 'Verificar tipos, asignaciones válidas y alcances.', termId: 'urn:term:software-engineering-ontology:sistema-de-tipos-formal', termTitle: 'Sistema de Tipos Formal' }
+        ],
+        postproduction: [
+          { name: 'Optimización de Representación Intermedia (IR)', description: 'Eliminación de código muerto y propagación de constantes.', termId: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', termTitle: 'AST' },
+          { name: 'Generación y Emisión de Código Destino', description: 'Emitir bytecode o código ejecutable con verificación de salida.', termId: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', termTitle: 'AST' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:software-engineering-ontology:ast-abstract-syntax-tree', title: 'Árbol de Sintaxis Abstracta (AST)' },
+        { id: 'urn:term:software-engineering-ontology:sistema-de-tipos-formal', title: 'Sistema de Tipos Formal' }
+      ]
+    },
+
+    // =========================================================
+    // GLOSARIO: IA Generativa & Modelos Multimodales para Medios
+    // =========================================================
+    'text-to-video-diffusion': {
+      id: 'text-to-video-diffusion',
+      name: 'Secuencia Generativa Text-to-Video (T2V) con DiT',
+      glossaryId: 'generative-ai-media',
+      description: 'Generación de secuencias de video fotorrealistas mediante transformadores de difusión (DiT) con guiado CFG, atención espaciotemporal y estabilidad cinemática.',
+      targetDuration: '5s - 10s por toma generativa',
+      recommendedAspectRatios: ['16:9 (Cinematic)', '2.39:1 (Widescreen)', '9:16 (Vertical Reels)'],
+      recommendedResolutions: ['1080p Full HD a 24fps', '4K Upscaled'],
+      determinantAttributes: [
+        { key: 'modelArchitecture', label: 'Arquitectura del Modelo Base', options: ['Diffusion Transformer (DiT)', 'U-Net 3D Espaciotemporal', 'Factorized Spatial-Temporal Attention'] },
+        { key: 'cfgScale', label: 'Escala de Guiado CFG (Classifier-Free Guidance)', options: ['5.0 (Movimiento Natural y Fotorrealismo)', '6.5 (Equilibrio de Prompt y Estilo)', '8.0 (Fuerte Adherencia al Texto)'] },
+        { key: 'samplingSteps', label: 'Pasos de Muestreo (Denoising Steps)', options: ['30 pasos (Muestreo rápido DPM++)', '50 pasos (Máxima convergencia textural)', '20 pasos (Euler Ancestral)'] },
+        { key: 'temporalConsistency', label: 'Mecanismo de Coherencia Temporal', options: ['Cross-Frame Self-Attention con Regularización', 'ControlNet Temporal', 'Latent Motion Vectors'] },
+        { key: 'motionMagnitude', label: 'Magnitud de Movimiento', options: ['Sutil / Micro-movimientos de aire', 'Cinemático Fluido (Travelling / Pan)', 'Dinámico Acelerado'] }
+      ],
+      defaultAttributes: {
+        duration: '5 segundos',
+        aspectRatio: '16:9',
+        resolution: '1080p a 24fps',
+        targetAudience: 'Creadores audiovisuales, postproductores y cineastas con IA',
+        intent: 'Sintetizar tomas en movimiento continuo sin morphing ni deformaciones de anatomía',
+        platform: 'Runway Gen-3, Sora, Kling, Luma Dream Machine, ComfyUI',
+        style: 'Cinematografía de 35mm con iluminación volumétrica y grano orgánico sutil',
+        audio: 'Audio ambiental sincronizado generado por modelo neuronal',
+        subtitles: 'N/A',
+        pacing: 'Cadencia cinematográfica regular de 24 fps',
+        camera: 'Travelling continuo frontal con lente 50mm f/1.8 y suave desenfoque de fondo'
+      },
+      actionVerbs: [
+        'Condicionar el muestreo latente con embeddings de texto y atención cruzada',
+        'Modular la escala CFG para equilibrar adherencia al prompt y naturalidad visual',
+        'Preservar la consistencia de identidad y geometrías a lo largo de los fotogramas',
+        'Eliminar artefactos de parpadeo temporal (flicker) mediante atención espaciotemporal',
+        'Decodificar el volumen latente a través del Autoencoder KL espacial a resolución nativa'
+      ],
+      actionDirectives: [
+        'Especificar descriptores de movimiento claros y continuos para evitar saltos o congelamientos temporales.',
+        'Fijar la escala CFG entre 5.0 y 6.5 para preservar texturas dérmicas orgánicas sin sobreexposición ni saturación plástica.',
+        'Utilizar semillas deterministas para posibilitar ajustes incrementales del plano generado.',
+        'Aplicar prompt negativo estricto contra mutaciones de extremidades y morphing de fondo.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Ingeniería de Prompt Textual y Selección de Embedding', description: 'Redactar tokens visuales descriptivos sin ambigüedad sintáctica.', termId: 'urn:term:generative-ai-media:text-to-video-t2v', termTitle: 'Text-to-Video (T2V)' },
+          { name: 'Calibración de la Escala de Guiado CFG', description: 'Ajustar la fuerza de guiado para concordancia con el concepto.', termId: 'urn:term:generative-ai-media:classifier-free-guidance-cfg', termTitle: 'Classifier-Free Guidance (CFG)' }
+        ],
+        production: [
+          { name: 'Inferencia de Desruidizado con Diffusion Transformer', description: 'Generar los parches espaciotemporales en el espacio latente.', termId: 'urn:term:generative-ai-media:diffusion-transformer-dit', termTitle: 'Diffusion Transformer (DiT)' },
+          { name: 'Decodificación Latente a Través del VAE', description: 'Reconstruir el flujo de fotogramas RGB desde la representación latente.', termId: 'urn:term:generative-ai-media:variational-autoencoder-vae', termTitle: 'Autoencoder Variacional (VAE)' }
+        ],
+        postproduction: [
+          { name: 'Superresolución Perceptual e Interpolación Temporal', description: 'Escalar a 4K e interpolar vectores a 60 fps si se requiere.', termId: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', termTitle: 'Latent Diffusion Models (LDM)' },
+          { name: 'Verificación de Artefactos y Coherencia de Cuadro', description: 'Auditar ausencia de parpadeos y deformaciones anatómicas.', termId: 'urn:term:generative-ai-media:text-to-video-t2v', termTitle: 'Text-to-Video (T2V)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:generative-ai-media:text-to-video-t2v', title: 'Text-to-Video (T2V / Síntesis Generativa de Video)' },
+        { id: 'urn:term:generative-ai-media:diffusion-transformer-dit', title: 'Diffusion Transformer (DiT)' },
+        { id: 'urn:term:generative-ai-media:classifier-free-guidance-cfg', title: 'Classifier-Free Guidance (CFG Scale)' },
+        { id: 'urn:term:generative-ai-media:variational-autoencoder-vae', title: 'Autoencoder Variacional (VAE)' }
+      ]
+    },
+
+    'multimodal-image-synthesis': {
+      id: 'multimodal-image-synthesis',
+      name: 'Síntesis de Imagen Latente Guiada por ControlNet',
+      glossaryId: 'generative-ai-media',
+      description: 'Generación de imágenes fotorrealistas de alta fidelidad espacial guiadas por mapas estructurales (Canny, Depth, OpenPose) y atención cruzada multimodal.',
+      targetDuration: 'Imagen Estática / Fotograma de Referencia',
+      recommendedAspectRatios: ['16:9', '2.39:1', '1:1', '4:5'],
+      recommendedResolutions: ['UHD 4K (3840x2160)', '2048x2048 Master'],
+      determinantAttributes: [
+        { key: 'controlNetConditioning', label: 'Modalidad de ControlNet', options: ['Mapa de Profundidad (MiDaS Depth)', 'Bordes Canny (Canny Edge Detection)', 'Pose Humana (OpenPose)', 'LineArt / Boceto'] },
+        { key: 'latentDiffusionModel', label: 'Modelo de Difusión Latente', options: ['SDXL 1.0 Base + Refiner', 'Flux.1 Schnell / Dev', 'Stable Diffusion 1.5 Photorealism'] },
+        { key: 'aspectRatio', label: 'Relación de Aspecto', options: ['16:9', '2.39:1', '1:1', '4:5', '9:16'] },
+        { key: 'denoisingStrength', label: 'Fuerza de Desruidizado (Denoising)', options: ['0.45 (Preservar estructura original)', '0.70 (Equilibrio de creatividad y guía)', '0.90 (Reinterpretación profunda)'] }
+      ],
+      defaultAttributes: {
+        duration: 'Fotograma de alta resolución',
+        aspectRatio: '16:9',
+        resolution: 'UHD 4K',
+        targetAudience: 'Directores de arte, ilustradores conceptuales y fotógrafos virtuales',
+        intent: 'Controlar al milímetro la composición visual y la geometría espacial del encuadre',
+        platform: 'ComfyUI, Automatic1111, Midjourney con Image Reference',
+        style: 'Fotorrealismo cinematográfico con texturas de microporos y lente 85mm portrait',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'N/A',
+        camera: 'Primer plano o plano medio con bokeh circular natural en segundo término'
+      },
+      actionVerbs: [
+        'Inyectar condicionamiento geométrico estricto mediante el módulo ControlNet',
+        'Proyectar descriptores semánticos en capas de atención cruzada (cross-attention)',
+        'Comprimir la imagen de entrada al espacio latente utilizando el Autoencoder KL',
+        'Refinar las microtexturas y poros mediante escalado latente (Hi-Res Fix)',
+        'Contener la saturación y aberraciones cromáticas en altas luces'
+      ],
+      actionDirectives: [
+        'Alinear la escala del mapa de profundidad con la distancia focal especificada en el prompt.',
+        'Verificar la fidelidad anatómica en manos y extremidades mediante penalizaciones en prompt negativo.',
+        'Exportar tensores en coma flotante de 16 bits para balance idóneo de rendimiento y fidelidad.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Generación o Extracción del Mapa de Profundidad / Canny', description: 'Extraer geometrías de referencia desde boceto o foto base.', termId: 'urn:term:generative-ai-media:controlnet-spatial-control', termTitle: 'ControlNet' },
+          { name: 'Codificación de Texto con CLIP / T5', description: 'Transformar descriptores visuales en embeddings espaciales.', termId: 'urn:term:generative-ai-media:clip-contrastive-language-image-pretraining', termTitle: 'CLIP' }
+        ],
+        production: [
+          { name: 'Desruidizado Guiado en Modelo de Difusión Latente', description: 'Ejecutar sampling condicionado por las capas de ControlNet.', termId: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', termTitle: 'Latent Diffusion Models (LDM)' },
+          { name: 'Inyección de Atención Cruzada Multimodal', description: 'Alinear los vectores de texto con los mapas de características latentes.', termId: 'urn:term:generative-ai-media:cross-attention-mechanism', termTitle: 'Mecanismo de Cross-Attention' }
+        ],
+        postproduction: [
+          { name: 'Decodificación con VAE y Corrección de Color', description: 'Convertir tensores latentes a RGB y contrastar en espacio de color.', termId: 'urn:term:generative-ai-media:variational-autoencoder-vae', termTitle: 'Autoencoder Variacional (VAE)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:generative-ai-media:controlnet-spatial-control', title: 'ControlNet (Control Espacial Preciso)' },
+        { id: 'urn:term:generative-ai-media:cross-attention-mechanism', title: 'Mecanismo de Cross-Attention' },
+        { id: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', title: 'Modelos de Difusión Latente (LDM)' },
+        { id: 'urn:term:generative-ai-media:clip-contrastive-language-image-pretraining', title: 'CLIP (Contrastive Language-Image Pretraining)' }
+      ]
+    },
+
+    'consistent-character-generation': {
+      id: 'consistent-character-generation',
+      name: 'Generación de Personaje Consistente con LoRA & VAE',
+      glossaryId: 'generative-ai-media',
+      description: 'Pipeline para síntesis repetible del mismo sujeto en múltiples ángulos, iluminaciones y situaciones utilizando pesos de bajo rango (LoRA).',
+      targetDuration: 'Conjunto de Planos / Serie Narrativa',
+      recommendedAspectRatios: ['16:9', '9:16', '1:1'],
+      recommendedResolutions: ['UHD 4K Master', '2048x1152'],
+      determinantAttributes: [
+        { key: 'loraWeight', label: 'Peso del Adaptador LoRA', options: ['0.75 (Equilibrio de Parecido y Flexibilidad)', '0.85 (Fuerte Similitud Facial)', '0.65 (Estilización Dinámica)'] },
+        { key: 'triggerToken', label: 'Token Disparador (Trigger Word)', placeholder: 'Ej. cxx_character_v1, ohwx_actress' },
+        { key: 'cameraFramingVariation', label: 'Variación de Encuadre', options: ['Plano Entero (Full Shot)', 'Plano Medio (Medium Shot)', 'Primer Plano (Close-up)'] }
+      ],
+      defaultAttributes: {
+        duration: 'Tomas individuales para secuencia',
+        aspectRatio: '16:9',
+        resolution: 'UHD 4K',
+        targetAudience: 'Narradores visuales de ficción, agencias publicitarias y directores de animación',
+        intent: 'Mantener consistencia fisionómica y textural del protagonista en toda la serie',
+        platform: 'ComfyUI, Kohya SS, WebUI Forge',
+        style: 'Iluminación motivada coherente con el entorno narrativo',
+        audio: 'N/A',
+        subtitles: 'N/A',
+        pacing: 'N/A',
+        camera: 'Cobertura multicámara con planos de reacción y acción'
+      },
+      actionVerbs: [
+        'Ajustar el peso de los adaptadores LoRA para preservar la identidad facial sin sobreajuste',
+        'Variar las directivas de cámara manteniendo invariantes las facciones del personaje',
+        'Armonizar la iluminación del sujeto con el entorno ambiental de la escena',
+        'Modular la paleta cromática sin alterar los tonos de piel identificatorios'
+      ],
+      actionDirectives: [
+        'Colocar el token disparador de identidad al comienzo del prompt positivo.',
+        'Asegurar que la vestimenta y accesorios respondan contextualmente al entorno narrativo.',
+        'Utilizar prompt negativo para descartar artefactos plásticos y deformaciones de silueta.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Calibración del Token Disparador y Adaptador LoRA', description: 'Fijar el multiplicador de rango bajo (rank) en la atención.', termId: 'urn:term:generative-ai-media:lora-low-rank-adaptation', termTitle: 'LoRA' }
+        ],
+        production: [
+          { name: 'Muestreo Latente con Inyección de Pesos LoRA', description: 'Generar los planos garantizando invariancia fisonómica.', termId: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', termTitle: 'Latent Diffusion Models (LDM)' }
+        ],
+        postproduction: [
+          { name: 'Inpainting Facial y Corrección de Iluminación', description: 'Refinar ojos y detalles en resolución completa.', termId: 'urn:term:generative-ai-media:variational-autoencoder-vae', termTitle: 'Autoencoder Variacional (VAE)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:generative-ai-media:lora-low-rank-adaptation', title: 'Adaptación de Bajo Rango (LoRA)' },
+        { id: 'urn:term:generative-ai-media:variational-autoencoder-vae', title: 'Autoencoder Variacional (VAE)' },
+        { id: 'urn:term:generative-ai-media:latent-diffusion-models-ldm', title: 'Modelos de Difusión Latente (LDM)' }
+      ]
+    },
+
+    'latent-video-extension': {
+      id: 'latent-video-extension',
+      name: 'Extensión & Transición Cinemática en Espacio Latente',
+      glossaryId: 'generative-ai-media',
+      description: 'Extensión temporal continua hacia adelante o transición entre dos fotogramas clave (First & Last Frame) mediante modelos de difusión latente I2V.',
+      targetDuration: '3s a 8s por extensión',
+      recommendedAspectRatios: ['16:9 (Widescreen)', '2.39:1 (CinemaScope)'],
+      recommendedResolutions: ['1080p a 24fps', '4K Upscaled'],
+      determinantAttributes: [
+        { key: 'conditioningMode', label: 'Modo de Acondicionamiento', options: ['First Frame Conditioning (I2V Inicio)', 'First & Last Frame Transition (Empalme de 2 fotogramas)', 'Temporal Inpainting'] },
+        { key: 'motionProfile', label: 'Perfil de Trayectoria de Movimiento', options: ['Travelling Frontal Continuo', 'Paneo Horizontal Calibrado', 'Órbita 180° Alrededor del Sujeto'] },
+        { key: 'extensionSeconds', label: 'Longitud de Extensión', options: ['3 segundos (Alta coherencia)', '5 segundos (Movimiento moderado)', '8 segundos (Transición suave)'] }
+      ],
+      defaultAttributes: {
+        duration: '4 segundos',
+        aspectRatio: '16:9',
+        resolution: '1080p 24fps',
+        targetAudience: 'Editores de video generativo y directores de fotografía digital',
+        intent: 'Alargar un plano existente o transicionar sin cortes bruscos entre dos tomas clave',
+        platform: 'ComfyUI, Runway Gen-3 Alpha, Kling Video, Luma Dream Machine',
+        style: 'Continuidad fotográfica estricta con el fotograma inicial',
+        audio: 'Diseño sonoro continuo con reverberación espacial',
+        subtitles: 'N/A',
+        pacing: 'Movimiento fluido y orgánico sin tirones (microstuttering)',
+        camera: 'Trayectoria coordinada que respeta la velocidad focal previa'
+      },
+      actionVerbs: [
+        'Anclar el primer fotograma en el espacio latente como condición de frontera temporal',
+        'Calcular la trayectoria de cámara óptima entre los fotogramas clave de inicio y fin',
+        'Preservar la coherencia de fondo durante la interpolación temporal continua',
+        'Sincronizar el final del movimiento de cámara con el corte o siguiente escena'
+      ],
+      actionDirectives: [
+        'Mantener el mismo seed o vector de ruido inicial en extensiones consecutivas para evitar saltos.',
+        'Evitar cambios bruscos de iluminación entre fotogramas ancla.',
+        'Supervisar el flujo óptico para garantizar ausencia de estiramientos o warping en bordes.'
+      ],
+      workflowTasks: {
+        preproduction: [
+          { name: 'Preparación y Corrección de Fotogramas Clave', description: 'Igualar niveles de exposición y balance cromático.', termId: 'urn:term:generative-ai-media:variational-autoencoder-vae', termTitle: 'Autoencoder Variacional (VAE)' }
+        ],
+        production: [
+          { name: 'Inferencia de Transición con Diffusion Transformer', description: 'Calcular el túnel latente entre los estados temporales.', termId: 'urn:term:generative-ai-media:diffusion-transformer-dit', termTitle: 'Diffusion Transformer (DiT)' }
+        ],
+        postproduction: [
+          { name: 'Fusión Temporal y Suavizado de Flujo Óptico', description: 'Garantizar empalme indetectable con el plano previo.', termId: 'urn:term:generative-ai-media:text-to-video-t2v', termTitle: 'Text-to-Video (T2V)' }
+        ]
+      },
+      keyGlossaryTerms: [
+        { id: 'urn:term:generative-ai-media:text-to-video-t2v', title: 'Text-to-Video (T2V / Síntesis Generativa de Video)' },
+        { id: 'urn:term:generative-ai-media:diffusion-transformer-dit', title: 'Diffusion Transformer (DiT)' },
+        { id: 'urn:term:generative-ai-media:variational-autoencoder-vae', title: 'Autoencoder Variacional (VAE)' }
+      ]
     }
   };
 
