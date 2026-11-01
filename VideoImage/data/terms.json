@@ -1,0 +1,435 @@
+{
+  "id": "video-image",
+  "title": "Video, Imagen & Gráficos Digitales",
+  "slug": "video-image",
+  "version": "1.0.0",
+  "description": "Glosario canónico de procesamiento de imágenes, fidelidad cromática, códecs de video, representación por píxeles y formatos de almacenamiento.",
+  "language": "es",
+  "license": "Local Knowledge Base - Internal Project Use",
+  "canonicalTerms": [
+    {
+      "id": "urn:term:video-image:pixel",
+      "slug": "pixel",
+      "title": "Píxel (Picture Element)",
+      "category": "Procesamiento y Filtros",
+      "shortDefinition": "Unidad mínima direccionable y homogénea de color y luminosidad que compone una imagen digital rasterizada.",
+      "fullDefinition": "El píxel es el elemento constitutivo fundamental en mapas de bits bidimensionales. Cada píxel almacena información discreta compuesta típicamente por canales cromáticos (como Rojo, Verde y Azul) y, optativamente, canales alfa que especifican la opacidad y cobertura espacial.",
+      "synonyms": ["Pixel", "Picture Element", "Punto de Imagen"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "profundidadBit": "8 bits (SDR), 10 bits, 12 bits, o 16/32 bits de punto flotante (HDR)",
+        "densidad": "Medida en PPI (Pixels Per Inch) o DPI (Dots Per Inch)"
+      },
+      "components": [
+        "Canal Rojo (R)",
+        "Canal Verde (G)",
+        "Canal Azul (B)",
+        "Canal Alfa (A - opacidad)"
+      ],
+      "applications": [
+        "Construcción de imágenes digitales y pantallas físicas",
+        "Filtrado espacial, convolución y procesamiento de visión artificial"
+      ],
+      "examples": [
+        "Un sensor Full HD de 1920x1080 píxeles alberga 2.073.600 píxeles individuales"
+      ],
+      "relations": [
+        {
+          "type": "isPartOf",
+          "target": "urn:term:video-image:framebuffer",
+          "label": "Es parte de",
+          "note": "El framebuffer está compuesto por una matriz bidimensional de píxeles contiguos."
+        },
+        {
+          "type": "hasInput",
+          "target": "urn:term:video-image:color-gamut",
+          "label": "Interpreta sus coordenadas en",
+          "note": "Los valores numéricos RGB de un píxel solo tienen significado inequívoco dentro de una gama cromática."
+        },
+        {
+          "type": "producedBy",
+          "target": "urn:term:render-3d-animations:shader",
+          "label": "Es producido por",
+          "note": "Los fragment shaders computan el valor cromático exacto para cada posición de píxel."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:framebuffer",
+      "slug": "framebuffer",
+      "title": "Búfer de Cuadro (Framebuffer)",
+      "category": "Procesamiento y Filtros",
+      "shortDefinition": "Zona de memoria de acceso rápido dedicada a almacenar el mapa de bits completo de un cuadro de video para su visualización.",
+      "fullDefinition": "El framebuffer es un búfer de memoria de video (VRAM o RAM del sistema) que contiene la representación completa de un frame o fotograma. Almacena no solo los canales de color finales, sino habitualmente canales de profundidad (Z-buffer), stencil o buffers auxiliares (G-buffer en renderizado diferido) antes de enviarse a la pantalla.",
+      "synonyms": ["Framebuffer", "Video Memory Buffer"],
+      "level": "arquitectura",
+      "status": "canonical",
+      "attributes": {
+        "tecnologiaRefresco": "Doble búfer (Double Buffering) y Triple búfer para prevenir tearing",
+        "asignacionMemoria": "Ancho x Alto x Bytes por Píxel x Número de Búfers"
+      },
+      "components": [
+        "Color Buffer (Front Buffer y Back Buffer)",
+        "Depth/Z-Buffer (resolución de oclusión)",
+        "Stencil Buffer (enmascaramiento)"
+      ],
+      "applications": [
+        "Salida directa a controladores de pantalla HDMI/DisplayPort",
+        "Composición gráfica en ventanas de sistemas operativos"
+      ],
+      "examples": [
+        "Intercambio de búfers (Swap Chains) a través de APIs de gráficos como DirectX DXGI o Vulkan WSI"
+      ],
+      "relations": [
+        {
+          "type": "contains",
+          "target": "urn:term:video-image:pixel",
+          "label": "Contiene a",
+          "note": "Almacena la cuadrícula ordenada de píxeles del cuadro actual."
+        },
+        {
+          "type": "producedBy",
+          "target": "urn:term:render-3d-animations:rendering-pipeline",
+          "label": "Es producido por",
+          "note": "Etapa terminal donde convergen las pasadas de renderizado gráfico."
+        },
+        {
+          "type": "usedFor",
+          "target": "urn:term:video-image:framerate",
+          "label": "Se actualiza según",
+          "note": "La tasa de refresco determina la frecuencia con la que se renueva el contenido del framebuffer."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:color-gamut",
+      "slug": "color-gamut",
+      "title": "Gama de Color (Color Gamut)",
+      "category": "Espacios de Color y Percepción",
+      "shortDefinition": "Rango o subconjunto completo de colores visibles que un determinado dispositivo, espacio o medio es capaz de reproducir.",
+      "fullDefinition": "Una gama o gamut de color delimita el área dentro del diagrama de cromaticidad CIE 1931 abarcada por un conjunto definido de primarios rojo, verde y azul y un punto blanco de referencia. Define el volumen de colores teóricamente sintetizables por un monitor, sensor o espacio cromático digital.",
+      "synonyms": ["Gamut de Color", "Triángulo de Primarios"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "estandares": "sRGB, DCI-P3 (cine digital), BT.2020 / Rec.2020 (UHDTV)",
+        "diagramaReferencia": "Diagrama de cromaticidad CIE 1931 xy"
+      },
+      "components": [
+        "Coordenadas de Primarios (R, G, B)",
+        "Punto Blanco (ej. D65 a 6504 K)",
+        "Curva de Transferencia Electro-Óptica (EOTF / Gamma)"
+      ],
+      "applications": [
+        "Calibración de monitores de corrección de color y masterización",
+        "Gestión de color en flujos ACES (Academy Color Encoding System)"
+      ],
+      "examples": [
+        "Espacio DCI-P3 que cubre un 25% más de volumen de color que el estándar sRGB clásico"
+      ],
+      "relations": [
+        {
+          "type": "dependsOn",
+          "target": "urn:term:video-image:color-space",
+          "label": "Se define dentro de",
+          "note": "El gamut conforma la frontera de saturación dentro del espacio de color tridimensional."
+        },
+        {
+          "type": "usedFor",
+          "target": "urn:term:render-3d-animations:brdf",
+          "label": "Condiciona a",
+          "note": "Los coeficientes de reflectancia física y albedo se expresan respecto a una gama definida."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:color-space",
+      "slug": "color-space",
+      "title": "Espacio de Color (Color Space)",
+      "category": "Espacios de Color y Percepción",
+      "shortDefinition": "Sistema matemático que asocia valores numéricos o tuplas de coordenadas con colores perceptualmente identificables.",
+      "fullDefinition": "Un espacio de color es una organización específica de colores que combina un modelo de color (como RGB, YCbCr, HSL o CIELAB) con una función de mapeo estricta y una gama bien delimitada. Permite la reproducibilidad precisa de representaciones de color tanto en medios analógicos como en procesamiento digital.",
+      "synonyms": ["Espacio Cromático", "Color Space"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "tipologias": "Lineal vs No-lineal (con curva Gamma o PQ / HLG)",
+        "modelosBase": "Tricromático aditivo (RGB), Oponente perceptual (Lab), Luminancia/Crominancia (YUV, YCbCr)"
+      },
+      "components": [
+        "Modelo matemático de dimensiones",
+        "Función de transferencia de luminancia (OETF/EOTF)",
+        "Definición formal de gamut"
+      ],
+      "applications": [
+        "Conversión de video para emisión broadcast",
+        "Masterización cinematográfica con preservación de intencionalidad cromática"
+      ],
+      "examples": [
+        "ACEScg para renderizado y composición en espacio lineal amplio"
+      ],
+      "relations": [
+        {
+          "type": "contains",
+          "target": "urn:term:video-image:color-gamut",
+          "label": "Contiene a",
+          "note": "Todo espacio de color incluye una especificación de su espectro o gamut."
+        },
+        {
+          "type": "usedFor",
+          "target": "urn:term:video-image:hdr-image",
+          "label": "Se utiliza para",
+          "note": "Proporciona los perfiles y funciones EOTF para codificar imágenes de alto rango dinámico."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:hdr-image",
+      "slug": "hdr-image",
+      "title": "Imagen de Alto Rango Dinámico (HDR)",
+      "category": "Formatos y Metadatos",
+      "shortDefinition": "Imagen digital capaz de representar un rango de luminosidad y contraste sustancialmente mayor que el estándar tradicional.",
+      "fullDefinition": "Formato de imagen y video que preserva detalles tanto en sombras extremadamente oscuras como en luces de máxima intensidad especular, superando el límite de 100 nits y 8 bits de las imágenes de Rango Dinámico Estándar (SDR). Utiliza codificaciones de 10, 12 o 16/32 bits y curvas perceptuales como SMPTE ST 2084 (PQ).",
+      "synonyms": ["HDR", "High Dynamic Range Imaging", "Rango Dinámico Extendido"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "brilloPico": "1.000 a 10.000 nits (cd/m²)",
+        "formatosArchivo": "OpenEXR (.exr), Radiance (.hdr), TIFF flotante, HEIC HDR"
+      },
+      "components": [
+        "Canales en coma flotante (FP16 o FP32)",
+        "Curvas de transferencia Perceptual Quantizer (PQ) o Hybrid Log-Gamma (HLG)",
+        "Metadatos de masterización (MaxFALL, MaxCLL)"
+      ],
+      "applications": [
+        "Mapas de entorno para iluminación IBL en render 3D",
+        "Distribución de video premium en streaming y Blu-ray UHD"
+      ],
+      "examples": [
+        "Mapa de luz ambiental de 32 bits por canal capturado mediante bracketing fotográfico"
+      ],
+      "relations": [
+        {
+          "type": "producedBy",
+          "target": "urn:term:render-3d-animations:ray-tracing",
+          "label": "Es producida por",
+          "note": "Los motores de ray tracing calculan naturalmente radiancia física en valores de punto flotante HDR."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:video-image:color-space",
+          "label": "Depende de",
+          "note": "Requiere espacios amplios como Rec.2020 para plasmar su gama y brillo."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:video-codec",
+      "slug": "video-codec",
+      "title": "Códec de Video (Video Codec)",
+      "category": "Compresión y Códecs",
+      "shortDefinition": "Algoritmo de compresión y descompresión digital de secuencias de video para reducir el tamaño de almacenamiento y tasa de transferencia.",
+      "fullDefinition": "Dispositivo o software que procesa flujos de video digital reduciendo redundancias espaciales (intraframe) y temporales (interframe) mediante transformadas matemáticas, estimación de movimiento y cuantización. Se compone de un codificador (encoder) y un descodificador (decoder).",
+      "synonyms": ["Codec", "Compresor/Descompresor de Video"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "tipologias": "Con pérdidas (Lossy) o Sin pérdidas (Lossless)",
+        "estandaresPopulares": "H.264/AVC, H.265/HEVC, AV1, ProRes, DNxHR"
+      },
+      "components": [
+        "Compensación y estimación de movimiento",
+        "Transformada Discreta del Coseno (DCT) o Transformada Entera",
+        "Codificador entrópico (CABAC o CAVLC)"
+      ],
+      "applications": [
+        "Transmisión de video por internet (VOD, streaming en vivo)",
+        "Formatos intermedios de edición profesional para edición fluida"
+      ],
+      "examples": [
+        "AV1 alcanzando un 30% más de eficiencia de compresión que HEVC en resoluciones 4K"
+      ],
+      "relations": [
+        {
+          "type": "dependsOn",
+          "target": "urn:term:video-image:chroma-subsampling",
+          "label": "Depende de",
+          "note": "Reduce el volumen de datos reduciendo la resolución de los canales de color antes de la compresión."
+        },
+        {
+          "type": "usedFor",
+          "target": "urn:term:video-image:framerate",
+          "label": "Codifica flujos en",
+          "note": "Gestiona la tasa de fotogramas del contenido comprimido."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:chroma-subsampling",
+      "slug": "chroma-subsampling",
+      "title": "Submuestreo de Croma (Chroma Subsampling)",
+      "category": "Compresión y Códecs",
+      "shortDefinition": "Técnica de compresión que reduce la resolución de color manteniendo intacta la resolución de luminancia.",
+      "fullDefinition": "Método de reducción de tasa de bits fundamentado en la fisiología de la visión humana, la cual presenta mayor sensibilidad a variaciones espaciales de brillo (luminancia Y) que a las de tono y saturación (crominancia Cb y Cr). Se cuantifica habitualmente como una razón de tres partes: J:a:b (ej. 4:4:4, 4:2:2, 4:2:0).",
+      "synonyms": ["Submuestreo Cromático", "Chroma Decimation"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "esquemasComunes": "4:4:4 (sin compresión de croma), 4:2:2 (emisión profesional), 4:2:0 (consumo web y streaming)",
+        "ahorroTasaBits": "4:2:0 reduce el ancho de banda del color en un 50% con impacto perceptual mínimo"
+      },
+      "components": [
+        "Separación de componentes Y, Cb, Cr",
+        "Filtro de diezmado espacial de croma",
+        "Interpolador de reconstrucción en el decodificador"
+      ],
+      "applications": [
+        "Formatos de grabación en cámaras de video comerciales",
+        "Compresión estándar de emisiones de televisión digital terrestre y satelital"
+      ],
+      "examples": [
+        "Video 4K en esquema 4:2:0 donde la resolución de croma es de 1920x1080 mientras que el brillo es 3840x2160"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:video-image:video-codec",
+          "label": "Se utiliza para",
+          "note": "Constituye la primera etapa de reducción de ancho de banda en códecs lossy."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:video-image:color-space",
+          "label": "Opera sobre",
+          "note": "Requiere la conversión previa a espacios de luminancia-crominancia como YCbCr."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:framerate",
+      "slug": "framerate",
+      "title": "Tasa de Fotogramas (Frame Rate / FPS)",
+      "category": "Formatos y Metadatos",
+      "shortDefinition": "Frecuencia o cadencia con la que se muestran o capturan fotogramas consecutivos de imagen por unidad de segundo.",
+      "fullDefinition": "Medida temporal que especifica cuántas imágenes estáticas sucesivas se proyectan cada segundo para inducir la ilusión perceptual de movimiento continuo en el cerebro humano (persistencia retiniana y fenómeno Phi). Se expresa comúnmente en fotogramas por segundo (fps) o Hertz (Hz).",
+      "synonyms": ["FPS", "Cuadros por Segundo", "Cadencia de Cuadro"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "frecuenciasEstandar": "24 fps (cine tradicional), 25/30 fps (video PAL/NTSC), 60/120 fps (videojuegos y HFR)",
+        "impactoMovimiento": "Mayor FPS reduce el efecto de desenfoque de movimiento estroboscópico"
+      },
+      "components": [
+        "Intervalo temporal entre cuadros (delta time)",
+        "Ángulo de obturación (Shutter Angle)",
+        "Base temporal de sincronización"
+      ],
+      "applications": [
+        "Configuración de cámaras cinematográficas y de captura de alta velocidad",
+        "Sincronización vertical (V-Sync, G-Sync, FreeSync) en monitores"
+      ],
+      "examples": [
+        "Proyección cinematográfica HFR a 48 fps o visualización interactiva a 144 Hz"
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:render-3d-animations:keyframe",
+          "label": "Está relacionado con",
+          "note": "Determina cuántos frames se interpolan entre dos keyframes de una animación."
+        },
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:video-image:framebuffer",
+          "label": "Gobierna el refresco de",
+          "note": "Indica cuántas veces por segundo el framebuffer traslada su contenido al monitor."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:bayer-filter",
+      "slug": "bayer-filter",
+      "title": "Matriz de Filtro Bayer (Bayer Filter CFA)",
+      "category": "Captura y Sensores",
+      "shortDefinition": "Mosaico de filtros de color rojo, verde y azul colocado sobre una cuadrícula de fotosensibles para capturar imágenes en color.",
+      "fullDefinition": "Arreglo de filtros de color (Color Filter Array) patentado por Bryce Bayer que organiza los sensores fotosensibles en una cuadrícula con un 50% de filtros verdes, un 25% rojos y un 25% azules (patrón RGGB), emulando la mayor sensibilidad del ojo humano a las longitudes de onda verdosas. Para obtener la imagen completa requiere un proceso posterior de interpolación cromática (demosaicing).",
+      "synonyms": ["Mosaico Bayer", "Bayer Pattern", "Color Filter Array CFA"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "distribucion": "RGGB, BGGR, GRBG",
+        "necesidadAlgoritmica": "Requiere desmosaicado (demosaicing/debayering)"
+      },
+      "components": [
+        "Microprismas de filtrado cromático",
+        "Fotodiodos semiconductores CMOS/CCD",
+        "Algoritmo de desmosaicado (AHD, VNG, bilineal)"
+      ],
+      "applications": [
+        "Casi la totalidad de cámaras fotográficas digitales y teléfonos inteligentes actuales",
+        "Flujos de trabajo RAW cinematográficos"
+      ],
+      "examples": [
+        "Extracción del flujo RAW nativo desde un sensor CMOS sin interpolar para procesamiento posterior en laboratorio digital"
+      ],
+      "relations": [
+        {
+          "type": "produces",
+          "target": "urn:term:video-image:pixel",
+          "label": "Genera valores base para",
+          "note": "Tras el demosaicing, cada fotosensible del mosaico genera un píxel RGB completo."
+        },
+        {
+          "type": "hasInput",
+          "target": "urn:term:video-image:color-gamut",
+          "label": "Determina la respuesta hacia",
+          "note": "Las características espectrales de los pigmentos del filtro condicionan la gama nativa del sensor."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:video-image:convolution-filter",
+      "slug": "convolution-filter",
+      "title": "Filtro de Convolución Espacial",
+      "category": "Procesamiento y Filtros",
+      "shortDefinition": "Operación matemática matricial aplicada a una imagen para alterar sus características espaciales de frecuencia y nitidez.",
+      "fullDefinition": "Técnica de procesamiento digital de imágenes en la que se calcula el nuevo valor de cada píxel multiplicando los valores de los píxeles vecinos por los coeficientes de una matriz bidimensional pequeña (núcleo o kernel) y sumando los resultados. Se utiliza para suavizado, detección de bordes, enfoque o relieve.",
+      "synonyms": ["Filtro Matricial", "Filtrado Espacial", "Kernel Convolution"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "tamanosNucleo": "3x3, 5x5, 7x7",
+        "propiedad": "Invarianza espacial y linealidad de la operación"
+      },
+      "components": [
+        "Núcleo o Kernel matricial",
+        "Ventana deslizante de vecindad",
+        "Mecanismo de gestión de bordes (padding con replicación o espejo)"
+      ],
+      "applications": [
+        "Desenfoque Gaussiano, realce de contornos (Unsharp Mask)",
+        "Operadores de detección de bordes (Sobel, Prewitt, Laplaciano)",
+        "Capas convolucionales en redes neuronales de visión por computador"
+      ],
+      "examples": [
+        "Kernel Sobel horizontal [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]] para detectar gradientes de intensidad en ejes verticales"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:video-image:pixel",
+          "label": "Modifica directamente",
+          "note": "Transforma los valores numéricos de luminosidad y color de los píxeles procesados."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:render-3d-animations:shader",
+          "label": "Se implementa mediante",
+          "note": "Los fragment o compute shaders son la vía idónea para ejecutar convoluciones aceleradas por hardware."
+        }
+      ]
+    }
+  ]
+}

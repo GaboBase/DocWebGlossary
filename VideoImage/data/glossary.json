@@ -1,0 +1,18 @@
+{
+  "id": "video-image",
+  "title": "Video, Imagen & Gráficos Digitales",
+  "slug": "video-image",
+  "version": "1.0.0",
+  "created": "2026-10-31T22:00:00Z",
+  "updated": "2026-10-31T22:00:00Z",
+  "license": "Local Knowledge Base",
+  "author": "DocWeb Knowledge Team",
+  "domain": "Digital Imaging",
+  "categories": [
+    "Espacios de Color y Percepción",
+    "Compresión y Códecs",
+    "Procesamiento y Filtros",
+    "Formatos y Metadatos",
+    "Captura y Sensores"
+  ]
+}

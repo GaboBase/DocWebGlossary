@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOCWEB MULTIGLOSSARY — Base de Conocimiento Local</title>
+  <meta name="description" content="Sistema multiglosario semántico, local, persistente y extensible para consulta, exploración e investigación técnica.">
+  <!-- Estilos Locales Autónomos (Cero dependencias remotas) -->
+  <link rel="stylesheet" href="./app/css/app.css">
+</head>
+<body>
+
+  <!-- Encabezado y Barra Superior -->
+  <header class="top-header">
+    <div class="brand">
+      <div class="brand-icon">Ω</div>
+      <div>
+        <div class="brand-title">DOCWEB MULTIGLOSSARY</div>
+        <div style="font-size: 0.72rem; color: var(--muted-foreground);">Sistema Semántico & Base de Conocimiento Local</div>
+      </div>
+      <span class="brand-badge" id="system-status-indicator">Iniciando motor local...</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-sm btn-primary" id="btn-new-term">
+        <span>➕ Nuevo Término</span>
+      </button>
+      <button class="btn btn-sm" id="btn-export-capsule" title="Exportar respaldo JSON de toda la base de conocimiento y revisiones">
+        <span>💾 Exportar Cápsula</span>
+      </button>
+      <button class="btn btn-sm" id="btn-import-capsule" title="Importar cápsula JSON con verificación criptográfica">
+        <span>📥 Importar Cápsula</span>
+      </button>
+      <input type="file" id="input-import-file" accept=".json" style="display: none;">
+    </div>
+  </header>
+
+  <!-- Disposición Principal de la Aplicación -->
+  <div class="app-layout">
+    
+    <!-- Barra Lateral: Selector de Glosario, Filtros y Lista de Términos -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <label for="glossary-select" class="sidebar-title">Glosario Activo</label>
+        <select id="glossary-select" class="glossary-selector" aria-label="Seleccionar glosario temático">
+          <!-- Opciones dinámicas inyectadas por app.js -->
+        </select>
+
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" class="search-input" placeholder="Buscar términos, definiciones, sinónimos..." aria-label="Buscar en el glosario">
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <div class="sidebar-title">Categorías Temáticas</div>
+          <div class="category-tags" id="category-container">
+            <!-- Chips de categorías generados dinámicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista Scrollable de Términos -->
+      <nav class="term-list-container" id="terms-list" aria-label="Índice de términos disponibles">
+        <!-- Renderizado dinámico de items -->
+      </nav>
+    </aside>
+
+    <!-- Contenido Principal: Visor Semántico, Diagrama Contextual y Relaciones -->
+    <main class="main-content" id="term-view-container" role="main">
+      <div class="content-card">
+        <div class="definition-lead">Cargando base de conocimiento semántica local...</div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Scripts Locales Autónomos -->
+  <script src="./app/js/storage.js"></script>
+  <script src="./app/js/semantic-engine.js"></script>
+  <script src="./app/js/app.js"></script>
+</body>
+</html>

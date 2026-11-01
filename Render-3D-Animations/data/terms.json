@@ -1,0 +1,454 @@
+{
+  "id": "render-3d-animations",
+  "title": "Render & Animación 3D",
+  "slug": "render-3d-animations",
+  "version": "1.0.0",
+  "description": "Glosario canónico de técnicas de computación gráfica tridimensional, iluminación global, pipeline de renderizado y animación.",
+  "language": "es",
+  "license": "Local Knowledge Base - Internal Project Use",
+  "canonicalTerms": [
+    {
+      "id": "urn:term:render-3d-animations:ray-tracing",
+      "slug": "ray-tracing",
+      "title": "Trazado de Rayos (Ray Tracing)",
+      "category": "Renderizado",
+      "shortDefinition": "Algoritmo de síntesis de imágenes que simula la trayectoria óptica de rayos de luz para calcular reflexiones, refracciones y sombras realistas.",
+      "fullDefinition": "El trazado de rayos es una técnica de computación gráfica para generar imágenes mediante el cálculo del camino de la luz a través de píxeles en un plano de proyección, modelando los efectos ópticos de su interacción con objetos tridimensionales. A diferencia de la rasterización basada en geometrías proyectadas, el trazado de rayos calcula el transporte de radiancia resolviendo intersecciones geométricas complejas.",
+      "synonyms": ["Ray Tracing", "Cálculo de Rayos Ópticos"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "complejidadAlgoritmica": "O(log N) por rayo con estructuras BVH jerárquicas",
+        "requisitoHardware": "Aceleradores de cálculo o núcleos RT dedicados",
+        "aplicacionTipica": "VFX cinematográfico, animación fotorrealista y renderizado híbrido en tiempo real"
+      },
+      "components": [
+        "Cálculo de intersección rayo-primitiva",
+        "Estructura de aceleración BVH (Bounding Volume Hierarchy)",
+        "Evaluación de BRDF (Bidirectional Reflectance Distribution Function)"
+      ],
+      "applications": [
+        "Generación de efectos visuales hiperrealistas",
+        "Simulaciones ópticas arquitectónicas",
+        "Renderizado fotorrealista en motores de videojuegos contemporáneos"
+      ],
+      "examples": [
+        "Generación de reflejos cáusticos en agua y cristales usando trazado inverso desde la cámara",
+        "Cálculo de sombras suaves proyectadas por fuentes de luz extensas"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:render-3d-animations:rendering-pipeline",
+          "label": "Es una técnica de",
+          "note": "Constituye un paradigma fundamental de renderizado frente a la rasterización."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:render-3d-animations:bvh",
+          "label": "Depende de",
+          "note": "Requiere estructuras de aceleración jerárquicas para una intersección eficiente."
+        },
+        {
+          "type": "requires",
+          "target": "urn:term:render-3d-animations:brdf",
+          "label": "Requiere",
+          "note": "Necesita modelos matemáticos de distribución de reflectancia bidireccional."
+        },
+        {
+          "type": "produces",
+          "target": "urn:term:video-image:hdr-image",
+          "label": "Produce",
+          "note": "Genera buffers de radiancia y matrices de color con rango dinámico extendido."
+        },
+        {
+          "type": "differsFrom",
+          "target": "urn:term:render-3d-animations:rasterization",
+          "label": "Se diferencia de",
+          "note": "Opera mediante muestreo de transporte de luz en vez de proyección de vértices a pantalla."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:rasterization",
+      "slug": "rasterization",
+      "title": "Rasterización (Rasterization)",
+      "category": "Renderizado",
+      "shortDefinition": "Técnica de procesamiento gráfico que convierte objetos vectoriales o polígonos 3D en fragmentos y píxeles discretos en un búfer 2D.",
+      "fullDefinition": "Proceso mediante el cual la geometría basada en vértices tridimensionales se proyecta en una cuadrícula bidireccional de píxeles, interpolando coordenadas, normales, colores y texturas sobre la superficie de las primitivas para su visualización ultrarrápida.",
+      "synonyms": ["Rasterizado", "Scanline Conversion"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "velocidad": "Óptima para 60-120+ FPS en GPUs modernas",
+        "algoritmoClave": "Depth-Buffering (Z-Buffer) y sombreado de fragmentos"
+      },
+      "components": [
+        "Vertex Assembler y Transform",
+        "Rasterizer de primitivas",
+        "Z-Buffer para resolución de visibilidad"
+      ],
+      "applications": [
+        "Motores de videojuegos en tiempo real",
+        "Visualizadores CAD e interfaces 3D interactivas"
+      ],
+      "examples": [
+        "Renderizado de millones de triángulos por segundo usando APIs como Vulkan, DirectX o Metal"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:render-3d-animations:rendering-pipeline",
+          "label": "Es una técnica de",
+          "note": "Método dominante para gráficos en tiempo real."
+        },
+        {
+          "type": "produces",
+          "target": "urn:term:video-image:framebuffer",
+          "label": "Produce",
+          "note": "Escribe valores RGBA y profundidad directamente en el framebuffer de visualización."
+        },
+        {
+          "type": "alternativeTo",
+          "target": "urn:term:render-3d-animations:ray-tracing",
+          "label": "Es una alternativa a",
+          "note": "Prioriza tasa de refresco y baja latencia sobre el fotorrealismo físico exacto."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:rendering-pipeline",
+      "slug": "rendering-pipeline",
+      "title": "Pipeline Gráfico de Renderizado",
+      "category": "Pipeline Gráfico",
+      "shortDefinition": "Secuencia ordenada de etapas de cómputo que transforman descripciones geométricas de escenas 3D en imágenes bidimensionales finales.",
+      "fullDefinition": "El pipeline gráfico comprende la totalidad del flujo de trabajo y etapas por las que transita una escena tridimensional, abarcando desde la preparación de geometrías, sombreado de vértices, teselación, rasterización o cálculo de rayos, sombreado de píxeles/fragmentos, hasta el postprocesamiento y salida a búfer de visualización.",
+      "synonyms": ["Graphics Pipeline", "Flujo de Render"],
+      "level": "arquitectura",
+      "status": "canonical",
+      "attributes": {
+        "naturaleza": "Altamente paralelizable y configurable",
+        "etapasProgramables": "Vertex, Hull/Domain, Geometry, Fragment/Pixel, Compute Shaders"
+      },
+      "components": [
+        "Etapa de geometría e interpolación",
+        "Etapa de iluminación y cálculo de materiales",
+        "Etapa de composición y postprocesamiento"
+      ],
+      "applications": [
+        "Arquitectura de controladores de GPU",
+        "Diseño de motores de render offline y tiempo real"
+      ],
+      "examples": [
+        "Pipeline de render diferido (Deferred Shading) separando geometría de cálculo de luces"
+      ],
+      "relations": [
+        {
+          "type": "contains",
+          "target": "urn:term:render-3d-animations:rasterization",
+          "label": "Contiene a",
+          "note": "La rasterización suele ser la etapa de conversión central en tiempo real."
+        },
+        {
+          "type": "contains",
+          "target": "urn:term:render-3d-animations:shader",
+          "label": "Contiene a",
+          "note": "Ejecuta múltiples microprogramas (shaders) en distintas etapas."
+        },
+        {
+          "type": "hasOutput",
+          "target": "urn:term:video-image:framebuffer",
+          "label": "Tiene como salida",
+          "note": "El buffer con la imagen completa lista para sincronización vertical o composición."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:bvh",
+      "slug": "bvh",
+      "title": "Jerarquía de Volúmenes Envolventes (BVH)",
+      "category": "Optimización y Aceleración",
+      "shortDefinition": "Estructura de datos en árbol utilizada para acelerar el cálculo de intersecciones entre rayos y primitivas 3D.",
+      "fullDefinition": "Estructura jerárquica de árbol binario donde cada nodo representa un volumen envolvente (típicamente AABB: Axis-Aligned Bounding Box) que engloba geométricamente a sus nodos hijos y geometrías subyacentes. Permite descartar rápidamente ramas enteras durante el test de intersección de rayos.",
+      "synonyms": ["Bounding Volume Hierarchy", "Árbol BVH"],
+      "level": "estructural",
+      "status": "canonical",
+      "attributes": {
+        "algoritmoConstruccion": "Surface Area Heuristic (SAH)",
+        "rendimiento": "Reduce la complejidad de búsqueda de O(N) a O(log N)"
+      },
+      "components": [
+        "Cajas envolventes orientadas o alineadas con los ejes (AABB)",
+        "Nodos hoja con índices de primitivas",
+        "Mecanismos de reajuste dinámico (refit) para animación"
+      ],
+      "applications": [
+        "Cores RT en hardware moderno de renderizado",
+        "Detección de colisiones en simulaciones de física"
+      ],
+      "examples": [
+        "Árbol BVH de dos niveles (TLAS para instancias y BLAS para geometrías)"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:render-3d-animations:ray-tracing",
+          "label": "Se utiliza para",
+          "note": "Optimiza drásticamente el cálculo de intersecciones de rayos."
+        },
+        {
+          "type": "isPartOf",
+          "target": "urn:term:render-3d-animations:rendering-pipeline",
+          "label": "Es parte de",
+          "note": "Estructura de soporte vital en la etapa de aceleración espacial."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:brdf",
+      "slug": "brdf",
+      "title": "Función de Distribución de Reflectancia Bidireccional (BRDF)",
+      "category": "Materiales e Iluminación",
+      "shortDefinition": "Función cuatridimensional que describe cómo se refleja la luz en una superficie opaca en función de los ángulos de incidencia y salida.",
+      "fullDefinition": "Formulación matemática que define la relación entre la radiancia saliente reflejada y la irradiancia incidente en un punto de una superficie. Es la piedra angular del sombreado físicamente basado (PBR), modelando fenómenos de microfacetas, conservación de energía y respuesta a diferentes longitudes de onda.",
+      "synonyms": ["BRDF", "Bidirectional Reflectance Distribution Function"],
+      "level": "teorico-avanzado",
+      "status": "canonical",
+      "attributes": {
+        "propiedadesClave": "Reciprocidad de Helmholtz y Conservación de Energía",
+        "modeloPopular": "Cook-Torrance con microfacetas GGX"
+      },
+      "components": [
+        "Término de Fresnel (F)",
+        "Distribución Normal de Microfacetas (D)",
+        "Función de Atenuación Geométrica (G)"
+      ],
+      "applications": [
+        "Materiales físicamente realistas (PBR) en motores 3D",
+        "Simulación de metales, dieléctricos y superficies rugosas"
+      ],
+      "examples": [
+        "Modelo GGX / Trowbridge-Reitz para metales pulidos y plásticos texturizados"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:render-3d-animations:pbr",
+          "label": "Se utiliza para",
+          "note": "Define la base óptica del modelado de superficies en PBR."
+        },
+        {
+          "type": "hasInput",
+          "target": "urn:term:video-image:color-gamut",
+          "label": "Tiene como entrada",
+          "note": "Depende de valores espectrales o coordenadas dentro del espacio de color del proyecto."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:pbr",
+      "slug": "pbr",
+      "title": "Renderizado Físicamente Basado (PBR)",
+      "category": "Materiales e Iluminación",
+      "shortDefinition": "Metodología de sombreado y renderizado que modela el flujo de luz según principios físicos exactos de la óptica.",
+      "fullDefinition": "Enfoque en gráficos por computadora que busca lograr una representación visual consistente bajo cualquier condición lumínica mediante la aplicación de leyes físicas de conservación de energía, dispersión de luz y reflectancia real de materiales según sus propiedades intrínsecas (albedo, rugosidad, metalicidad).",
+      "synonyms": ["Physically Based Rendering", "Sombreado Físico"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "paradigma": "Separación estricta entre albedo y componentes lumínicos",
+        "consistencia": "El material luce coherente en exteriores, interiores y distintas temperaturas de color"
+      },
+      "components": [
+        "Mapa de Albedo / Color Base",
+        "Mapa de Rugosidad (Roughness)",
+        "Mapa de Metalicidad (Metallic)",
+        "Normal Maps de microrelieve"
+      ],
+      "applications": [
+        "Estándar en cine, animación, videojuegos y visualización industrial"
+      ],
+      "examples": [
+        "Flujo Metálico/Rugosidad de glTF 2.0 y motores Unreal Engine / Unity"
+      ],
+      "relations": [
+        {
+          "type": "dependsOn",
+          "target": "urn:term:render-3d-animations:brdf",
+          "label": "Depende de",
+          "note": "Calcula el rebote de la luz apoyándose en funciones BRDF."
+        },
+        {
+          "type": "produces",
+          "target": "urn:term:video-image:hdr-image",
+          "label": "Produce",
+          "note": "Resultados de iluminación en espacio lineal con valores físicamente medidos."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:shader",
+      "slug": "shader",
+      "title": "Sombreador (Shader)",
+      "category": "Pipeline Gráfico",
+      "shortDefinition": "Programa informático especializado diseñado para ejecutarse en paralelo en una GPU para calcular renderizado y efectos visuales.",
+      "fullDefinition": "Subrutina de software escrita en lenguajes especializados (HLSL, GLSL, MSL, WGSL) que se compila y ejecuta directamente en los núcleos de la unidad de procesamiento gráfico para determinar posiciones geométricas, texturizado, iluminación y posprocesamiento visual de píxeles o fragmentos.",
+      "synonyms": ["Shader Program", "Microprograma Gráfico"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "lenguajes": "HLSL, GLSL, Metal Shading Language, WGSL",
+        "ejecucion": "Miles de hilos masivamente paralelos en SIMD / SIMT"
+      },
+      "components": [
+        "Vertex Shader (posicionamiento de vértices)",
+        "Pixel/Fragment Shader (cálculo de color e iluminación por fragmento)",
+        "Compute Shader (cálculo numérico y simulaciones generales)"
+      ],
+      "applications": [
+        "Deformaciones de malla de personajes en tiempo real",
+        "Cálculo de iluminación volumétrica y niebla"
+      ],
+      "examples": [
+        "Fragment shader que aplica corrección gamma y mapeo de tonos al buffer de imagen"
+      ],
+      "relations": [
+        {
+          "type": "isPartOf",
+          "target": "urn:term:render-3d-animations:rendering-pipeline",
+          "label": "Es parte de",
+          "note": "Define la lógica programable en cada estación del pipeline gráfico."
+        },
+        {
+          "type": "produces",
+          "target": "urn:term:video-image:pixel",
+          "label": "Produce",
+          "note": "Calcula los valores numéricos finales de color y opacidad de los píxeles."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:skeletal-animation",
+      "slug": "skeletal-animation",
+      "title": "Animación Esquelética (Rigging & Skinning)",
+      "category": "Animación y Rigging",
+      "shortDefinition": "Técnica de animación donde una malla 3D se asocia y deforma mediante una estructura interna de huesos interconectados en jerarquía.",
+      "fullDefinition": "Metodología estándar para animar personajes y criaturas tridimensionales. Consiste en definir un esqueleto de huesos (rigging) con jerarquías cinemáticas y asignar pesos de influencia (skinning weights) a cada vértice de la malla 3D respecto a dichos huesos para permitir deformaciones fluidas mediante transformaciones matriciales.",
+      "synonyms": ["Skeletal Animation", "Skinning", "Rigging"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "mecanismos": "Cinemática Directa (FK) y Cinemática Inversa (IK)",
+        "deformacionEstandar": "Linear Blend Skinning (LBS) o Dual Quaternion Skinning (DQS)"
+      },
+      "components": [
+        "Jerarquía esquelética (Bone Hierarchy / Armature)",
+        "Matriz de transformación de pose (Pose Matrix)",
+        "Pesos de influencia por vértice (Vertex Blend Weights)"
+      ],
+      "applications": [
+        "Animación de personajes en videojuegos y largometrajes animados",
+        "Captura de movimiento (MoCap) y simulación biomecánica"
+      ],
+      "examples": [
+        "Solucionador IK de 2 articulaciones para flexión natural de piernas y brazos"
+      ],
+      "relations": [
+        {
+          "type": "dependsOn",
+          "target": "urn:term:render-3d-animations:keyframe",
+          "label": "Depende de",
+          "note": "Las rotaciones y traslaciones de los huesos se definen mediante curvas de keyframes."
+        },
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:render-3d-animations:rendering-pipeline",
+          "label": "Se integra en",
+          "note": "La deformación de vértices se evalúa típicamente en el Vertex Shader antes del rasterizado."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:keyframe",
+      "slug": "keyframe",
+      "title": "Fotograma Clave (Keyframe)",
+      "category": "Animación y Rigging",
+      "shortDefinition": "Punto temporal de referencia que fija valores exactos de posición, rotación o escala, a partir del cual se calcula la interpolación.",
+      "fullDefinition": "En animación y video, un fotograma clave determina el inicio o fin de una transición o movimiento específico. Los estados intermedios entre fotogramas clave se calculan mediante algoritmos de interpolación matemática (curvas Bezier, splines o interpolación lineal).",
+      "synonyms": ["Keyframe", "Cuadro Clave"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "interpolacion": "Curvas de Bézier cúbicas, Hermite o Step",
+        "dominioTemporal": "Definido en frames por segundo (fps) o tiempo normalizado"
+      },
+      "components": [
+        "Marca de tiempo (Timestamp)",
+        "Valor del canal (Value)",
+        "Tangentes de entrada y salida (In/Out Tangents)"
+      ],
+      "applications": [
+        "Curvas de animación en software 3D (Blender, Maya)",
+        "Edición y efectos temporales en video digital"
+      ],
+      "examples": [
+        "Curva de animación con suavizado Ease-In y Ease-Out para desaceleración realista"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:render-3d-animations:skeletal-animation",
+          "label": "Se utiliza para",
+          "note": "Guía la evolución temporal de los parámetros de huesos y controladores."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:video-image:framerate",
+          "label": "Está relacionado con",
+          "note": "La cadencia temporal de keyframes se evalúa en función de la tasa de cuadros del proyecto."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:render-3d-animations:ambient-occlusion",
+      "slug": "ambient-occlusion",
+      "title": "Oclusión Ambiental (Ambient Occlusion)",
+      "category": "Materiales e Iluminación",
+      "shortDefinition": "Método de cálculo que evalúa qué tan expuesto está cada punto de una escena a la iluminación ambiental difusa.",
+      "fullDefinition": "Técnica de sombreado que aproxima la cantidad de luz difusa ambiental que puede alcanzar un punto de una geometría basándose en la proximidad de otras superficies circundantes. Oscurece rincones, pliegues y grietas donde la luz ambiental queda bloqueada de manera natural.",
+      "synonyms": ["AO", "Ambient Occlusion"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "variantes": "SSAO (Screen Space), HBAO+, GTAO, Ray-Traced AO (RTAO)",
+        "costo": "Muy económico en espacio de pantalla (SSAO), físicamente exacto con ray tracing"
+      },
+      "components": [
+        "Muestreo de hemisferio en espacio normal",
+        "Radio de búsqueda de oclusores",
+        "Filtro de desenfoque bilateral preservador de bordes"
+      ],
+      "applications": [
+        "Mejora inmediata de la percepción de profundidad y volumen geométrico",
+        "Horneado de mapas de texturas (Baking) en desarrollo de videojuegos"
+      ],
+      "examples": [
+        "GTAO (Ground Truth Ambient Occlusion) aplicado como pase de postprocesamiento a 60 FPS"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:render-3d-animations:rendering-pipeline",
+          "label": "Es un pase de",
+          "note": "Se ejecuta habitualmente como un pase de sombreado o postprocesado."
+        },
+        {
+          "type": "usedFor",
+          "target": "urn:term:render-3d-animations:pbr",
+          "label": "Se utiliza para",
+          "note": "Complementa la iluminación indirecta en materiales PBR."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "./schema/glossaries-manifest.json",
+  "version": "1.0.0",
+  "systemTitle": "DOCWEB MULTIGLOSSARY",
+  "description": "Sistema multiglosario semántico, local, persistente y extensible para consulta, exploración e investigación técnica.",
+  "canonicalGlossaries": [
+    {
+      "id": "render-3d-animations",
+      "slug": "render-3d-animations",
+      "title": "Render & Animación 3D",
+      "description": "Conceptos, algoritmos, flujos de trabajo, pipelines y técnicas de renderizado por trazado de rayos, rasterización, sombreado, animación y modelado tridimensional.",
+      "dataPath": "./Render-3D-Animations/data/terms.json",
+      "metadataPath": "./Render-3D-Animations/data/glossary.json",
+      "domain": "Computer Graphics, Rendering, CGI, 3D Animation",
+      "termCount": 10,
+      "categories": [
+        "Renderizado",
+        "Pipeline Gráfico",
+        "Materiales e Iluminación",
+        "Animación y Rigging",
+        "Optimización y Aceleración"
+      ]
+    },
+    {
+      "id": "video-image",
+      "slug": "video-image",
+      "title": "Video, Imagen & Gráficos Digitales",
+      "description": "Fundamentos de procesamiento digital de imágenes, espacios de color, compresión de video, formatos, filtrado espacial, transformadas y fidelidad visual.",
+      "dataPath": "./VideoImage/data/terms.json",
+      "metadataPath": "./VideoImage/data/glossary.json",
+      "domain": "Digital Imaging, Color Science, Video Compression, Post-production",
+      "termCount": 10,
+      "categories": [
+        "Espacios de Color y Percepción",
+        "Compresión y Códecs",
+        "Procesamiento y Filtros",
+        "Formatos y Metadatos",
+        "Captura y Sensores"
+      ]
+    }
+  ]
+}

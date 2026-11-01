@@ -1,0 +1,18 @@
+{
+  "id": "render-3d-animations",
+  "title": "Render & Animación 3D",
+  "slug": "render-3d-animations",
+  "version": "1.0.0",
+  "created": "2026-10-31T22:00:00Z",
+  "updated": "2026-10-31T22:00:00Z",
+  "license": "Local Knowledge Base",
+  "author": "DocWeb Knowledge Team",
+  "domain": "Computer Graphics",
+  "categories": [
+    "Renderizado",
+    "Pipeline Gráfico",
+    "Materiales e Iluminación",
+    "Animación y Rigging",
+    "Optimización y Aceleración"
+  ]
+}
