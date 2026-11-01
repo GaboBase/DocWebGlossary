@@ -114,7 +114,23 @@ function buildDataBundle() {
   console.log(`  SHA-256: ${computedHash}`);
   console.log(`  Total Glosarios: ${catalog.canonicalGlossaries.length} | Total Términos: ${totalTerms}`);
 
-  // Actualizar metadatos en catálogo
+  // Verificar si el hash y bundle ya coinciden exactamente para garantizar idempotencia bit a bit
+  const isUpToDate = catalog._dataHash === computedHash && fs.existsSync(outputPath);
+  if (isUpToDate) {
+    const existingBundle = fs.readFileSync(outputPath, 'utf8');
+    if (existingBundle.includes(`Hash SHA-256: ${computedHash}`)) {
+      const bundleSizeKb = (Buffer.byteLength(existingBundle, 'utf8') / 1024).toFixed(1);
+      console.log(`  ✔ Datos y bundle al día e idénticos bit a bit (${bundleSizeKb} KB).`);
+      console.log('═'.repeat(70) + '\n');
+      return {
+        hash: computedHash,
+        totalTerms,
+        bundleSizeKb
+      };
+    }
+  }
+
+  // Actualizar metadatos en catálogo si hubo cambios reales
   catalog._dataHash = computedHash;
   catalog._lastCompiled = new Date().toISOString();
   catalog._totalTerms = totalTerms;
