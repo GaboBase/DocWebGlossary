@@ -1,0 +1,28 @@
+{
+  "name": "docweb-glosary",
+  "version": "1.0.0",
+  "description": "Sistema de gestión ontológica multi-dominio y orientador de prompts técnicos autónomo y local",
+  "main": "index.html",
+  "scripts": {
+    "build": "node tools/build_data_bundle.js",
+    "test": "node tools/run_all_tests.js",
+    "test:autonomy": "node tools/test_autonomy.js",
+    "test:adversarial": "node tools/test_m4_m6_adversarial.js",
+    "dist": "node tools/build_release.js"
+  },
+  "keywords": [
+    "ontology",
+    "glossary",
+    "audiovisual",
+    "vfx",
+    "generative-ai",
+    "prompts",
+    "json-ld",
+    "offline-first"
+  ],
+  "author": "DocWeb Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
