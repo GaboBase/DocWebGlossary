@@ -1046,6 +1046,7 @@ window.DocWebApp = {
 
     const facets = window.DocWebSemantics.getAdditiveFacets(term);
     const questions = window.DocWebSemantics.generateOntologicalQuestions ? window.DocWebSemantics.generateOntologicalQuestions(term) : [];
+    const intention = window.DocWebSemantics.deriveTermIntention ? window.DocWebSemantics.deriveTermIntention(term) : null;
 
     // Render HTML del Término (HTML5 Semantic DOM)
     viewContainer.innerHTML = `
@@ -1121,6 +1122,60 @@ window.DocWebApp = {
           <div class="section-label" data-dom-tag="div">Desarrollo Conceptual Extendido</div>
           <div class="definition-full" itemprop="disambiguatingDescription" data-dom-tag="div">${term.fullDefinition || term.extendedDefinition || 'Sin definición detallada'}</div>
         </section>
+
+        <!-- Marco de Expresión Basada en Intenciones Operativas y Efectos Concretos -->
+        ${intention ? `
+        <section class="intent-driven-section content-card" aria-label="Expresión basada en intenciones" data-dom-tag="section" data-dom-container="content-card" style="margin-top:0.75rem; border-left:4px solid var(--accent); background:linear-gradient(135deg, rgba(56,189,248,0.04) 0%, rgba(139,92,246,0.04) 100%); padding:0.85rem; border-radius:var(--radius); border-top:1px solid var(--border); border-right:1px solid var(--border); border-bottom:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; flex-wrap:wrap; gap:0.4rem;">
+            <div style="display:flex; align-items:center; gap:0.4rem;">
+              <span style="font-size:1.15rem;">🎯</span>
+              <h3 style="font-size:0.95rem; font-weight:700; margin:0; color:var(--foreground);">Expresión Basada en Intenciones Operativas</h3>
+            </div>
+            <span class="badge" style="background:rgba(56,189,248,0.15); color:#38bdf8; font-weight:700; font-size:0.72rem; padding:0.18rem 0.5rem; border-radius:0.3rem;">
+              ${intention.badge}
+            </span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:0.6rem; margin-top:0.5rem;">
+            <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:0.65rem;">
+              <div style="font-size:0.72rem; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:0.25rem;">
+                🎯 Propósito / Intención Primaria
+              </div>
+              <div style="font-size:0.78rem; color:var(--foreground); line-height:1.45;">
+                ${intention.primaryIntent}
+              </div>
+            </div>
+
+            <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:0.65rem;">
+              <div style="font-size:0.72rem; font-weight:700; color:#10b981; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:0.25rem;">
+                ⚡ Efecto & Transformación Concreta
+              </div>
+              <div style="font-size:0.78rem; color:var(--foreground); line-height:1.45;">
+                ${intention.concreteEffect}
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:0.6rem; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:0.65rem; display:flex; flex-direction:column; gap:0.35rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.3rem;">
+              <span style="font-size:0.72rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.04em;">
+                🤖 Directiva de Prompt Basada en Intención
+              </span>
+              <div style="display:flex; gap:0.3rem;">
+                <button type="button" class="btn btn-sm btn-secondary" style="font-size:0.68rem; padding:0.15rem 0.45rem;" onclick="window.DocWebApp.copyToClipboardDirect('${intention.operationalDirective.replace(/'/g, "\\'")}', this, '📋 Copiado!')">
+                  📋 Copiar Directiva
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" style="font-size:0.68rem; padding:0.15rem 0.45rem;" onclick="window.DocWebApp.orientInAiModal('${term.id}')">
+                  ✨ Usar en Orientador IA
+                </button>
+              </div>
+            </div>
+            <div style="font-size:0.78rem; color:var(--muted-foreground); font-family:monospace; line-height:1.45; background:var(--background); padding:0.45rem 0.65rem; border-radius:0.3rem; border:1px solid var(--border);">
+              ${intention.operationalDirective}
+            </div>
+          </div>
+        </section>
+        ` : ''}
 
         <!-- Atributos Técnicos, Componentes, Aplicaciones y Ejemplos (HTML5 Semantic Description List) -->
         <section aria-label="Atributos y descomposiciones conceptuales" data-dom-tag="section" data-dom-container="content-card">
@@ -1467,26 +1522,50 @@ window.DocWebApp = {
       const mermaidCode = window.DocWebSemantics.generateMermaidDiagram(term, {
         selectedGlossaryId: this.currentGlossaryId || 'all'
       });
+      const renderedVisualSvg = window.DocWebSemantics.generateMermaidVisualSvg
+        ? window.DocWebSemantics.generateMermaidVisualSvg(term, { selectedGlossaryId: this.currentGlossaryId || 'all' })
+        : '';
       return `
         <div class="code-export-container" data-dom-tag="div" data-dom-container="code-export-container">
-          <div class="code-export-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-            <span style="font-size:0.8rem; font-weight:700; color:var(--primary);">🧜 Diagrama de Flujo y Relaciones Mermaid.js</span>
-            <button type="button" class="btn btn-sm btn-primary" onclick="window.DocWebApp.copyDiagramCode('mermaid')">📋 Copiar Código Mermaid</button>
+          <!-- Diagrama Mermaid Visual Renderizado Autónomo -->
+          <div class="rendered-diagram-visual-wrapper" style="margin-bottom:0.75rem; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:#0f172a;">
+            ${renderedVisualSvg}
           </div>
-          <pre class="code-export-pre" style="background:var(--background); border:1px solid var(--border); padding:0.85rem; border-radius:var(--radius); font-size:0.75rem; color:#f8fafc; font-family:monospace; line-height:1.5; overflow-x:auto;"><code id="mermaid-code-content">${window.DocWebSemantics.escapeXml(mermaidCode)}</code></pre>
+
+          <!-- Cabecera de Código Fuente y Botones de Acción -->
+          <div class="code-export-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; flex-wrap:wrap; gap:0.4rem;">
+            <span style="font-size:0.8rem; font-weight:700; color:var(--primary);">🧜 Especificación Mermaid.js (Código Fuente)</span>
+            <div style="display:flex; gap:0.35rem;">
+              <button type="button" class="btn btn-sm btn-primary" onclick="window.DocWebApp.copyDiagramCode('mermaid')">📋 Copiar Código Mermaid</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.toggleDiagramCode('mermaid')">👁️ Mostrar/Ocultar Código</button>
+            </div>
+          </div>
+          <pre class="code-export-pre" id="mermaid-code-pre" style="display:none; background:var(--background); border:1px solid var(--border); padding:0.85rem; border-radius:var(--radius); font-size:0.75rem; color:#f8fafc; font-family:monospace; line-height:1.5; overflow-x:auto;"><code id="mermaid-code-content">${window.DocWebSemantics.escapeXml(mermaidCode)}</code></pre>
         </div>
       `;
     } else if (format === 'dot') {
       const dotCode = window.DocWebSemantics.generateDotSpecification(term, {
         selectedGlossaryId: this.currentGlossaryId || 'all'
       });
+      const renderedVisualSvg = window.DocWebSemantics.generateDotVisualSvg
+        ? window.DocWebSemantics.generateDotVisualSvg(term, { selectedGlossaryId: this.currentGlossaryId || 'all' })
+        : '';
       return `
         <div class="code-export-container" data-dom-tag="div" data-dom-container="code-export-container">
-          <div class="code-export-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-            <span style="font-size:0.8rem; font-weight:700; color:var(--primary);">📊 Especificación Graphviz DOT Formal</span>
-            <button type="button" class="btn btn-sm btn-primary" onclick="window.DocWebApp.copyDiagramCode('dot')">📋 Copiar Especificación DOT</button>
+          <!-- Diagrama Graphviz DOT Visual Renderizado Autónomo -->
+          <div class="rendered-diagram-visual-wrapper" style="margin-bottom:0.75rem; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:#0b1120;">
+            ${renderedVisualSvg}
           </div>
-          <pre class="code-export-pre" style="background:var(--background); border:1px solid var(--border); padding:0.85rem; border-radius:var(--radius); font-size:0.75rem; color:#f8fafc; font-family:monospace; line-height:1.5; overflow-x:auto;"><code id="dot-code-content">${window.DocWebSemantics.escapeXml(dotCode)}</code></pre>
+
+          <!-- Cabecera de Código y Botones de Acción -->
+          <div class="code-export-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; flex-wrap:wrap; gap:0.4rem;">
+            <span style="font-size:0.8rem; font-weight:700; color:var(--primary);">📊 Especificación Graphviz DOT Formal (Código Fuente)</span>
+            <div style="display:flex; gap:0.35rem;">
+              <button type="button" class="btn btn-sm btn-primary" onclick="window.DocWebApp.copyDiagramCode('dot')">📋 Copiar Especificación DOT</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.toggleDiagramCode('dot')">👁️ Mostrar/Ocultar Código</button>
+            </div>
+          </div>
+          <pre class="code-export-pre" id="dot-code-pre" style="display:none; background:var(--background); border:1px solid var(--border); padding:0.85rem; border-radius:var(--radius); font-size:0.75rem; color:#f8fafc; font-family:monospace; line-height:1.5; overflow-x:auto;"><code id="dot-code-content">${window.DocWebSemantics.escapeXml(dotCode)}</code></pre>
         </div>
       `;
     } else if (format === 'matrix') {
@@ -1674,6 +1753,30 @@ window.DocWebApp = {
       this.updateStatus(`Código ${type.toUpperCase()} copiado al portapapeles.`, 'success');
     }).catch(() => {
       prompt(`Copia el código ${type.toUpperCase()}:`, code);
+    });
+  },
+
+  toggleDiagramCode(type) {
+    const el = document.getElementById(`${type}-code-pre`);
+    if (el) {
+      el.style.display = (el.style.display === 'none' || !el.style.display) ? 'block' : 'none';
+    }
+  },
+
+  copyToClipboardDirect(text, btnElement, feedbackText = '📋 Copiado!') {
+    if (!navigator.clipboard) {
+      prompt('Copia el texto:', text);
+      return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      if (btnElement) {
+        const orig = btnElement.textContent;
+        btnElement.textContent = feedbackText;
+        setTimeout(() => { btnElement.textContent = orig; }, 2000);
+      }
+      this.updateStatus('Directiva basada en intención copiada al portapapeles.', 'success');
+    }).catch(() => {
+      prompt('Copia el texto:', text);
     });
   },
 

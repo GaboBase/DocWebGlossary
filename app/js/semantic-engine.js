@@ -1061,6 +1061,359 @@ class SemanticKnowledgeEngine {
   }
 
   /**
+   * Deriva la expresión del término basada en intenciones operativas y efectos concretos.
+   * Modela la orientación a objetivos del marco ontológico.
+   */
+  deriveTermIntention(term) {
+    if (!term) return null;
+    
+    if (term.intention && typeof term.intention === 'object') {
+      return term.intention;
+    }
+
+    const cat = (term.category || '').toLowerCase();
+    const domain = (term.glossaryId || '').toLowerCase();
+    const title = term.title || '';
+
+    let primaryIntent = '';
+    let concreteEffect = '';
+    let operationalDirective = '';
+    let intentionVector = 'Operativa / Estructural';
+    let intentionBadge = '🎯 Intención de Producción';
+
+    if (domain === 'software-engineering-ontology' || cat.includes('arquitectura') || cat.includes('semantica')) {
+      intentionVector = 'Arquitectura & Verificabilidad';
+      intentionBadge = '🏗️ Intención de Ingeniería Formal';
+      primaryIntent = `Garantizar la modularidad, bajo acoplamiento y verificabilidad determinista del sistema computacional al aislar ${title.toLowerCase()}.`;
+      concreteEffect = `Eliminar dependencias cruzadas inestables y asegurar que el código cumpla con contratos formales y pruebas herméticas.`;
+      operationalDirective = `Modelar "${title}" aislando sus interfaces de la infraestructura concreta para mantener inestabilidad Martin I <= 0.2.`;
+    } else if (domain === 'generative-ai-media' || cat.includes('ia') || cat.includes('difusion')) {
+      intentionVector = 'Inferencia & Fidelidad Latente';
+      intentionBadge = '🤖 Intención de Guiado Generativo';
+      primaryIntent = `Controlar y guiar la distribución de probabilidad latente del modelo multimodal para sintetizar "${title}" con coherencia espaciotemporal.`;
+      concreteEffect = `Prevenir artefactos visuales, parpadeo temporal (flicker) y deformaciones morfológicas en la salida generativa.`;
+      operationalDirective = `Inyectar descriptores específicos de "${title}" en el espacio latente calibrando la escala CFG y los pesos de atención cruzada.`;
+    } else if (cat.includes('camara') || cat.includes('optica') || cat.includes('encuadre')) {
+      intentionVector = 'Composición & Punto de Vista';
+      intentionBadge = '🎥 Intención Cinemática Visual';
+      primaryIntent = `Guiar la mirada y el foco atencional del espectador hacia el centro dramático de la escena mediante ${title.toLowerCase()}.`;
+      concreteEffect = `Establecer relaciones de escala, perspectiva espacial y jerarquía emocional entre los sujetos y su entorno.`;
+      operationalDirective = `Componer el plano empleando "${title}" con distancia focal calibrada y trayectoria de movimiento estabilizada.`;
+    } else if (cat.includes('iluminacion') || cat.includes('color')) {
+      intentionVector = 'Atmósfera & Ciencia de Color';
+      intentionBadge = '💡 Intención Cromática y Lumínica';
+      primaryIntent = `Crear tridimensionalidad volumétrica, volumen de contraste y tonalidad psicológica en el cuadro utilizando ${title.toLowerCase()}.`;
+      concreteEffect = `Separar al sujeto del fondo con separación tonal armónica y garantizar fidelidad de rango dinámico sin empastar negros ni quemar altas luces.`;
+      operationalDirective = `Calibrar la temperatura de color y fotometría para "${title}" asegurando concordancia con el espacio de color de trabajo (ACES/Rec.709).`;
+    } else if (cat.includes('audio') || cat.includes('sonido')) {
+      intentionVector = 'Diseño Sonoro & Inmersión';
+      intentionBadge = '🎙️ Intención Electroacústica';
+      primaryIntent = `Capturar o sintetizar el espacio auditivo de la acción garantizando inteligibilidad discursiva y corporeidad con ${title.toLowerCase()}.`;
+      concreteEffect = `Sumergir al oyente en la atmósfera acústica de la escena con balance espectral y rango dinámico estandarizado.`;
+      operationalDirective = `Registrar y mezclar "${title}" calibrando el patrón polar y asegurando sonoridad integrada conforme a norma EBU R128 (-24 LUFS).`;
+    } else if (cat.includes('edicion') || cat.includes('montaje')) {
+      intentionVector = 'Cadencia & Narrativa Temporal';
+      intentionBadge = '✂️ Intención Rítmica y Montaje';
+      primaryIntent = `Articular la cadencia rítmica y la elipsis temporal de la narración audiovisual articulando la transición con ${title.toLowerCase()}.`;
+      concreteEffect = `Gobernar la velocidad de procesamiento cognitivo del espectador y construir el arco dramático sin fisuras perceptuales.`;
+      operationalDirective = `Ejecutar la unión o modulación rítmica mediante "${title}" en corte sobre acción o acento musical sin quebrar la continuidad visual.`;
+    } else {
+      intentionVector = 'Estandarización & Flujo Operativo';
+      intentionBadge = '⚙️ Intención Técnica Operativa';
+      primaryIntent = `Estandarizar y optimizar la fase productiva garantizando interoperabilidad y rigor técnico al ejecutar ${title.toLowerCase()}.`;
+      concreteEffect = `Evitar retrabajos, pérdidas de información o degradación de calidad a lo largo del pipeline.`;
+      operationalDirective = `Aplicar las directivas canónicas de "${title}" siguiendo la especificación formal del flujo de trabajo.`;
+    }
+
+    return {
+      vector: intentionVector,
+      badge: intentionBadge,
+      primaryIntent: primaryIntent,
+      concreteEffect: concreteEffect,
+      operationalDirective: operationalDirective
+    };
+  }
+
+  /**
+   * Renderiza el diagrama Mermaid.js como gráfico visual vectorial interactivo SVG.
+   * Muestra la estructura de flujo oficial con nodos clicables y subgrafos.
+   */
+  generateMermaidVisualSvg(term, options = {}) {
+    if (!term) return '<div class="text-muted">Sin término para renderizar Mermaid.</div>';
+
+    const directRels = (Array.isArray(term.relations) ? term.relations : []).filter(r => r && r.target);
+    const inverseRels = this.getInverseRelations(term.id);
+    const intention = this.deriveTermIntention(term);
+
+    const svgWidth = 920;
+    const directCount = Math.min(directRels.length, 5);
+    const inverseCount = Math.min(inverseRels.length, 5);
+    const maxRows = Math.max(1, Math.max(directCount, inverseCount));
+    const rowHeight = 72;
+    const svgHeight = Math.max(340, 110 + maxRows * rowHeight);
+
+    const leftX = 40;
+    const leftWidth = 240;
+    const focalX = 350;
+    const focalY = svgHeight / 2 - 45;
+    const focalWidth = 220;
+    const focalHeight = 90;
+    const rightX = 640;
+    const rightWidth = 240;
+
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" class="mermaid-rendered-svg" style="width:100%; height:auto; background:#0f172a; border-radius:8px; font-family:system-ui, -apple-system, sans-serif;">
+      <defs>
+        <marker id="mermaid-arrow-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+        </marker>
+        <marker id="mermaid-arrow-dashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#c084fc"/>
+        </marker>
+        <linearGradient id="mermaid-focal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2563eb"/>
+          <stop offset="100%" stop-color="#1d4ed8"/>
+        </linearGradient>
+        <filter id="mermaid-node-shadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.4"/>
+        </filter>
+      </defs>
+
+      <!-- Banner Superior Mermaid Flowchart -->
+      <rect x="0" y="0" width="${svgWidth}" height="42" fill="#1e293b" />
+      <text x="20" y="26" fill="#38bdf8" font-size="12" font-weight="700">🧜 MERMAID.JS RENDERED VIEW • Flowchart LR</text>
+      <text x="${svgWidth - 20}" y="26" text-anchor="end" fill="#94a3b8" font-size="11">🎯 Intención: ${this.escapeXml(intention ? intention.vector : 'Orientada a Objetivos')}</text>
+      <line x1="0" y1="42" x2="${svgWidth}" y2="42" stroke="#334155" stroke-width="1"/>
+    `;
+
+    // Render Subgraph Relaciones Inversas (Left)
+    if (inverseCount > 0) {
+      const containerH = inverseCount * rowHeight + 40;
+      const startY = (svgHeight - containerH) / 2 + 30;
+      svg += `
+        <rect x="${leftX}" y="${startY}" width="${leftWidth}" height="${containerH}" rx="6" ry="6" fill="#1e293b" fill-opacity="0.5" stroke="#a855f7" stroke-dasharray="4 4" stroke-width="1.2"/>
+        <text x="${leftX + 12}" y="${startY + 20}" fill="#c084fc" font-size="11" font-weight="700">subgraph RelacionesInversas</text>
+      `;
+
+      inverseRels.slice(0, 5).forEach((inv, i) => {
+        const ny = startY + 32 + i * rowHeight;
+        const sourceUrn = inv.sourceTermId || inv.source || '';
+        const sourceTerm = this.getTerm(sourceUrn);
+        const title = inv.sourceTitle || (sourceTerm ? sourceTerm.title : sourceUrn.split(':').pop());
+        const isCross = sourceTerm && sourceTerm.glossaryId !== term.glossaryId;
+        const nodeX = leftX + 15;
+        const nodeW = leftWidth - 30;
+        const nodeH = 46;
+
+        svg += `
+          <g class="mermaid-interactive-node" onclick="window.DocWebApp.navigateToTerm('${sourceUrn}')" style="cursor:pointer;" filter="url(#mermaid-node-shadow)">
+            <rect x="${nodeX}" y="${ny}" width="${nodeW}" height="${nodeH}" rx="6" ry="6" fill="#1e293b" stroke="${isCross ? '#ec4899' : '#a855f7'}" stroke-width="1.5"/>
+            <text x="${nodeX + 10}" y="${ny + 20}" fill="#f8fafc" font-size="11" font-weight="600">${this.escapeXml(title.substring(0, 24))}</text>
+            <text x="${nodeX + 10}" y="${ny + 36}" fill="#94a3b8" font-size="9">${isCross ? '🌐 Inter-Glosario' : '📄 ' + (inv.type || 'Inversa')}</text>
+          </g>
+        `;
+
+        const p1x = nodeX + nodeW;
+        const p1y = ny + nodeH / 2;
+        const p2x = focalX;
+        const p2y = focalY + focalHeight / 2;
+        const cx1 = p1x + 35;
+        const cx2 = p2x - 35;
+        svg += `
+          <path d="M ${p1x} ${p1y} C ${cx1} ${p1y}, ${cx2} ${p2y}, ${p2x} ${p2y}" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#mermaid-arrow-dashed)"/>
+        `;
+      });
+    }
+
+    // Render Focal Node (Center)
+    svg += `
+      <g filter="url(#mermaid-node-shadow)" class="mermaid-focal-group">
+        <rect x="${focalX}" y="${focalY}" width="${focalWidth}" height="${focalHeight}" rx="8" ry="8" fill="url(#mermaid-focal-grad)" stroke="#60a5fa" stroke-width="2.5"/>
+        <text x="${focalX + focalWidth / 2}" y="${focalY + 28}" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">🎯 ${this.escapeXml(term.title.substring(0, 24))}</text>
+        <text x="${focalX + focalWidth / 2}" y="${focalY + 48}" text-anchor="middle" fill="#bfdbfe" font-size="10">🏷️ ${this.escapeXml(term.category || 'General')}</text>
+        <rect x="${focalX + focalWidth / 2 - 45}" y="${focalY + 58}" width="90" height="18" rx="4" ry="4" fill="#1e3a8a" fill-opacity="0.8"/>
+        <text x="${focalX + focalWidth / 2}" y="${focalY + 71}" text-anchor="middle" fill="#93c5fd" font-size="9" font-weight="700">Nivel ${term.ontologicalLevel || 'L4'}</text>
+      </g>
+    `;
+
+    // Render Subgraph Relaciones Directas (Right)
+    if (directCount > 0) {
+      const containerH = directCount * rowHeight + 40;
+      const startY = (svgHeight - containerH) / 2 + 30;
+      svg += `
+        <rect x="${rightX}" y="${startY}" width="${rightWidth}" height="${containerH}" rx="6" ry="6" fill="#1e293b" fill-opacity="0.5" stroke="#0ea5e9" stroke-dasharray="4 4" stroke-width="1.2"/>
+        <text x="${rightX + 12}" y="${startY + 20}" fill="#38bdf8" font-size="11" font-weight="700">subgraph RelacionesDirectas</text>
+      `;
+
+      directRels.slice(0, 5).forEach((rel, i) => {
+        const ny = startY + 32 + i * rowHeight;
+        const targetTerm = this.getTerm(rel.target);
+        const title = targetTerm ? targetTerm.title : rel.target.split(':').pop();
+        const isCross = targetTerm && targetTerm.glossaryId !== term.glossaryId;
+        const nodeX = rightX + 15;
+        const nodeW = rightWidth - 30;
+        const nodeH = 46;
+
+        svg += `
+          <g class="mermaid-interactive-node" onclick="window.DocWebApp.navigateToTerm('${rel.target}')" style="cursor:pointer;" filter="url(#mermaid-node-shadow)">
+            <rect x="${nodeX}" y="${ny}" width="${nodeW}" height="${nodeH}" rx="6" ry="6" fill="#1e293b" stroke="${isCross ? '#ec4899' : '#0ea5e9'}" stroke-width="1.5"/>
+            <text x="${nodeX + 10}" y="${ny + 20}" fill="#f8fafc" font-size="11" font-weight="600">${this.escapeXml(title.substring(0, 24))}</text>
+            <text x="${nodeX + 10}" y="${ny + 36}" fill="#94a3b8" font-size="9">${isCross ? '🌐 Inter-Glosario' : '📄 ' + (rel.type || 'Directa')}</text>
+          </g>
+        `;
+
+        const p1x = focalX + focalWidth;
+        const p1y = focalY + focalHeight / 2;
+        const p2x = nodeX;
+        const p2y = ny + nodeH / 2;
+        const cx1 = p1x + 35;
+        const cx2 = p2x - 35;
+        svg += `
+          <path d="M ${p1x} ${p1y} C ${cx1} ${p1y}, ${cx2} ${p2y}, ${p2x} ${p2y}" fill="none" stroke="#0ea5e9" stroke-width="1.8" marker-end="url(#mermaid-arrow-head)"/>
+          <rect x="${(p1x + p2x) / 2 - 35}" y="${(p1y + p2y) / 2 - 9}" width="70" height="18" rx="3" fill="#0f172a" stroke="#334155" stroke-width="0.8"/>
+          <text x="${(p1x + p2x) / 2}" y="${(p1y + p2y) / 2 + 3}" text-anchor="middle" fill="#38bdf8" font-size="8.5" font-weight="600">${this.escapeXml(rel.type || 'rel')}</text>
+        `;
+      });
+    }
+
+    svg += '</svg>';
+    return svg;
+  }
+
+  /**
+   * Renderiza la especificación Graphviz DOT como gráfico visual interactivo SVG (rankdir=LR).
+   */
+  generateDotVisualSvg(term, options = {}) {
+    if (!term) return '<div class="text-muted">Sin término para renderizar Graphviz DOT.</div>';
+
+    const directRels = (Array.isArray(term.relations) ? term.relations : []).filter(r => r && r.target);
+    const inverseRels = this.getInverseRelations(term.id);
+    const intention = this.deriveTermIntention(term);
+
+    const svgWidth = 920;
+    const directCount = Math.min(directRels.length, 5);
+    const inverseCount = Math.min(inverseRels.length, 5);
+    const maxRows = Math.max(1, Math.max(directCount, inverseCount));
+    const rowHeight = 72;
+    const svgHeight = Math.max(340, 110 + maxRows * rowHeight);
+
+    const leftX = 40;
+    const leftWidth = 240;
+    const focalX = 350;
+    const focalY = svgHeight / 2 - 40;
+    const focalWidth = 220;
+    const focalHeight = 80;
+    const rightX = 640;
+    const rightWidth = 240;
+
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" class="dot-rendered-svg" style="width:100%; height:auto; background:#0b1120; border-radius:8px; font-family:'Fira Code', monospace, sans-serif;">
+      <defs>
+        <marker id="dot-arrow-direct" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <polygon points="0 2, 8 5, 0 8" fill="#38bdf8" stroke="#38bdf8" stroke-width="1"/>
+        </marker>
+        <marker id="dot-arrow-inverse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <polygon points="0 2, 8 5, 0 8" fill="#c084fc" stroke="#c084fc" stroke-width="1"/>
+        </marker>
+      </defs>
+
+      <!-- Banner Graphviz DOT -->
+      <rect x="0" y="0" width="${svgWidth}" height="42" fill="#111827" />
+      <text x="20" y="26" fill="#38bdf8" font-size="12" font-weight="700">📊 GRAPHVIZ DOT RENDERED VIEW • digraph DocWebKnowledgeGraph [rankdir=LR]</text>
+      <text x="${svgWidth - 20}" y="26" text-anchor="end" fill="#9ca3af" font-size="10">rankdir=LR | shape=box, rounded</text>
+      <line x1="0" y1="42" x2="${svgWidth}" y2="42" stroke="#1f2937" stroke-width="1"/>
+    `;
+
+    // Render cluster_inverse (Left)
+    if (inverseCount > 0) {
+      const containerH = inverseCount * rowHeight + 40;
+      const startY = (svgHeight - containerH) / 2 + 30;
+      svg += `
+        <rect x="${leftX}" y="${startY}" width="${leftWidth}" height="${containerH}" rx="4" ry="4" fill="#111827" stroke="#475569" stroke-dasharray="3 3" stroke-width="1"/>
+        <text x="${leftX + 10}" y="${startY + 18}" fill="#94a3b8" font-size="10" font-family="monospace">subgraph cluster_inverse</text>
+      `;
+
+      inverseRels.slice(0, 5).forEach((inv, i) => {
+        const ny = startY + 30 + i * rowHeight;
+        const sourceUrn = inv.sourceTermId || inv.source || '';
+        const sourceTerm = this.getTerm(sourceUrn);
+        const title = inv.sourceTitle || (sourceTerm ? sourceTerm.title : sourceUrn.split(':').pop());
+        const isCross = sourceTerm && sourceTerm.glossaryId !== term.glossaryId;
+        const nodeX = leftX + 12;
+        const nodeW = leftWidth - 24;
+        const nodeH = 42;
+
+        svg += `
+          <g onclick="window.DocWebApp.navigateToTerm('${sourceUrn}')" style="cursor:pointer;">
+            <rect x="${nodeX}" y="${ny}" width="${nodeW}" height="${nodeH}" rx="12" ry="12" fill="#1f2937" stroke="${isCross ? '#ec4899' : '#a855f7'}" stroke-width="1.3"/>
+            <text x="${nodeX + nodeW / 2}" y="${ny + 25}" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">${this.escapeXml(title.substring(0, 22))}</text>
+          </g>
+        `;
+
+        const p1x = nodeX + nodeW;
+        const p1y = ny + nodeH / 2;
+        const p2x = focalX;
+        const p2y = focalY + focalHeight / 2;
+        const cx1 = p1x + 35;
+        const cx2 = p2x - 35;
+        svg += `
+          <path d="M ${p1x} ${p1y} C ${cx1} ${p1y}, ${cx2} ${p2y}, ${p2x} ${p2y}" fill="none" stroke="#a855f7" stroke-width="1.4" stroke-dasharray="4 2" marker-end="url(#dot-arrow-inverse)"/>
+        `;
+      });
+    }
+
+    // Render Focal Node (Center - Graphviz double outline box)
+    svg += `
+      <g>
+        <rect x="${focalX}" y="${focalY}" width="${focalWidth}" height="${focalHeight}" rx="4" ry="4" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
+        <rect x="${focalX + 3}" y="${focalY + 3}" width="${focalWidth - 6}" height="${focalHeight - 6}" rx="3" ry="3" fill="none" stroke="#3b82f6" stroke-width="1"/>
+        <text x="${focalX + focalWidth / 2}" y="${focalY + 32}" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700" font-family="monospace">${this.escapeXml(term.title.substring(0, 22))}</text>
+        <text x="${focalX + focalWidth / 2}" y="${focalY + 52}" text-anchor="middle" fill="#93c5fd" font-size="9.5" font-family="monospace">[${this.escapeXml(term.category || 'General')}]</text>
+        <text x="${focalX + focalWidth / 2}" y="${focalY + 68}" text-anchor="middle" fill="#38bdf8" font-size="8.5" font-family="monospace">level=${term.ontologicalLevel || 'L4'}</text>
+      </g>
+    `;
+
+    // Render cluster_direct (Right)
+    if (directCount > 0) {
+      const containerH = directCount * rowHeight + 40;
+      const startY = (svgHeight - containerH) / 2 + 30;
+      svg += `
+        <rect x="${rightX}" y="${startY}" width="${rightWidth}" height="${containerH}" rx="4" ry="4" fill="#111827" stroke="#475569" stroke-dasharray="3 3" stroke-width="1"/>
+        <text x="${rightX + 10}" y="${startY + 18}" fill="#94a3b8" font-size="10" font-family="monospace">subgraph cluster_direct</text>
+      `;
+
+      directRels.slice(0, 5).forEach((rel, i) => {
+        const ny = startY + 30 + i * rowHeight;
+        const targetTerm = this.getTerm(rel.target);
+        const title = targetTerm ? targetTerm.title : rel.target.split(':').pop();
+        const isCross = targetTerm && targetTerm.glossaryId !== term.glossaryId;
+        const nodeX = rightX + 12;
+        const nodeW = rightWidth - 24;
+        const nodeH = 42;
+
+        svg += `
+          <g onclick="window.DocWebApp.navigateToTerm('${rel.target}')" style="cursor:pointer;">
+            <rect x="${nodeX}" y="${ny}" width="${nodeW}" height="${nodeH}" rx="4" ry="4" fill="#1f2937" stroke="${isCross ? '#ec4899' : '#0ea5e9'}" stroke-width="1.3"/>
+            <text x="${nodeX + nodeW / 2}" y="${ny + 25}" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">${this.escapeXml(title.substring(0, 22))}</text>
+          </g>
+        `;
+
+        const p1x = focalX + focalWidth;
+        const p1y = focalY + focalHeight / 2;
+        const p2x = nodeX;
+        const p2y = ny + nodeH / 2;
+        const cx1 = p1x + 35;
+        const cx2 = p2x - 35;
+        svg += `
+          <path d="M ${p1x} ${p1y} C ${cx1} ${p1y}, ${cx2} ${p2y}, ${p2x} ${p2y}" fill="none" stroke="#0ea5e9" stroke-width="1.5" marker-end="url(#dot-arrow-direct)"/>
+          <text x="${(p1x + p2x) / 2}" y="${(p1y + p2y) / 2 - 6}" text-anchor="middle" fill="#7dd3fc" font-size="8" font-family="monospace">${this.escapeXml(rel.type || 'rel')}</text>
+        `;
+      });
+    }
+
+    svg += '</svg>';
+    return svg;
+  }
+
+  /**
    * Genera el mapa mental interactivo y accesible en HTML Semántico (DOM Mindmap Tree).
    */
   generateHtmlMindmap(term, options = {}) {
