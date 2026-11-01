@@ -1,10 +1,13 @@
 /**
- * DOCWEB MULTIGLOSSARY — Paquete Canónico de Datos Local
- * Permite que la aplicación funcione al 100% tanto servida vía HTTP/HTTPS como
- * abriendo index.html directamente con doble clic (protocolo file:///) sin ser
- * bloqueada por las políticas CORS de navegadores como Chrome, Edge o Firefox.
+ * DOCWEB MULTIGLOSSARY — Paquete Canónico de Datos Local (Autónomo & Offline)
+ * Hash SHA-256: 4e83ab51539c4b307828ad0d5aa1b8a56c2a5c1d57bb83d9c9b775857955620c
+ * Fecha de Compilación: 2026-11-01T10:38:25.083Z
+ * Permite funcionamiento íntegro bajo protocolo file:/// sin restricciones CORS.
  */
 window.DocWebCanonicalData = {
+  _dataHash: "4e83ab51539c4b307828ad0d5aa1b8a56c2a5c1d57bb83d9c9b775857955620c",
+  _compiledAt: "2026-11-01T10:38:25.083Z",
+  _totalTerms: 272,
   catalog: {
   "$schema": "./schema/glossaries-manifest.json",
   "version": "1.0.0",
@@ -107,7 +110,10 @@ window.DocWebCanonicalData = {
         "Alineación, Guía & Muestreo"
       ]
     }
-  ]
+  ],
+  "_dataHash": "4e83ab51539c4b307828ad0d5aa1b8a56c2a5c1d57bb83d9c9b775857955620c",
+  "_lastCompiled": "2026-11-01T10:38:25.083Z",
+  "_totalTerms": 272
 },
   glossaries: {
   "render-3d-animations": [

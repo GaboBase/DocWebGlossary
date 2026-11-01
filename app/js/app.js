@@ -4,6 +4,16 @@
  */
 
 window.DocWebApp = {
+  escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  },
+
   currentGlossaryId: 'all',
   currentCategory: 'all',
   currentLetter: 'all',
@@ -584,13 +594,17 @@ window.DocWebApp = {
 
       suggestions.innerHTML = matched.map(t => {
         const g = window.DocWebSemantics.getGlossary(t.glossaryId);
+        const safeTitle = this.escapeHtml(t.title);
+        const safeCategory = this.escapeHtml(t.category || 'General');
+        const safeId = this.escapeHtml(t.id);
+        const safeGlossary = this.escapeHtml(g ? g.slug : t.glossaryId);
         return `
-          <div class="suggestion-item" data-term-id="${t.id}">
+          <div class="suggestion-item" data-term-id="${safeId}">
             <div>
-              <div class="suggestion-title">${t.title}</div>
-              <div style="font-size: 0.7rem; color: var(--muted-foreground);">${t.category || 'General'}</div>
+              <div class="suggestion-title">${safeTitle}</div>
+              <div style="font-size: 0.7rem; color: var(--muted-foreground);">${safeCategory}</div>
             </div>
-            <span class="suggestion-badge">📚 ${g ? g.slug : t.glossaryId}</span>
+            <span class="suggestion-badge">📚 ${safeGlossary}</span>
           </div>
         `;
       }).join('');
@@ -997,12 +1011,15 @@ window.DocWebApp = {
         }
       };
 
+      const safeTitle = this.escapeHtml(term.title);
+      const safeSnippet = this.escapeHtml(snippet);
+      const safeGlossary = this.escapeHtml(glossaryInfo);
       item.innerHTML = `
         <div class="term-item-header">
-          <span class="term-item-title">${term.title}</span>
-          <span class="term-item-badge">${glossaryInfo}</span>
+          <span class="term-item-title">${safeTitle}</span>
+          <span class="term-item-badge">${safeGlossary}</span>
         </div>
-        <div class="term-item-snippet">${snippet}</div>
+        <div class="term-item-snippet">${safeSnippet}</div>
       `;
       container.appendChild(item);
     });
@@ -2233,8 +2250,8 @@ window.DocWebApp = {
           badge.type = 'button';
           badge.className = 'spec-term-badge';
           badge.setAttribute('data-term-id', t.id);
-          badge.title = `Explorar "${t.title}" en el glosario`;
-          badge.innerHTML = `<span>🔗</span> ${t.title}`;
+          badge.title = `Explorar "${this.escapeHtml(t.title)}" en el glosario`;
+          badge.innerHTML = `<span>🔗</span> ${this.escapeHtml(t.title)}`;
           badge.onclick = () => {
             this.closeOrientatorModal();
             this.navigateToTerm(t.id);

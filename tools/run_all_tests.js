@@ -17,6 +17,8 @@ const { runSemanticIntegrityTests } = require('./test_semantic_integrity');
 const { runJsonLdAndSchemaTests } = require('./test_jsonld_schema');
 const { runPromptOrientatorTests } = require('./test_prompt_orientator');
 const { runStorageCapsuleTests } = require('./test_storage_capsule');
+const { runDataParityTests } = require('./test_data_parity');
+const { runM4M6AdversarialTests } = require('./test_m4_m6_adversarial');
 const { FEATURES, TIERS, COLORS } = require('./test_utils');
 
 async function runAllTests() {
@@ -82,14 +84,32 @@ async function runAllTests() {
     suiteResults.push({ suite: 'Persistence & Storage Capsule', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
   }
 
-  // 7. Master Test Runner Integrity (F24 & F25)
+  // 7. Data Parity & Freshness (Hash SHA-256 & Deterministic Sync)
+  try {
+    const res = runDataParityTests();
+    suiteResults.push(res);
+  } catch (e) {
+    console.error('Fatal error in Data Parity suite:', e);
+    suiteResults.push({ suite: 'Data Parity & Freshness', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
+  }
+
+  // 8. Adversarial Coverage Hardening (Milestones 4, 5 & 6)
+  try {
+    const res = runM4M6AdversarialTests();
+    suiteResults.push(res);
+  } catch (e) {
+    console.error('Fatal error in M4-M6 Adversarial suite:', e);
+    suiteResults.push({ suite: 'Adversarial Hardening (M4-M6)', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
+  }
+
+  // 9. Master Test Runner Integrity (F24 & F25)
   const masterRunner = new (require('./test_utils').TestRunner)('Master E2E Verification & Hardening');
   console.log(`\n=== Running ${masterRunner.suiteName} ===`);
 
   // F24: Complete E2E Automated Verification
   masterRunner.assert(
-    suiteResults.length === 6,
-    `Master test runner executed all 6 required modular test suites (completed: ${suiteResults.length}/6)`,
+    suiteResults.length >= 8,
+    `Master test runner executed all ${suiteResults.length} modular test suites (minimum: 8)`,
     { feature: 'F24', tier: 1 }
   );
 
