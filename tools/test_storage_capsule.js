@@ -233,6 +233,102 @@ async function runStorageCapsuleTests() {
   }
 
   // -------------------------------------------------------------
+  // TIER 3.5: Transparent In-Memory RAM Fallback (Private Browsing / Quota Exceeded)
+  // -------------------------------------------------------------
+  console.log('\n--- Tier 3.5: Transparent In-Memory RAM Fallback Execution ---');
+
+  const sandboxRam = {
+    window: {},
+    TextEncoder: TextEncoder,
+    console: { log: () => {}, warn: () => {}, error: () => {} }
+  };
+  vm.createContext(sandboxRam);
+  vm.runInContext(fs.readFileSync(storagePath, 'utf8'), sandboxRam);
+  const ramEngine = sandboxRam.window.DocWebStorage;
+
+  await ramEngine.init();
+  runner.assert(
+    ramEngine.isRamFallback === true,
+    'Storage engine activates RAM fallback when IndexedDB is unavailable',
+    { feature: 'F20', tier: 3 }
+  );
+
+  // 1. Save Term in RAM
+  const ramTermResult = await ramEngine.saveTerm(sampleCustomTerm, 'ram_tester', 'Prueba en RAM');
+  runner.assert(
+    ramTermResult.success && ramTermResult.storageType === 'ram_fallback',
+    'Saving term succeeds in RAM fallback returning storageType "ram_fallback"',
+    { feature: 'F20', tier: 3 }
+  );
+
+  // 2. Retrieve Term from RAM
+  const fetchedRamTerm = await ramEngine.getTerm(sampleCustomTerm.id);
+  runner.assertEqual(
+    fetchedRamTerm ? fetchedRamTerm.title : null,
+    sampleCustomTerm.title,
+    'Retrieving saved term from RAM returns exact content',
+    { feature: 'F20', tier: 3 }
+  );
+
+  // 3. GetAllCustomTerms from RAM
+  const allRamTerms = await ramEngine.getAllCustomTerms();
+  runner.assertEqual(
+    allRamTerms.length,
+    1,
+    'getAllCustomTerms returns all terms currently held in RAM',
+    { feature: 'F20', tier: 3 }
+  );
+
+  // 4. Save and Get Custom Glossary in RAM
+  const sampleGlossary = { id: 'glossary-test', title: 'Glosario de Prueba RAM' };
+  const glossResult = await ramEngine.saveGlossary(sampleGlossary);
+  runner.assert(
+    glossResult.success && glossResult.storageType === 'ram_fallback',
+    'Saving custom glossary succeeds in RAM fallback',
+    { feature: 'F20', tier: 3 }
+  );
+  const fetchedGloss = await ramEngine.getGlossary('glossary-test');
+  runner.assertEqual(
+    fetchedGloss ? fetchedGloss.title : null,
+    sampleGlossary.title,
+    'Retrieving custom glossary from RAM returns correct title',
+    { feature: 'F20', tier: 3 }
+  );
+
+  // 5. Export Knowledge Capsule from RAM
+  const ramCapsule = await ramEngine.exportKnowledgeCapsule();
+  runner.assert(
+    ramCapsule.format === 'DOCWEB_MULTIGLOSSARY_CAPSULE' && ramCapsule.terms.length === 1,
+    'exportKnowledgeCapsule correctly packages RAM stored terms and revisions',
+    { feature: 'F22', tier: 3 }
+  );
+
+  // 6. Delete Term in RAM
+  const delResult = await ramEngine.deleteTerm(sampleCustomTerm.id, 'ram_tester', 'Borrado de prueba');
+  runner.assert(
+    delResult.success && delResult.storageType === 'ram_fallback',
+    'deleteTerm succeeds in RAM fallback',
+    { feature: 'F20', tier: 3 }
+  );
+  const afterDelTerm = await ramEngine.getTerm(sampleCustomTerm.id);
+  runner.assertEqual(
+    afterDelTerm,
+    null,
+    'Deleted term in RAM returns null upon subsequent lookup',
+    { feature: 'F20', tier: 3 }
+  );
+
+  // 7. Clear All Custom Data in RAM
+  await ramEngine.clearAllCustomData();
+  const clearedTerms = await ramEngine.getAllCustomTerms();
+  const clearedGlossaries = await ramEngine.getAllCustomGlossaries();
+  runner.assert(
+    clearedTerms.length === 0 && clearedGlossaries.length === 0,
+    'clearAllCustomData successfully resets all RAM maps and revision log',
+    { feature: 'F20', tier: 3 }
+  );
+
+  // -------------------------------------------------------------
   // TIER 4: Real-World Scenario: Field Filmmaking Capsule Export & Restore
   // -------------------------------------------------------------
   console.log('\n--- Tier 4: Offline Field Filmmaking Capsule Workload ---');

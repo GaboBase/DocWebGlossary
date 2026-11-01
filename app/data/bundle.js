@@ -1,12 +1,12 @@
 /**
  * DOCWEB MULTIGLOSSARY — Paquete Canónico de Datos Local (Autónomo & Offline)
- * Hash SHA-256: 4e83ab51539c4b307828ad0d5aa1b8a56c2a5c1d57bb83d9c9b775857955620c
- * Fecha de Compilación: 2026-11-01T10:38:25.083Z
+ * Hash SHA-256: d51cd98f8f4be0f83c9ae461905170f370eefa30a1aecc35d55b7ccdcc9ea719
+ * Fecha de Compilación: 2026-11-01T11:15:35.889Z
  * Permite funcionamiento íntegro bajo protocolo file:/// sin restricciones CORS.
  */
 window.DocWebCanonicalData = {
-  _dataHash: "4e83ab51539c4b307828ad0d5aa1b8a56c2a5c1d57bb83d9c9b775857955620c",
-  _compiledAt: "2026-11-01T10:38:25.083Z",
+  _dataHash: "d51cd98f8f4be0f83c9ae461905170f370eefa30a1aecc35d55b7ccdcc9ea719",
+  _compiledAt: "2026-11-01T11:15:35.889Z",
   _totalTerms: 272,
   catalog: {
   "$schema": "./schema/glossaries-manifest.json",
@@ -111,8 +111,8 @@ window.DocWebCanonicalData = {
       ]
     }
   ],
-  "_dataHash": "4e83ab51539c4b307828ad0d5aa1b8a56c2a5c1d57bb83d9c9b775857955620c",
-  "_lastCompiled": "2026-11-01T10:38:25.083Z",
+  "_dataHash": "d51cd98f8f4be0f83c9ae461905170f370eefa30a1aecc35d55b7ccdcc9ea719",
+  "_lastCompiled": "2026-11-01T11:15:35.889Z",
   "_totalTerms": 272
 },
   glossaries: {
@@ -505,7 +505,7 @@ window.DocWebCanonicalData = {
     },
     {
       "id": "urn:term:render-3d-animations:keyframe",
-      "slug": "keyframe",
+      "slug": "keyframe-3d",
       "title": "Fotograma Clave (Keyframe)",
       "category": "Animación y Rigging",
       "shortDefinition": "Punto temporal de referencia que fija valores exactos de posición, rotación o escala, a partir del cual se calcula la interpolación.",

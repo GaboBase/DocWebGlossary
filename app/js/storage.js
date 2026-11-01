@@ -18,68 +18,87 @@ class LocalStorageEngine {
   constructor() {
     this.db = null;
     this.isReady = false;
+    this.isRamFallback = false;
+    this.ramStore = {
+      terms: new Map(),
+      glossaries: new Map(),
+      revisions: []
+    };
   }
 
   /**
-   * Inicializa la conexión con IndexedDB y crea los almacenes necesarios.
-   * @returns {Promise<IDBDatabase|null>}
+   * Inicializa la conexión con IndexedDB con tolerancia a fallos y fallback automático a RAM.
+   * Maneja silenciosamente excepciones QuotaExceededError o SecurityError (ej. modo incógnito estricto).
+   * @returns {Promise<IDBDatabase|Object>}
    */
   async init() {
-    if (this.isReady && this.db) return this.db;
+    if (this.isReady) return this.db || this.ramStore;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const idb = (typeof window !== 'undefined' && window.indexedDB) 
         ? window.indexedDB 
         : (typeof indexedDB !== 'undefined' ? indexedDB : null);
 
       if (!idb) {
         if (typeof console !== 'undefined' && console.warn) {
-          console.warn('IndexedDB no está disponible en este entorno.');
+          console.warn('[DocWebStorage] IndexedDB no está disponible en este entorno. Activando almacén volátil en memoria RAM.');
         }
-        this.isReady = false;
-        resolve(null);
+        this.isRamFallback = true;
+        this.isReady = true;
+        resolve(this.ramStore);
         return;
       }
 
-      const request = idb.open(DB_NAME, DB_VERSION);
+      try {
+        const request = idb.open(DB_NAME, DB_VERSION);
 
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-        
-        // Almacén de Términos Personalizados y Modificaciones Locales
-        if (!db.objectStoreNames.contains(STORE_TERMS)) {
-          const termsStore = db.createObjectStore(STORE_TERMS, { keyPath: 'id' });
-          termsStore.createIndex('glossaryId', 'glossaryId', { unique: false });
-          termsStore.createIndex('slug', 'slug', { unique: false });
-          termsStore.createIndex('updatedAt', 'updatedAt', { unique: false });
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          
+          // Almacén de Términos Personalizados y Modificaciones Locales
+          if (!db.objectStoreNames.contains(STORE_TERMS)) {
+            const termsStore = db.createObjectStore(STORE_TERMS, { keyPath: 'id' });
+            termsStore.createIndex('glossaryId', 'glossaryId', { unique: false });
+            termsStore.createIndex('slug', 'slug', { unique: false });
+            termsStore.createIndex('updatedAt', 'updatedAt', { unique: false });
+          }
+
+          // Almacén de Metadatos de Glosarios Especializados Personalizados
+          if (!db.objectStoreNames.contains(STORE_GLOSSARIES)) {
+            db.createObjectStore(STORE_GLOSSARIES, { keyPath: 'id' });
+          }
+
+          // Almacén Inmutable de Historial de Revisiones
+          if (!db.objectStoreNames.contains(STORE_REVISIONS)) {
+            const revStore = db.createObjectStore(STORE_REVISIONS, { keyPath: 'revisionId' });
+            revStore.createIndex('termId', 'termId', { unique: false });
+            revStore.createIndex('timestamp', 'timestamp', { unique: false });
+          }
+        };
+
+        request.onsuccess = (event) => {
+          this.db = event.target.result;
+          this.isReady = true;
+          this.isRamFallback = false;
+          resolve(this.db);
+        };
+
+        request.onerror = (event) => {
+          if (typeof console !== 'undefined' && console.warn) {
+            console.warn('[DocWebStorage] Error al acceder a IndexedDB (modo privado o cuota). Conmutando a fallback en memoria RAM:', event.target ? event.target.error : event);
+          }
+          this.isRamFallback = true;
+          this.isReady = true;
+          resolve(this.ramStore);
+        };
+      } catch (err) {
+        if (typeof console !== 'undefined' && console.warn) {
+          console.warn('[DocWebStorage] Excepción al invocar indexedDB.open. Conmutando a fallback en memoria RAM:', err);
         }
-
-        // Almacén de Metadatos de Glosarios Especializados Personalizados
-        if (!db.objectStoreNames.contains(STORE_GLOSSARIES)) {
-          db.createObjectStore(STORE_GLOSSARIES, { keyPath: 'id' });
-        }
-
-        // Almacén Inmutable de Historial de Revisiones
-        if (!db.objectStoreNames.contains(STORE_REVISIONS)) {
-          const revStore = db.createObjectStore(STORE_REVISIONS, { keyPath: 'revisionId' });
-          revStore.createIndex('termId', 'termId', { unique: false });
-          revStore.createIndex('timestamp', 'timestamp', { unique: false });
-        }
-      };
-
-      request.onsuccess = (event) => {
-        this.db = event.target.result;
+        this.isRamFallback = true;
         this.isReady = true;
-        resolve(this.db);
-      };
-
-      request.onerror = (event) => {
-        if (typeof console !== 'undefined' && console.error) {
-          console.error('Error al inicializar IndexedDB:', event.target.error);
-        }
-        this.isReady = false;
-        reject(event.target.error);
-      };
+        resolve(this.ramStore);
+      }
     });
   }
 
@@ -122,7 +141,6 @@ class LocalStorageEngine {
    */
   async saveTerm(term, author = 'user', changeLog = 'Actualización local') {
     await this.init();
-    if (!this.db) throw new Error('Almacén local IndexedDB no inicializado.');
 
     if (!term || typeof term !== 'object') {
       throw new Error('Entidad de término inválida para persistencia.');
@@ -155,6 +173,17 @@ class LocalStorageEngine {
       snapshot: termCopy
     };
 
+    if (this.isRamFallback || !this.db) {
+      this.ramStore.terms.set(termCopy.id, termCopy);
+      this.ramStore.revisions.push(revision);
+      return {
+        success: true,
+        term: termCopy,
+        revision: revision,
+        storageType: 'ram_fallback'
+      };
+    }
+
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([STORE_TERMS, STORE_REVISIONS], 'readwrite');
       const termsStore = transaction.objectStore(STORE_TERMS);
@@ -184,7 +213,9 @@ class LocalStorageEngine {
    */
   async getTerm(termId) {
     await this.init();
-    if (!this.db) return null;
+    if (this.isRamFallback || !this.db) {
+      return this.ramStore.terms.get(termId) || null;
+    }
 
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([STORE_TERMS], 'readonly');
@@ -203,7 +234,13 @@ class LocalStorageEngine {
    */
   async getAllCustomTerms(glossaryId = null) {
     await this.init();
-    if (!this.db) return [];
+    if (this.isRamFallback || !this.db) {
+      let terms = Array.from(this.ramStore.terms.values());
+      if (glossaryId && glossaryId !== 'all') {
+        terms = terms.filter(t => t.glossaryId === glossaryId);
+      }
+      return terms;
+    }
 
     return new Promise((resolve, reject) => {
       try {
@@ -239,7 +276,10 @@ class LocalStorageEngine {
    */
   async getTermRevisions(termId) {
     await this.init();
-    if (!this.db) return [];
+    if (this.isRamFallback || !this.db) {
+      const revs = (this.ramStore.revisions || []).filter(r => r.termId === termId);
+      return revs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    }
 
     return new Promise((resolve, reject) => {
       try {
@@ -271,9 +311,15 @@ class LocalStorageEngine {
     const customTerms = await this.getAllCustomTerms(glossaryId);
     
     // Obtener las revisiones correspondientes
-    const allRevisions = await new Promise((resolve, reject) => {
-      if (!this.db) {
-        resolve([]);
+    const allRevisions = await new Promise((resolve) => {
+      if (this.isRamFallback || !this.db) {
+        let revs = [...(this.ramStore.revisions || [])];
+        if (glossaryId && glossaryId !== 'all') {
+          const termIdSet = new Set(customTerms.map(t => t.id));
+          revs = revs.filter(r => termIdSet.has(r.termId));
+        }
+        revs.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+        resolve(revs);
         return;
       }
       try {
@@ -371,8 +417,20 @@ class LocalStorageEngine {
       }
     }
 
-    if (!this.db) {
-      throw new Error('Almacén local IndexedDB no inicializado.');
+    if (this.isRamFallback || !this.db) {
+      for (const term of capsuleData.terms) {
+        this.ramStore.terms.set(term.id, term);
+      }
+      if (Array.isArray(capsuleData.revisions)) {
+        for (const rev of capsuleData.revisions) {
+          this.ramStore.revisions.push(rev);
+        }
+      }
+      return {
+        importedTerms: capsuleData.terms.length,
+        importedRevisions: (capsuleData.revisions || []).length,
+        storageType: 'ram_fallback'
+      };
     }
 
     return new Promise((resolve, reject) => {
@@ -410,7 +468,6 @@ class LocalStorageEngine {
    */
   async deleteTerm(termId, author = 'user', reason = 'Eliminación de término local') {
     await this.init();
-    if (!this.db) throw new Error('Almacén local IndexedDB no inicializado.');
 
     const existing = await this.getTerm(termId);
     if (!existing) return { success: false, notFound: true };
@@ -425,6 +482,12 @@ class LocalStorageEngine {
       hash: await this.computeSha256(`DELETED:${termId}:${now}`),
       snapshot: { ...existing, _deleted: true }
     };
+
+    if (this.isRamFallback || !this.db) {
+      const deleted = this.ramStore.terms.delete(termId);
+      this.ramStore.revisions.push(revision);
+      return { success: deleted, deletedTermId: termId, revision, storageType: 'ram_fallback' };
+    }
 
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([STORE_TERMS, STORE_REVISIONS], 'readwrite');
@@ -447,11 +510,15 @@ class LocalStorageEngine {
    */
   async saveGlossary(glossary) {
     await this.init();
-    if (!this.db) throw new Error('Almacén local IndexedDB no inicializado.');
 
     const now = new Date().toISOString();
     const copy = { ...glossary, updatedAt: now };
     if (!copy.createdAt) copy.createdAt = now;
+
+    if (this.isRamFallback || !this.db) {
+      this.ramStore.glossaries.set(copy.id, copy);
+      return { success: true, glossary: copy, storageType: 'ram_fallback' };
+    }
 
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([STORE_GLOSSARIES], 'readwrite');
@@ -469,7 +536,9 @@ class LocalStorageEngine {
    */
   async getGlossary(glossaryId) {
     await this.init();
-    if (!this.db) return null;
+    if (this.isRamFallback || !this.db) {
+      return this.ramStore.glossaries.get(glossaryId) || null;
+    }
 
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([STORE_GLOSSARIES], 'readonly');
@@ -486,7 +555,9 @@ class LocalStorageEngine {
    */
   async getAllCustomGlossaries() {
     await this.init();
-    if (!this.db) return [];
+    if (this.isRamFallback || !this.db) {
+      return Array.from(this.ramStore.glossaries.values());
+    }
 
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([STORE_GLOSSARIES], 'readonly');
@@ -498,12 +569,17 @@ class LocalStorageEngine {
   }
 
   /**
-   * Limpia todos los almacenes locales de IndexedDB (términos, glosarios y revisiones).
+   * Limpia todos los almacenes locales de IndexedDB o RAM (términos, glosarios y revisiones).
    * @returns {Promise<boolean>}
    */
   async clearAllCustomData() {
     await this.init();
-    if (!this.db) return false;
+    if (this.isRamFallback || !this.db) {
+      this.ramStore.terms.clear();
+      this.ramStore.glossaries.clear();
+      this.ramStore.revisions = [];
+      return true;
+    }
 
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([STORE_TERMS, STORE_GLOSSARIES, STORE_REVISIONS], 'readwrite');

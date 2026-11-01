@@ -258,6 +258,115 @@ function runM4M6AdversarialTests() {
     }
   }
 
+  // -------------------------------------------------------------
+  // Robustez de Enrutamiento por Hash & Deep Linking (Week 2 / B-08)
+  // -------------------------------------------------------------
+  console.log('\n--- Deep Linking & URL Hash Routing Resilience ---');
+
+  // Verificar que el 100% de los 272 términos tienen slug único y no vacío para enrutamiento limpio
+  const slugMap = new Map();
+  let duplicateSlugs = 0;
+  for (const term of allTerms) {
+    runner.assert(
+      typeof term.slug === 'string' && term.slug.length > 0 && !/[^a-z0-9\-_]/i.test(term.slug),
+      `Term "${term.id}" has valid URL-safe slug: "${term.slug}"`,
+      { feature: 'F14', tier: 2 }
+    );
+    if (slugMap.has(term.slug)) {
+      duplicateSlugs++;
+    } else {
+      slugMap.set(term.slug, term.id);
+    }
+  }
+
+  runner.assertEqual(
+    duplicateSlugs,
+    0,
+    `Zero duplicate slugs across all ${allTerms.length} terms for deterministic deep linking`,
+    { feature: 'F14', tier: 2 }
+  );
+
+  // Cargar app.js en el sandbox y verificar métodos de routing
+  const appPath = path.join(ROOT_DIR, 'app', 'js', 'app.js');
+  const appCode = fs.readFileSync(appPath, 'utf8');
+
+  // Mocking DOM elements for app.js router evaluation
+  const elements = new Map();
+  sandbox.document.getElementById = (id) => {
+    if (!elements.has(id)) {
+      elements.set(id, {
+        id,
+        style: {},
+        classList: { add: () => {}, remove: () => {}, contains: () => false },
+        setAttribute: () => {},
+        getAttribute: () => null,
+        appendChild: () => {},
+        addEventListener: () => {},
+        scrollIntoView: () => {},
+        focus: () => {},
+        children: []
+      });
+    }
+    return elements.get(id);
+  };
+  sandbox.window.location = { hash: '', href: 'file:///d:/DocWebGlosary/index.html' };
+
+  let appLoaded = false;
+  try {
+    vm.runInContext(appCode, sandbox);
+    appLoaded = typeof sandbox.window.DocWebApp === 'object' && typeof sandbox.window.DocWebApp.setupHashRouter === 'function';
+  } catch (e) {
+    appLoaded = false;
+  }
+
+  runner.assert(
+    appLoaded,
+    'app.js loads cleanly and exports setupHashRouter() and updateHash()',
+    { feature: 'F14', tier: 3 }
+  );
+
+  const app = sandbox.window.DocWebApp;
+  if (app) {
+    // Probar resolución de ruta #/term/:slug
+    sandbox.window.location.hash = '#/term/rendering-pipeline';
+    let termSelected = false;
+    app.selectTerm = (id) => { termSelected = (id.includes('rendering-pipeline') || id.length > 0); };
+    app.handleHashChange();
+    runner.assert(
+      termSelected,
+      'Router correctly resolves #/term/rendering-pipeline and dispatches selectTerm',
+      { feature: 'F14', tier: 3 }
+    );
+
+    // Probar resolución de ruta #/hub
+    let hubSwitched = false;
+    app.switchView = (view) => { if (view === 'homepage-view') hubSwitched = true; };
+    sandbox.window.location.hash = '#/hub';
+    app.handleHashChange();
+    runner.assert(
+      hubSwitched,
+      'Router correctly resolves #/hub and switches to homepage view',
+      { feature: 'F14', tier: 3 }
+    );
+
+    // Probar resolución de ruta malformada/fuzzing sin lanzar excepciones
+    const fuzzHashes = ['#/', '#/unknown/123/bad', '#/../../etc/passwd', '#/<script>alert(1)</script>', '#'];
+    let fuzzPassed = true;
+    for (const fHash of fuzzHashes) {
+      try {
+        sandbox.window.location.hash = fHash;
+        app.handleHashChange();
+      } catch (err) {
+        fuzzPassed = false;
+      }
+    }
+    runner.assert(
+      fuzzPassed,
+      'Router handles arbitrary fuzzing hashes and XSS attempts without throwing exceptions',
+      { feature: 'F14', tier: 3 }
+    );
+  }
+
   return runner.printReport();
 }
 

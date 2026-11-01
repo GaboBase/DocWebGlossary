@@ -36,6 +36,7 @@ window.DocWebApp = {
   hubFilterPhase: 'all',
   hubFilterModality: 'all',
   hubFilterQuery: '',
+  _isUpdatingHash: false,
 
   async init() {
     try {
@@ -80,10 +81,18 @@ window.DocWebApp = {
       this.initHomepage();
       this.setupHoverSystem();
 
-      // Seleccionar primer término si existe
-      const allTerms = window.DocWebSemantics.getAllTerms();
-      if (allTerms.length > 0) {
-        this.selectTerm(allTerms[0].id);
+      // 4. Configurar Enrutamiento por Hash en la URL (Deep Linking & Navegación Historial)
+      this.setupHashRouter();
+
+      // Resolver ruta inicial desde el hash de la URL o seleccionar primer término
+      const hasInitialHash = typeof window !== 'undefined' && window.location && window.location.hash && window.location.hash.length > 1;
+      if (hasInitialHash) {
+        this.handleHashChange();
+      } else {
+        const allTerms = window.DocWebSemantics.getAllTerms();
+        if (allTerms.length > 0) {
+          this.selectTerm(allTerms[0].id, false);
+        }
       }
 
       this.setupEventListeners();
@@ -219,6 +228,7 @@ window.DocWebApp = {
     if (orientatorSelect) {
       orientatorSelect.addEventListener('change', (e) => {
         this.populateOrientatorProductDefaults(e.target.value);
+        this.updateHash(`#/orientator/${e.target.value}`);
       });
     }
 
@@ -265,14 +275,14 @@ window.DocWebApp = {
     });
   },
 
-  switchView(viewId) {
+  switchView(viewId, updateUrl = true) {
     if (viewId === 'orientator-view') {
       this.openOrientatorModal();
       return;
     }
 
     if (viewId === 'diagram-view') {
-      this.switchView('glossary-view');
+      this.switchView('glossary-view', false);
       const diagramEl = document.getElementById('diagram-section-container');
       if (diagramEl) {
         diagramEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -280,6 +290,15 @@ window.DocWebApp = {
       const navBtnDiagram = document.getElementById('nav-btn-diagram');
       document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
       if (navBtnDiagram) navBtnDiagram.classList.add('active');
+
+      if (updateUrl) {
+        const term = this.currentTermId ? window.DocWebSemantics.getTerm(this.currentTermId) : null;
+        if (term && term.slug) {
+          this.updateHash(`#/diagram/${term.slug}`);
+        } else {
+          this.updateHash('#/diagram');
+        }
+      }
       return;
     }
 
@@ -295,9 +314,125 @@ window.DocWebApp = {
       if (homepageView) homepageView.style.display = 'block';
       if (glossaryView) glossaryView.style.display = 'none';
       this.renderHomepage();
+      if (updateUrl) {
+        this.updateHash('#/hub');
+      }
     } else {
       if (homepageView) homepageView.style.display = 'none';
       if (glossaryView) glossaryView.style.display = 'grid';
+      if (updateUrl) {
+        const term = this.currentTermId ? window.DocWebSemantics.getTerm(this.currentTermId) : null;
+        if (term && term.slug) {
+          this.updateHash(`#/term/${term.slug}`);
+        } else {
+          this.updateHash(`#/glossary/${this.currentGlossaryId || 'all'}`);
+        }
+      }
+    }
+  },
+
+  // =========================================================================
+  // ENRUTAMIENTO POR HASH EN LA URL (DEEP LINKING & HISTORIAL)
+  // =========================================================================
+
+  setupHashRouter() {
+    if (typeof window === 'undefined') return;
+    window.addEventListener('hashchange', () => {
+      if (this._isUpdatingHash) return;
+      this.handleHashChange();
+    });
+  },
+
+  updateHash(hash) {
+    if (typeof window === 'undefined' || !window.location) return;
+    if (window.location.hash === hash) return;
+    this._isUpdatingHash = true;
+    try {
+      window.location.hash = hash;
+    } finally {
+      setTimeout(() => { this._isUpdatingHash = false; }, 40);
+    }
+  },
+
+  handleHashChange() {
+    if (typeof window === 'undefined' || !window.location || !window.DocWebSemantics) return;
+    const rawHash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (!rawHash) {
+      this.switchView('homepage-view', false);
+      return;
+    }
+
+    const parts = rawHash.split('/');
+    const section = parts[0];
+
+    if (section === 'hub' || section === 'home') {
+      this.switchView('homepage-view', false);
+    } else if (section === 'orientator') {
+      const prodId = parts[1] || null;
+      this.openOrientatorModal(prodId, false);
+    } else if (section === 'glossary') {
+      const gid = parts[1] || 'all';
+      this.currentGlossaryId = gid;
+      const select = document.getElementById('glossary-select');
+      if (select) select.value = gid;
+      this.renderCategoryChips();
+      this.renderAzNav();
+      
+      const termSlug = parts[2];
+      if (termSlug) {
+        const found = window.DocWebSemantics.getAllTerms().find(t => 
+          (gid === 'all' || t.glossaryId === gid) && (t.slug === termSlug || t.id.endsWith(':' + termSlug))
+        );
+        if (found) {
+          this.switchView('glossary-view', false);
+          this.selectTerm(found.id, false);
+          return;
+        }
+      }
+      this.switchView('glossary-view', false);
+      this.filterAndRenderTerms();
+    } else if (section === 'term') {
+      const termIdentifier = parts.slice(1).join('/');
+      const all = window.DocWebSemantics.getAllTerms();
+      const found = window.DocWebSemantics.getTerm(termIdentifier) || 
+                    all.find(t => t.slug === termIdentifier || t.id === termIdentifier || t.id.endsWith(':' + termIdentifier));
+      if (found) {
+        this.currentGlossaryId = found.glossaryId;
+        const select = document.getElementById('glossary-select');
+        if (select) select.value = found.glossaryId;
+        this.renderCategoryChips();
+        this.renderAzNav();
+        this.switchView('glossary-view', false);
+        this.selectTerm(found.id, false);
+      }
+    } else if (section === 'diagram') {
+      const termIdentifier = parts.slice(1).join('/');
+      if (termIdentifier) {
+        const all = window.DocWebSemantics.getAllTerms();
+        const found = window.DocWebSemantics.getTerm(termIdentifier) ||
+                      all.find(t => t.slug === termIdentifier || t.id === termIdentifier || t.id.endsWith(':' + termIdentifier));
+        if (found) {
+          this.selectTerm(found.id, false);
+        }
+      }
+      this.switchView('diagram-view', false);
+    }
+  },
+
+  copyTermDeepLink(termId) {
+    if (typeof window === 'undefined' || !window.location) return;
+    const term = window.DocWebSemantics.getTerm(termId);
+    if (!term) return;
+    const baseUrl = (window.location.href || '').split('#')[0];
+    const cleanUrl = `${baseUrl}#/term/${term.slug}`;
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(cleanUrl).then(() => {
+        this.updateStatus(`Enlace directo copiado: ${cleanUrl}`, 'success');
+      }).catch(() => {
+        prompt('Enlace directo al término:', cleanUrl);
+      });
+    } else {
+      prompt('Enlace directo al término:', cleanUrl);
     }
   },
 
@@ -1025,7 +1160,7 @@ window.DocWebApp = {
     });
   },
 
-  selectTerm(termId) {
+  selectTerm(termId, updateUrl = true) {
     this.currentTermId = termId;
     
     // Actualizar clase activa en la lista
@@ -1034,6 +1169,10 @@ window.DocWebApp = {
 
     const term = window.DocWebSemantics.getTerm(termId);
     if (!term) return;
+
+    if (updateUrl && term.slug) {
+      this.updateHash(`#/term/${term.slug}`);
+    }
 
     this.renderTermView(term);
   },
@@ -1097,6 +1236,7 @@ window.DocWebApp = {
           <!-- Botones de Acción Inmediata del Término -->
           <div class="term-action-buttons-group" style="display:flex; flex-wrap:wrap; gap:0.35rem; align-items:center;" data-dom-tag="div" data-dom-container="term-header-view">
             <button type="button" class="btn btn-sm btn-primary" onclick="window.DocWebApp.openTermEditor('${term.id}')" title="Editar o ampliar atributos, relaciones y definiciones de este término" aria-label="Editar o ampliar término">✏️ Editar</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.copyTermDeepLink('${term.id}')" title="Copiar enlace directo URL con hash al portapapeles" aria-label="Copiar enlace directo">🔗 Enlace</button>
             <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.copyTermUrn('${term.id}')" title="Copiar identificador URN canónico al portapapeles" aria-label="Copiar URN canónica">📋 Copiar URN</button>
             <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.copyTermJsonLd('${term.id}')" title="Copiar especificación Schema.org DefinedTerm JSON-LD estructurado" aria-label="Copiar JSON-LD">📄 JSON-LD</button>
             <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.focusInDiagram()" title="Desplazarse y enfocar este término en el Diagrama Contextual de Relaciones" aria-label="Enfocar en diagrama">🎯 Ver Diagrama</button>
@@ -1905,22 +2045,54 @@ window.DocWebApp = {
 
   // --- Métodos de Orientador Audiovisual IA (Milestone 4) ---
 
-  openOrientatorModal() {
+  openOrientatorModal(productId = null, updateUrl = true) {
     const modal = document.getElementById('orientator-modal');
     if (!modal) return;
     this.populateOrientatorProductSelect();
+
+    if (productId) {
+      const select = document.getElementById('orientator-product-select');
+      if (select) {
+        const optionExists = Array.from(select.options).some(o => o.value === productId);
+        if (optionExists) {
+          select.value = productId;
+          this.populateOrientatorProductDefaults(productId);
+        }
+      }
+    }
+
     modal.style.display = 'flex';
     modal.setAttribute('aria-hidden', 'false');
+
+    if (updateUrl) {
+      const currentSelected = document.getElementById('orientator-product-select')?.value || productId;
+      this.updateHash(currentSelected ? `#/orientator/${currentSelected}` : '#/orientator');
+    }
 
     const closeBtn = document.getElementById('btn-close-orientator');
     if (closeBtn) closeBtn.focus();
   },
 
-  closeOrientatorModal() {
+  closeOrientatorModal(updateUrl = true) {
     const modal = document.getElementById('orientator-modal');
     if (!modal) return;
     modal.style.display = 'none';
     modal.setAttribute('aria-hidden', 'true');
+
+    if (updateUrl) {
+      const hp = document.getElementById('homepage-view');
+      const isHpVisible = hp && hp.style.display !== 'none';
+      if (isHpVisible) {
+        this.updateHash('#/hub');
+      } else {
+        const term = this.currentTermId ? window.DocWebSemantics.getTerm(this.currentTermId) : null;
+        if (term && term.slug) {
+          this.updateHash(`#/term/${term.slug}`);
+        } else {
+          this.updateHash(`#/glossary/${this.currentGlossaryId || 'all'}`);
+        }
+      }
+    }
 
     const btn = document.getElementById('btn-orientator');
     if (btn) btn.focus();
@@ -2376,6 +2548,8 @@ window.DocWebApp = {
   }
 };
 
-window.addEventListener('DOMContentLoaded', () => {
-  window.DocWebApp.init();
-});
+if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+  window.addEventListener('DOMContentLoaded', () => {
+    window.DocWebApp.init();
+  });
+}
