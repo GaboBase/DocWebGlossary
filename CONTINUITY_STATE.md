@@ -3,9 +3,10 @@
 This record allows a completely different editor to understand the project and resume development without needing the previous executor's conversational memory. It is written in English per project convention.
 
 > Status: Stabilization cycle complete (v1.0.0 validated); Phase 2 — Cross-Domain
-> Synthesis and Interactive Knowledge Graph v1.1.0 in progress (B-10 semantic
-> foundation validated; cross-domain composition UI — COMPLETED; **interactive
-> semantic graph viewer — COMPLETED**). B-11 (browser E2E / PWA) deferred — see section 6.
+> Synthesis and Interactive Knowledge Graph v1.1.0 complete (B-10 semantic
+> foundation validated; cross-domain composition UI — COMPLETED; interactive
+> semantic graph viewer — COMPLETED). B-11 browser E2E — COMPLETED (headless
+> Chrome/Edge via DevTools Protocol, file:// execution verified). PWA deferred.
 
 ---
 
@@ -65,7 +66,7 @@ Generated data (produced by `tools/build_data_bundle.js` from sources):
 Tools:
 - `tools/build_data_bundle.js` — declarative, idempotent data compiler
 - `tools/build_release.js` — clean release ZIP builder (18 files)
-- `tools/run_all_tests.js` — master E2E runner (10 suites)
+- `tools/run_all_tests.js` — master E2E runner (11 suites)
 - `tools/test_autonomy.js` — canonical autonomy test
 - `tools/test_data_parity.js` — SHA-256 synchronization test
 - `tools/test_dom_security.js` — DOM sanitization / XSS tests
@@ -104,15 +105,15 @@ Preserved historical artifacts (NOT deleted):
 | `getTermProvenance()` domain traceability | COMPLETED AND VALIDATED |
 | Cross-domain composition UI (multi-domain selector) | COMPLETED AND VALIDATED |
 | Interactive semantic graph viewer (B-10) | COMPLETED AND VALIDATED |
-| Browser E2E testing (B-11) | DEFERRED — headless browser broken in container |
+| Browser E2E testing (B-11) | COMPLETED AND VALIDATED | Headless Chrome/Edge via --dump-dom on file:// URL; 14 assertions covering startup, CSP, offline autonomy, five-domain rendering, search, diagram, composition panel, capsule buttons, deep links, zero network calls. |
 | PWA (B-11) | DEFERRED — separate deployment mode |
 
 ### Validation status
 
 Integrated suite (`node tools/run_all_tests.js`):
-- 693 assertions, 693 passed, 0 failed, 0 pending — **100.0%**
-- Execution time: ~300–400 ms
-- 10 suites: Autonomy, Data Parity, Catalog & Terms, Semantic Integrity, JSON-LD, Prompt Orientator, Storage Capsule, M4–M6 Adversarial, DOM Security, Cross-Domain Search & Provenance
+- 708 assertions, 708 passed, 0 failed, 0 pending — **100.0%**
+- Execution time: ~6–7 s (includes headless browser launch)
+- 11 suites: Autonomy, Data Parity, Catalog & Terms, Semantic Integrity, JSON-LD, Prompt Orientator, Storage Capsule, M4–M6 Adversarial, DOM Security, Cross-Domain Search & Provenance, Browser E2E (Headless, file://)
 - No weakened assertions, no concealed pre-existing failures
 
 Data:
@@ -180,8 +181,8 @@ Documented as RETIRED/FROZEN in `tools/archive/README.md`; excluded from build/t
 ## 5. Validation evidence
 
 ### Test suite (`npm test` / `node tools/run_all_tests.js`)
-- 659 total assertions; 659 passed; 0 failed; 0 pending; **100.0%**
-- 10 suites: Autonomy, Data Parity, Catalog & Terms, Semantic Integrity, JSON-LD, Prompt Orientator, Storage Capsule, M4–M6 Adversarial, DOM Security, Master Runner
+- 708 total assertions; 708 passed; 0 failed; 0 pending; **100.0%**
+- 11 suites: Autonomy, Data Parity, Catalog & Terms, Semantic Integrity, JSON-LD, Prompt Orientator, Storage Capsule, M4–M6 Adversarial, DOM Security, Cross-Domain Search & Provenance, Browser E2E (Headless, file://)
 
 ### Data pipeline
 - All 10 domain JSON files validate (JSON syntax, unique IDs, required fields, categories, relationships)
@@ -208,24 +209,21 @@ Documented as RETIRED/FROZEN in `tools/archive/README.md`; excluded from build/t
 | Proposal | Decision | Justification |
 |----------|----------|---------------|
 | B-10 cross-domain semantic foundation (`searchTerms` multi-domain, `searchCrossDomain`, `getTermProvenance`) | INCORPORATED NOW | Foundation already verified; focused, backward-compatible, measurable (34 new tests, all passing). First increment of Phase 2. |
-| B-10 cross-domain composition UI (multi-domain selector in hub) | INCORPORATED NOW | First user-facing B-10 capability; semantic foundation already validated; implemented via `app/js/app.js` composition panel (multi-domain selector, term selection basket, relationship-aware prompt compilation with domain provenance). Verified with full 693-assertion suite at 100%. |
+| B-10 cross-domain composition UI (multi-domain selector in hub) | INCORPORATED NOW | First user-facing B-10 capability; semantic foundation already validated; implemented via `app/js/app.js` composition panel (multi-domain selector, term selection basket, relationship-aware prompt compilation with domain provenance). Verified with full 708-assertion suite at 100%. |
 | B-10 precomputed semantic index | PREPARE FOR FUTURE DEVELOPMENT | Derived artifact, reproducible from canonical data; document concept but do not implement yet (avoid competing source of truth). |
 | B-10 interactive semantic graph viewer | INCORPORATE INTO NEXT STAGE | Depends on composition foundation; do not start until cross-domain composition is in place. |
 | B-11 browser E2E testing | DEFERRED | Chrome/Edge installed but headless rendering fails in this container (fork errors). Document gap; recommend headless-friendly CI in a compatible environment. |
 | B-11 PWA | DEFERRED | Separate deployment mode; Service Worker not assumed under file://. Preserve standalone app; evaluate later. |
-| B-01 to B-09 (stabilization) | PRESERVED | All complete and validated (693 assertions, 100%); do not reopen without evidence of regression. |
+| B-01 to B-09 (stabilization) | PRESERVED | All complete and validated (708 assertions, 100%); do not reopen without evidence of regression. |
 ## 6. Remaining work
 
 - **Precomputed semantic index (B-10):** Document as a derived, reproducible artifact; implement only when cross-domain search performance justifies it.
-- **Browser E2E acceptance (B-11):** Verify `file://` behavior in a real browser when a compatible environment (working headless Chrome/Edge) is available.
-- **Code coverage:** Add instrumentation only if separately authorized with a reliable zero-dependency tool.
-- **PWA (B-11):** Deferred; separate deployment mode.
+- **PWA (B-11):** Deferred; separate deployment mode. Service Worker incompatible with file://; preserves standalone app.
 
 ### Prioritized next steps
 
-1. Browser `file://` acceptance test (when headless browser works in this environment).
-2. Precomputed semantic index (only when cross-domain search performance justifies it).
-3. Confirm or close out B-10/B-11 definitions (none currently in the repository).
+1. Precomputed semantic index (only when cross-domain search performance justifies it).
+2. Confirm or close out B-10/B-11 definitions (none currently in the repository).
 
 ---
 

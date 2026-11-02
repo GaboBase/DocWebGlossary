@@ -49,7 +49,7 @@ Aplicación web estática, autónoma y offline-capable para gestión de glosario
 # Compilar y sincronizar paquete de datos (idempotente, solo lectura sobre fuentes)
 npm run build
 
-# Ejecutar suite completa de pruebas E2E (10 suites modulares)
+# Ejecutar suite completa de pruebas E2E (11 suites modulares)
 npm test
 
 # Suite de autonomía offline (cero llamadas externas)
@@ -93,10 +93,10 @@ npm run dist
 
 ## 6. Estado actual (verificado)
 
-- 693 aserciones, 100% aprobadas, 0 fallidas
-- 10 suites: Autonomía, Paridad de Datos, Catálogo y Términos, Integridad Semántica, JSON-LD, Orientador de Prompts, Cápsula de Almacenamiento, Adversarial M4-M6, Seguridad del DOM, Búsqueda Interdominio y Procedencia
+- 708 aserciones, 100% aprobadas, 0 fallidas
+- 11 suites: Autonomía, Paridad de Datos, Catálogo y Términos, Integridad Semántica, JSON-LD, Orientador de Prompts, Cápsula de Almacenamiento, Adversarial M4-M6, Seguridad del DOM, Búsqueda Interdominio y Procedencia, Browser E2E (Headless, file://)
 - Fase de estabilización (v1.0.0) completa
-- Fase 2 (B-10): base semántica interdominio validada; UI de composición en desarrollo; gráfico interactivo pendiente
+- Fase 2 (B-10): base semántica interdominio validada; UI de composición completada; gráfico interactivo completado
 
 ---
 

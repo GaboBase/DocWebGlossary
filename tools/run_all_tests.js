@@ -21,6 +21,7 @@ const { runDataParityTests } = require('./test_data_parity');
 const { runM4M6AdversarialTests } = require('./test_m4_m6_adversarial');
 const { runDomSecurityTests } = require('./test_dom_security');
 const { runCrossDomainSearchTests } = require('./test_cross_domain_search');
+const { runBrowserE2ETests } = require('./test_browser_e2e');
 const { FEATURES, TIERS, COLORS } = require('./test_utils');
 
 async function runAllTests() {
@@ -124,7 +125,16 @@ async function runAllTests() {
     suiteResults.push({ suite: 'Cross-Domain Search & Provenance', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
   }
 
-  // 11. Master Test Runner Integrity (F24 & F25)
+  // 11. Browser E2E (Headless, file://) — B-11 browser testing
+  try {
+    const res = await runBrowserE2ETests();
+    suiteResults.push(res);
+  } catch (e) {
+    console.error('Fatal error in Browser E2E suite:', e);
+    suiteResults.push({ suite: 'Browser E2E (Headless, file://)', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
+  }
+
+  // 12. Master Test Runner Integrity (F24 & F25)
   const masterRunner = new (require('./test_utils').TestRunner)('Master E2E Verification & Hardening');
   console.log(`\n=== Running ${masterRunner.suiteName} ===`);
 
