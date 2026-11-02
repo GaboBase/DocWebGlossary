@@ -1,0 +1,323 @@
+{
+  "id": "prompt-engineering",
+  "title": "Ingeniería de Prompts",
+  "slug": "prompt-engineering",
+  "version": "1.0.0",
+  "description": "Glosario canónico de ingeniería de prompts para modelos de base y grandes modelos de lenguaje, cubriendo técnicas de prompting, mensajes del sistema, plantillas, cadenas de prompts, ingeniería de contexto y optimización de instrucciones.",
+  "language": "es",
+  "license": "Local Knowledge Base - Internal Project Use",
+  "canonicalTerms": [
+    {
+      "id": "urn:term:prompt-engineering:prompt-concepto",
+      "slug": "prompt-concepto",
+      "title": "Prompt",
+      "category": "Fundamentos de Prompts",
+      "shortDefinition": "Entrada de texto o instrucción proporcionada a un modelo de IA generativa para guiar su salida hacia una respuesta o tarea específica.",
+      "fullDefinition": "Un prompt es una entrada —generalmente texto, pero puede incluir imágenes, audio o código— proporcionada a un modelo generativo de IA (como un LLM) para elicit una respuesta específica o realizar una tarea. Puede incluir instrucciones, contexto, ejemplos o preguntas, y puede seguir formatos o patrones específicos. A diferencia del fine-tuning, el prompting no modifica los pesos o parámetros internos del modelo; solo elabora mejores entradas para obtener salidas deseadas del modelo existente.",
+      "synonyms": ["Prompt", "Instrucción", "Entrada de Modelo"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "contenido": "Puede incluir instrucciones, contexto, ejemplos o preguntas",
+        "formato": "Puede seguir formatos o patrones específicos"
+      },
+      "components": [
+        "Directiva o instrucción principal",
+        "Contexto opcional",
+        "Ejemplos o demostraciones (shots)",
+        "Pregunta o tarea a realizar"
+      ],
+      "applications": [
+        "Clasificación de texto y respuesta a preguntas",
+        "Generación de código y resumen",
+        "Extracción de entidades y tareas de dominio especializado"
+      ],
+      "examples": [
+        "Clasifica el sentimiento de la siguiente reseña en: positivo, neutro, negativo. Texto: <reseña>",
+        "Escribe una función en Python que calcule la secuencia de Fibonacci"
+      ],
+      "relations": [
+        {
+          "type": "isInputTo",
+          "target": "urn:term:prompt-engineering:prompt-engineering",
+          "label": "Es entrada de",
+          "note": "El prompt es el objeto principal de la ingeniería de prompts."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:prompt-template",
+          "label": "Está relacionado con",
+          "note": "Un prompt puede ser una instancia de una plantilla de prompt."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:prompt-engineering",
+      "slug": "prompt-engineering",
+      "title": "Ingeniería de Prompts",
+      "category": "Fundamentos de Prompts",
+      "shortDefinition": "Proceso iterativo de diseñar, probar y refinar prompts para que un modelo de lenguaje produzca de forma fiable la salida deseada para una tarea.",
+      "fullDefinition": "La ingeniería de prompts es la práctica de estructurar entradas de lenguaje natural (prompts) para producir salidas específicas de un modelo generativo de IA. Implica entender cómo interpreta el modelo el lenguaje e incluir técnicas como few-shot prompting, chain-of-thought prompting y asignación de roles. Es un proceso iterativo que consiste en realizar inferencia en un conjunto de datos, evaluar el rendimiento y modificar la plantilla de prompt. No modifica los pesos del modelo; solo optimiza las entradas.",
+      "synonyms": ["Prompt Engineering", "Ingeniería de Instrucciones", "Diseño de Prompts"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "naturaleza": "Proceso iterativo de diseño y refinamiento",
+        "tecnicas": "Few-shot, chain-of-thought, asignación de roles"
+      },
+      "components": [
+        "Diseño del prompt inicial",
+        "Ejecución de inferencia sobre datos",
+        "Evaluación del rendimiento de la salida",
+        "Modificación de la plantilla de prompt"
+      ],
+      "applications": [
+        "Optimización de respuestas de LLM para tareas específicas",
+        "Creación de agentes conversacionales efectivos",
+        "Generación de contenido estructurado y confiable"
+      ],
+      "examples": [
+        "Refinar un prompt de clasificación de sentimientos añadiendo ejemplos etiquetados",
+        "Añadir instrucciones de razonamiento paso a paso a un prompt de resolución de problemas matemáticos"
+      ],
+      "relations": [
+        {
+          "type": "uses",
+          "target": "urn:term:prompt-engineering:prompt-concepto",
+          "label": "Utiliza",
+          "note": "La ingeniería de prompts diseña y refina prompts."
+        },
+        {
+          "type": "includes",
+          "target": "urn:term:prompt-engineering:few-shot-prompting",
+          "label": "Incluye",
+          "note": "El few-shot prompting es una técnica dentro de la ingeniería de prompts."
+        },
+        {
+          "type": "includes",
+          "target": "urn:term:prompt-engineering:chain-of-thought",
+          "label": "Incluye",
+          "note": "El chain-of-thought es una técnica dentro de la ingeniería de prompts."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:few-shot-prompting",
+      "slug": "few-shot-prompting",
+      "title": "Few-Shot Prompting",
+      "category": "Técnicas de Ingeniería de Prompts",
+      "shortDefinition": "Técnica de prompting que proporciona ejemplos de una tarea completada (exemplares o shots) dentro del prompt para guiar al modelo hacia el resultado deseado.",
+      "fullDefinition": "El few-shot prompting es una técnica en la que se incluyen uno o más ejemplos de una tarea ya resuelta dentro del prompt, para que el modelo aprenda por imitación el patrón esperado y lo aplique a la nueva entrada. Los ejemplos actúan como demostraciones que guían al modelo generativo para realizar la tarea sin modificar sus parámetros. Cuantos más ejemplos relevantes se proporcionen (hasta los límites de contexto del modelo), generalmente mejor es el rendimiento.",
+      "synonyms": ["Few-Shot Prompting", "Aprendizaje de Pocos Ejemplos", "Exemplar Prompting"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "numeroEjemplos": "Generalmente entre 1 y varios ejemplos dentro del límite de contexto",
+        "funcion": "Demostración por imitación del patrón esperado"
+      },
+      "components": [
+        "Ejemplos de entrada-salida (exemplares)",
+        "Instrucción de tarea opcional",
+        "Entrada para la cual se espera una salida"
+      ],
+      "applications": [
+        "Clasificación de texto con ejemplos etiquetados",
+        "Generación de código a partir de ejemplos de entrada-salida",
+        "Extracción de entidades con ejemplos de anotación"
+      ],
+      "examples": [
+        "Proporcionar 3 ejemplos de reseñas clasificadas como positivo/neutro/negativo antes de pedir la clasificación de una nueva reseña",
+        "Dar ejemplos de consultas en lenguaje natural traducidas a SQL antes de pedir una nueva traducción"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:prompt-engineering:prompt-engineering",
+          "label": "Es una técnica de",
+          "note": "El few-shot prompting es una técnica dentro de la ingeniería de prompts."
+        },
+        {
+          "type": "differsFrom",
+          "target": "urn:term:prompt-engineering:few-shot-prompting",
+          "label": "Se diferencia de",
+          "note": "El few-shot incluye ejemplos; el zero-shot no proporciona ningún ejemplo."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:chain-of-thought",
+      "slug": "chain-of-thought",
+      "title": "Chain-of-Thought Prompting",
+      "category": "Técnicas de Ingeniería de Prompts",
+      "shortDefinition": "Técnica de prompting que instruye al modelo a mostrar su proceso de razonamiento paso a paso antes de producir la respuesta final.",
+      "fullDefinition": "El chain-of-thought (CoT) prompting es una técnica que pide al modelo de lenguaje descomponer problemas complejos en pasos intermedios de razonamiento, generando una cadena de pensamiento antes de llegar a la conclusión final. Esto mejora significativamente el rendimiento en tareas que requieren razonamiento aritmético, lógico o de sentido común, al forzar al modelo a estructurar su pensamiento de manera explícita y verificable.",
+      "synonyms": ["Chain-of-Thought", "CoT", "Razonamiento Paso a Paso", "Pensamiento en Cadena"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "tipoTarea": "Razonamiento aritmético, lógico, sentido común",
+        "formato": "Cadena de pasos de razonamiento antes de la respuesta final"
+      },
+      "components": [
+        "Instrucción de razonamiento paso a paso",
+        "Pasos intermedios de pensamiento",
+        "Respuesta final derivada del razonamiento"
+      ],
+      "applications": [
+        "Resolución de problemas matemáticos",
+        "Razonamiento lógico y de sentido común",
+        "Tomas de decisiones complejas en agentes de IA"
+      ],
+      "examples": [
+        "Preguntar al modelo que resuelva un problema matemático mostrando cada paso del cálculo antes de dar la respuesta",
+        "Solicitar a un agente de IA que explique su razonamiento antes de recomendar una acción"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:prompt-engineering:prompt-engineering",
+          "label": "Es una técnica de",
+          "note": "El chain-of-thought es una técnica dentro de la ingeniería de prompts."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:chain-of-thought",
+          "label": "Está relacionado con",
+          "note": "Tree-of-thought extiende chain-of-thought explorando múltiples caminos de razonamiento."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:system-message",
+      "slug": "system-message",
+      "title": "Mensaje del Sistema",
+      "category": "Contexto y Mensajes del Sistema",
+      "shortDefinition": "Instrucción especializada proporcionada a un modelo de lenguaje que define su rol, comportamiento y parámetros de operación para la interacción subsiguiente.",
+      "fullDefinition": "Un mensaje del sistema (system message) es una instrucción de contexto proporcionada al modelo de lenguaje que define su rol, comportamiento y parámetros de operación para la interacción posterior. Suele tener prioridad superior frente a los mensajes del usuario regulares y se utiliza para establecer el tono, estilo, restricciones y reglas de la conversación. Es un elemento clave de la ingeniería de contexto, que gestiona los elementos no-prompt que acompañan a las entradas del usuario.",
+      "synonyms": ["System Message", "Instrucción del Sistema", "Mensaje de Sistema"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "prioridad": "Superior a los mensajes del usuario",
+        "propósito": "Definir rol, comportamiento, contexto y restricciones"
+      },
+      "components": [
+        "Definición del rol del modelo (por ejemplo, asistente, experto)",
+        "Instrucciones de comportamiento y tono",
+        "Reglas y restricciones de la interacción",
+        "Contexto inicial de la conversación"
+      ],
+      "applications": [
+        "Configurar asistentes de IA con roles específicos",
+        "Establecer restricciones de seguridad y estilo en conversaciones",
+        "Definir el comportamiento de agentes conversacionales"
+      ],
+      "examples": [
+        "Eres un asistente experto en programación Python. Responde de forma concisa y proporciona ejemplos de código.",
+        "Actúa como un traductor profesional entre español e inglés, manteniendo el tono formal."
+      ],
+      "relations": [
+        {
+          "type": "partOf",
+          "target": "urn:term:prompt-engineering:context-engineering",
+          "label": "Es parte de",
+          "note": "El mensaje del sistema es un componente clave de la ingeniería de contexto."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:prompt-concepto",
+          "label": "Está relacionado con",
+          "note": "El mensaje del sistema acompaña al prompt del usuario en la interacción."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:context-engineering",
+      "slug": "context-engineering",
+      "title": "Ingeniería de Contexto",
+      "category": "Contexto y Mensajes del Sistemas",
+      "shortDefinition": "Área de ingeniería de software enfocada en la gestión de los elementos de contexto que acompañan a los prompts, incluyendo instrucciones del sistema, conocimiento recuperado, definiciones de herramientas, resúmenes de conversación y metadatos de tarea.",
+      "fullDefinition": "La ingeniería de contexto es el área relacionada con la ingeniería de prompts que se enfoca en la gestión de los elementos de contexto no-prompt suministrados al modelo generativo. Incluye mensajes del sistema, conocimiento recuperado (RAG), definiciones de herramientas, resúmenes de conversación, metadatos de tarea y tokens. El objetivo es optimizar la información relevante disponible para el modelo en cada interacción, mejorando la precisión y relevancia de las respuestas sin modificar los pesos del modelo.",
+      "synonyms": ["Context Engineering", "Ingeniería de Contexto", "Gestión de Contexto de LLM"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "elementos": "Mensajes del sistema, conocimiento recuperado, definiciones de herramientas, resúmenes",
+        "objetivo": "Optimizar información relevante para el modelo en cada interacción"
+      },
+      "components": [
+        "Mensajes del sistema e instrucciones de rol",
+        "Conocimiento recuperado mediante RAG",
+        "Definiciones de herramientas y API disponibles",
+        "Resúmenes de conversación y estado de sesión",
+        "Metadatos de tarea y tokens de contexto"
+      ],
+      "applications": [
+        "Asistentes de IA con acceso a documentación empresarial",
+        "Agentes que usan herramientas externas mediante definiciones de contexto",
+        "Conversaciones de largo plazo con resumen de historial"
+      ],
+      "examples": [
+        "Un sistema RAG que recupera fragmentos de documentos relevantes y los incluye como contexto en el prompt",
+        "Un agente de programación que incluye definiciones de API y ejemplos de uso en el contexto del modelo"
+      ],
+      "relations": [
+        {
+          "type": "includes",
+          "target": "urn:term:prompt-engineering:system-message",
+          "label": "Incluye",
+          "note": "El mensaje del sistema es un componente de la ingeniería de contexto."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:prompt-concepto",
+          "label": "Está relacionado con",
+          "note": "La ingeniería de contexto complementa el diseño de prompts con elementos no-prompt."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:prompt-template",
+      "slug": "prompt-template",
+      "title": "Plantilla de Prompt",
+      "category": "Fundamentos de Prompts",
+      "shortDefinition": "Función o estructura que contiene una o más variables que son reemplazadas por contenido específico para crear un prompt concreto.",
+      "fullDefinition": "Una plantilla de prompt es una estructura que contiene una o más variables que se sustituyen por medios (generalmente texto) para crear un prompt específico. Permite crear prompts consistentes y reutilizables donde partes fijas de la instrucción se combinan con contenido variable. Las plantillas son fundamentales para la ingeniería de prompts sistemática, permitiendo aplicar la misma estructura de instrucción a diferentes entradas.",
+      "synonyms": ["Prompt Template", "Plantilla de Instrucción", "Prompt Pattern"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "variables": "Uno o más placeholders reemplazados por contenido dinámico",
+        "reutilizabilidad": "Misma estructura aplicada a diferentes entradas"
+      },
+      "components": [
+        "Texto fijo de la plantilla",
+        "Variables o placeholders para contenido dinámico",
+        "Reglas de sustitución de variables"
+      ],
+      "applications": [
+        "Generación de prompts consistentes para tareas repetitivas",
+        "Sistemas de prompts parametrizados en aplicaciones de IA",
+        "Creación de flujos de prompts reutilizables"
+      ],
+      "examples": [
+        "Una plantilla de traducción: 'Traduce el siguiente texto de {idioma_origen} a {idioma_destino}: {texto}'",
+        "Una plantilla de clasificación: 'Clasifica el siguiente texto en {categorias}: {texto_entrada}'"
+      ],
+      "relations": [
+        {
+          "type": "usedToCreate",
+          "target": "urn:term:prompt-engineering:prompt-concepto",
+          "label": "Se utiliza para crear",
+          "note": "Una plantilla de prompt se instancia con variables para crear un prompt concreto."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:prompt-engineering",
+          "label": "Está relacionado con",
+          "note": "Las plantillas de prompt son una herramienta fundamental en la ingeniería de prompts."
+        }
+      ]
+    }
+  ]
+}

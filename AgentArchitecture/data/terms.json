@@ -1,0 +1,420 @@
+{
+  "id": "agent-architecture",
+  "title": "Arquitectura de Agentes & Sistemas Multiagente",
+  "slug": "agent-architecture",
+  "version": "1.0.0",
+  "description": "Glosario canónico de arquitecturas de agentes software, sistemas multiagente, modelos mentales BDI, sensores y efectores, roles, compromisos y ontologías de agentes para arquitecturas orientadas a agentes.",
+  "language": "es",
+  "license": "Local Knowledge Base - Internal Project Use",
+  "canonicalTerms": [
+    {
+      "id": "urn:term:agent-architecture:agent",
+      "slug": "agent",
+      "title": "Agente Software",
+      "category": "Agentes y Autonomía",
+      "shortDefinition": "Entidad de software situada en un entorno capaz de acción autónoma flexible para cumplir sus objetivos de diseño.",
+      "fullDefinition": "Un agente software es una entidad computacional autónoma que percibe su entorno a través de sensores, actúa sobre él mediante efectores, y puede operar de forma independiente para alcanzar objetivos específicos sin intervención continua de un usuario humano. Se caracteriza por autonomía, reactividad, proactividad y habilidad social.",
+      "synonyms": ["Agente", "Agente Software", "Software Agent"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "propiedadesClave": "Autonomía, reactividad, proactividad, habilidad social",
+        "paradigma": "Programación Orientada a Agentes (AOP)"
+      },
+      "components": [
+        "Módulo de percepción (sensores)",
+        "Módulo de acción (efectores)",
+        "Base de conocimientos local",
+        "Motor de toma de decisiones"
+      ],
+      "applications": [
+        "Sistemas multiagente distribuidos",
+        "Asistentes virtuales autónomos",
+        "Robótica y sistemas embebidos inteligentes"
+      ],
+      "examples": [
+        "Un agente de navegación que percibe obstáculos y ajusta su ruta en tiempo real",
+        "Un agente de negociación electrónica que representa a un usuario en subastas automatizadas"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:agent-architecture:multi-agent-system",
+          "label": "Es un componente de",
+          "note": "Un agente es la unidad básica que compone un sistema multiagente."
+        },
+        {
+          "type": "hasComponent",
+          "target": "urn:term:agent-architecture:sensor",
+          "label": "Tiene como componente",
+          "note": "El agente percibe el entorno mediante sensores."
+        },
+        {
+          "type": "hasComponent",
+          "target": "urn:term:agent-architecture:effector",
+          "label": "Tiene como componente",
+          "note": "El agente actúa sobre el entorno mediante efectores."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:multi-agent-system",
+      "slug": "multi-agent-system",
+      "title": "Sistema Multiagente (MAS)",
+      "category": "Interacción Multiagente",
+      "shortDefinition": "Organización compuesta por agentes autónomos y proactivos que interactúan entre sí para alcanzar objetivos comunes o privados.",
+      "fullDefinition": "Un Sistema Multiagente (MAS) es una colección de entidades computacionales autónomas, posiblemente heterogéneas, cada una con capacidades propias de resolución de problemas, capaces de interactuar entre sí mediante protocolos y lenguajes de alto nivel para alcanzar una meta global. Las interacciones típicas incluyen cooperación, coordinación y negociación.",
+      "synonyms": ["Sistema de Agentes Múltiples", "MAS", "Multi-Agent System"],
+      "level": "arquitectura",
+      "status": "canonical",
+      "attributes": {
+        "naturaleza": "Descentralizada y posiblemente heterogénea",
+        "tiposInteraccion": "Cooperación, coordinación, negociación"
+      },
+      "components": [
+        "Agentes autónomos",
+        "Protocolo de comunicación entre agentes",
+        "Infraestructura de conocimiento y recursos",
+        "Topología de configuración"
+      ],
+      "applications": [
+        "Simulaciones de tráfico y transporte",
+        "Comercio electrónico y subastas automatizadas",
+        "Sistemas de gestión de energía distribuida"
+      ],
+      "examples": [
+        "Un MAS de robots coordinados para exploración de terrenos desconocidos",
+        "Agentes de negociación en mercados electrónicos de energía"
+      ],
+      "relations": [
+        {
+          "type": "composedOf",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Está compuesto por",
+          "note": "Un MAS es una organización de múltiples agentes autónomos."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:agent-architecture:role",
+          "label": "Depende de",
+          "note": "Los agentes dentro del MAS desempeñan roles definidos con responsabilidades específicas."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:commitment",
+          "label": "Está relacionado con",
+          "note": "Los compromisos modelan obligaciones entre agentes en el MAS."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:bdi-agent",
+      "slug": "bdi-agent",
+      "title": "Agente BDI (Beliefs-Desires-Intentions)",
+      "category": "Arquitecturas de Agentes",
+      "shortDefinition": "Modelo de arquitectura de agente basado en creencias, deseos e intenciones para razonamiento práctico y toma de decisiones autónoma.",
+      "fullDefinition": "El modelo BDI es una arquitectura de agente software donde el estado mental del agente se representa mediante tres componentes: creencias (lo que el agente cree sobre el mundo), deseos (objetivos o estados preferidos) e intenciones (planes comprometidos que el agente está ejecutando). Permite razonamiento práctico deliberado y ejecución de planes para alcanzar objetivos.",
+      "synonyms": ["BDI", "Beliefs-Desires-Intentions", "Agente BDI"],
+      "level": "teorico-avanzado",
+      "status": "canonical",
+      "attributes": {
+        "componentes": "Creencias, Deseos, Intenciones",
+        "ciclo": "Percepción -> Deliberación -> Medios-fines -> Ejecución"
+      },
+      "components": [
+        "Base de creencias (Belief Base)",
+        "Base de deseos o objetivos (Goal Base)",
+        "Base de intenciones o planes (Intention/Plan Base)",
+        "Función de deliberación y selección de planes"
+      ],
+      "applications": [
+        "Agentes de negociación autónoma",
+        "Sistemas de planificación automática",
+        "Agentes de control en sistemas críticos"
+      ],
+      "examples": [
+        "Un agente BDI que planifica una ruta de entrega ajustándose a creencias sobre tráfico en tiempo real",
+        "Un agente de gestión de crisis que adopta intenciones basadas en nuevas informaciones del entorno"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Es un tipo de",
+          "note": "El agente BDI es una arquitectura concreta de agente software."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:agent-architecture:goal",
+          "label": "Depende de",
+          "note": "Las intenciones del agente BDI derivan de sus deseos y objetivos."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:commitment",
+          "label": "Está relacionado con",
+          "note": "Las intenciones del agente BDI generan compromisos hacia otros agentes."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:reactive-agent",
+      "slug": "reactive-agent",
+      "title": "Agente Reactivo",
+      "category": "Arquitecturas de Agentes",
+      "shortDefinition": "Agente que responde a estímulos del entorno sin razonamiento deliberativo interno, priorizando tiempo de respuesta bajo sobre planificación compleja.",
+      "fullDefinition": "Un agente reactivo es una arquitectura de agente que renuncia a la representación simbólica interna y al razonamiento deliberativo, respondiendo directamente a percepciones del entorno mediante reglas condición-acción (stimulus-response). Es adecuado para entornos dinámicos donde el tiempo de respuesta es crítico y no requiere planificación a largo plazo.",
+      "synonyms": ["Agente Reactivo", "Reactive Agent", "Agente de Respuesta a Estímulos"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "modelo": "Reglas condición-acción (if-then)",
+        "tiempoRespuesta": "Baja latencia, adecuado para entornos dinámicos"
+      },
+      "components": [
+        "Sensores de percepción",
+        "Reglas condición-acción",
+        "Efectores de acción directa"
+      ],
+      "applications": [
+        "Control de robots reactivos en tiempo real",
+        "Sistemas de evitación de obstáculos",
+        "Agentes de control de procesos industriales"
+      ],
+      "examples": [
+        "Un robot aspirador que cambia de dirección al detectar una pared",
+        "Un agente de control de semáforos que responde al flujo de tráfico"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Es un tipo de",
+          "note": "El agente reactivo es una clase de arquitectura de agente."
+        },
+        {
+          "type": "differsFrom",
+          "target": "urn:term:agent-architecture:bdi-agent",
+          "label": "Se diferencia de",
+          "note": "A diferencia del agente BDI, el agente reactivo no delibera ni mantiene estado simbólico interno."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:sensor",
+      "slug": "sensor",
+      "title": "Sensor de Agente",
+      "category": "Agentes y Autonomía",
+      "shortDefinition": "Componente de un agente que percibe el entorno y proporciona datos de entrada para la toma de decisiones.",
+      "fullDefinition": "Un sensor es la interfaz de percepción de un agente software que captura información del entorno externo o interno y la convierte en señales o datos interpretables por el agente. El sensor requiere un conjunto de servicios del entorno para funcionar y constituye el canal de entrada del agente en su interacción con el mundo.",
+      "synonyms": ["Sensor", "Perceptor", "Módulo de Percepción"],
+      "level": "estructural",
+      "status": "canonical",
+      "attributes": {
+        "funcion": "Entrada de datos del entorno al agente",
+        "tipoDatos": "Puede ser discreto o continuo, estructurado o no estructurado"
+      },
+      "components": [
+        "Interfaz de captura de datos",
+        "Procesamiento de señal de entrada",
+        "Adaptador al formato interno del agente"
+      ],
+      "applications": [
+        "Cámaras y LiDAR en robots autónomos",
+        "APIs de datos de mercado en agentes financieros",
+        "Sensores de red en agentes de monitorización"
+      ],
+      "examples": [
+        "Un sensor de temperatura que alimenta datos a un agente de control climático",
+        "Un sensor de visión que permite a un agente navegar un entorno físico"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Se utiliza para",
+          "note": "El agente utiliza el sensor para percibir su entorno."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:effector",
+          "label": "Está relacionado con",
+          "note": "Sensores y efectores forman la interfaz completa del agente con el entorno."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:effector",
+      "slug": "effector",
+      "title": "Efector de Agente",
+      "category": "Agentes y Autonomía",
+      "shortDefinition": "Componente de un agente que actúa sobre el entorno, proporcionando servicios o realizando acciones concretas.",
+      "fullDefinition": "Un efectoor es la interfaz de acción de un agente software que ejecuta operaciones sobre el entorno externo. Proporciona al entorno un conjunto de servicios y constituye el canal de salida del agente. Mientras los sensores captan información, los efectores materializan las decisiones del agente en cambios del mundo.",
+      "synonyms": ["Effector", "Actuador", "Módulo de Acción"],
+      "level": "estructural",
+      "status": "canonical",
+      "attributes": {
+        "funcion": "Salida de acciones del agente al entorno",
+        "tipoAccion": "Puede ser física (movimiento) o digital (envío de mensajes, llamadas API)"
+      },
+      "components": [
+        "Interfaz de ejecución de acciones",
+        "Traductores de decisión interna a acción externa",
+        "Mecanismos de retroalimentación de ejecución"
+      ],
+      "applications": [
+        "Motores y actuadores en robótica",
+        "Envío de comandos API en agentes de automatización",
+        "Generación de respuestas en agentes conversacionales"
+      ],
+      "examples": [
+        "Un brazo robótico que mueve un objeto bajo control de un agente",
+        "Un agente de correo electrónico que envía mensajes automáticamente"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Se utiliza para",
+          "note": "El agente utiliza el efector para actuar sobre su entorno."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:sensor",
+          "label": "Está relacionado con",
+          "note": "Efectores y sensores forman la interfaz completa del agente con el entorno."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:role",
+      "slug": "role",
+      "title": "Rol de Agente",
+      "category": "Interacción Multiagente",
+      "shortDefinition": "Conjunto de servicios y responsabilidades que un agente desempeña dentro de un sistema multiagente.",
+      "fullDefinition": "Un rol define las capacidades, habilidades y responsabilidades que un agente debe tener para realizar una tarea dentro de un MAS. Un agente puede desempeñar uno o varios roles simultáneamente, y los roles organizan la estructura social y funcional del sistema multiagente, definiendo quién hace qué y con qué recursos.",
+      "synonyms": ["Role", "Rol", "Función de Agente"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "cardinalidad": "Un agente puede desempeñar múltiples roles",
+        "ambito": "Define responsabilidades y servicios provistos"
+      },
+      "components": [
+        "Servicios proporcionados por el agente",
+        "Responsabilidades asignadas",
+        "Capacidades y habilidades requeridas"
+      ],
+      "applications": [
+        "Organización de equipos de agentes de software",
+        "Asignación de tareas en MAS de fabricación",
+        "Gestión de permisos y autorizaciones en sistemas multiagente"
+      ],
+      "examples": [
+        "Un agente que desempeña el rol de coordinador en un MAS de logística",
+        "Un agente con el rol de validador en una red de agentes de consenso"
+      ],
+      "relations": [
+        {
+          "type": "isPlayedBy",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Es desempeñado por",
+          "note": "Un rol es desempeñado por uno o más agentes en el MAS."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:agent-architecture:multi-agent-system",
+          "label": "Depende de",
+          "note": "Los roles adquieren significado dentro del contexto de un MAS."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:goal",
+      "slug": "goal",
+      "title": "Objetivo de Agente",
+      "category": "Agentes y Autonomía",
+      "shortDefinition": "Estado deseado o meta que un agente se compromete a alcanzar mediante su comportamiento autónomo.",
+      "fullDefinition": "Un objetivo representa un estado preferido del mundo que el agente desea lograr. En arquitecturas de agentes como BDI, los objetivos guían la deliberación y la selección de planes. Los objetivos pueden ser de logro (achievement), mantenimiento (maintenance) o evitación (avoidance), y pueden ser adoptados, abandonados o suspendidos según las creencias del agente sobre el entorno.",
+      "synonyms": ["Goal", "Objetivo", "Meta del Agente"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "tipos": "Logro, mantenimiento, evitación",
+        "estado": "Adoptado, activo, completado, abandonado"
+      },
+      "components": [
+        "Descripción del estado deseado",
+        "Criterios de satisfacción",
+        "Prioridad y urgencia"
+      ],
+      "applications": [
+        "Planificación automática de agentes",
+        "Gestión de tareas en sistemas multiagente",
+        "Toma de decisiones basada en objetivos"
+      ],
+      "examples": [
+        "Un agente de entrega con el objetivo de entregar un paquete antes de las 18:00",
+        "Un agente de refrigeración con el objetivo de mantener la temperatura por debajo de 25°C"
+      ],
+      "relations": [
+        {
+          "type": "adoptedBy",
+          "target": "urn:term:agent-architecture:bdi-agent",
+          "label": "Es adoptado por",
+          "note": "Un agente BDI adopta objetivos como deseos que se convierten en intenciones."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:commitment",
+          "label": "Está relacionado con",
+          "note": "Los objetivos de un agente pueden generar compromisos hacia otros agentes."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:commitment",
+      "slug": "commitment",
+      "title": "Compromiso de Agente",
+      "category": "Interacción Multiagente",
+      "shortDefinition": "Obligación formal que un agente asume hacia otro dentro de un sistema multiagente, modelando interacciones confiables y responsables.",
+      "fullDefinition": "Un compromiso es una obligación semántica que un agente (deudor) contrae con otro agente (acreedor) sobre la realización de una acción o el logro de un estado. Los compromisos son fundamentales en ontologías de agentes como OASIS para representar interacciones confiables, permitiendo que los agentes razonen sobre las responsabilidades de sus pares sin conocer sus detalles internos de implementación.",
+      "synonyms": ["Commitment", "Compromiso", "Obligación Agente-Agente"],
+      "level": "teorico-avanzado",
+      "status": "canonical",
+      "attributes": {
+        "partes": "Deudor (deudor) y acreedor",
+        "estados": "Activo, cumplido, liberado, expirado, violado"
+      },
+      "components": [
+        "Agente deudor que asume el compromiso",
+        "Agente acreedor al que se debe el compromiso",
+        "Condición de cumplimiento o acción esperada",
+        "Estado del compromiso"
+      ],
+      "applications": [
+        "Contratos electrónicos entre agentes autónomos",
+        "Protocolos de negociación en MAS",
+        "Gestión de responsabilidades en sistemas multiagente abiertos"
+      ],
+      "examples": [
+        "Un agente de venta se compromete a entregar un producto al agente comprador tras recibir el pago",
+        "Un agente de transporte se compromete a entregar una mercancía en una fecha determinada"
+      ],
+      "relations": [
+        {
+          "type": "assumedBy",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Es asumido por",
+          "note": "Un compromiso es asumido por un agente deudor hacia un acreedor."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:multi-agent-system",
+          "label": "Está relacionado con",
+          "note": "Los compromisos son la base de la interacción confiable en un MAS."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,313 @@
+{
+  "id": "ai-augmented-engineering",
+  "title": "Ingeniería de Software Aumentada por IA",
+  "slug": "ai-augmented-engineering",
+  "version": "1.0.0",
+  "description": "Glosario canónico de ingeniería de software aumentada por IA, cubriendo desarrollo asistido y aumentado, ciclo de vida impulsado por IA, agentes de ingeniería, copilotos, gobernanza de salidas de IA y validación humana en el bucle.",
+  "language": "es",
+  "license": "Local Knowledge Base - Internal Project Use",
+  "canonicalTerms": [
+    {
+      "id": "urn:term:ai-augmented-engineering:ai-augmented-development",
+      "slug": "ai-augmented-development",
+      "title": "Desarrollo Aumentado por IA",
+      "category": "Desarrollo Aumentado por IA",
+      "shortDefinition": "Integración estructural de IA a lo largo de todo el ciclo de vida del software, con presencia de IA en cada etapa y puertas de validación que garantizan la calidad de la salida.",
+      "fullDefinition": "El desarrollo aumentado por IA (AI-augmented development) va más allá del simple autocomplete dentro del editor. Integra la IA en todas las etapas del ciclo de vida del software: descubrimiento, especificación, construcción, pruebas, revisión, despliegue y operación. Se caracteriza por ser estructural (la IA está presente en cada etapa con metadatos que registran su contribución) y disciplinado (puertas de CI validan la salida de la IA antes de que se fusione).",
+      "synonyms": ["AI-Augmented Development", "Ingeniería Aumentada por IA", "AI-Augmented Software Engineering"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "alcance": "Todo el ciclo de vida del software (SDLC)",
+        "disciplina": "Estructural, con puertas de validación y metadatos de contribución"
+      },
+      "components": [
+        "IDE agente que planifica cambios multi-archivo",
+        "Servidores MCP para contexto de herramientas",
+        "Especificación como artefacto de primera clase",
+        "Puertas de CI que validan salida de IA"
+      ],
+      "applications": [
+        "Entrega de software 40-50% más rápida en proyectos aumentados",
+        "Reducción de carga cognitiva del ingeniero",
+        "Mejora de tasas de defectos y aceptación"
+      ],
+      "examples": [
+        "Un IDE agente que lee múltiples archivos, propone un plan de cambios y abre un pull request para aprobación humana",
+        "Un pipeline CI que rechaza código generado por IA si no pasa pruebas de seguridad y estándares"
+      ],
+      "relations": [
+        {
+          "type": "differsFrom",
+          "target": "urn:term:ai-augmented-engineering:ai-assisted-development",
+          "label": "Se diferencia de",
+          "note": "El desarrollo aumentado es estructural y de ciclo completo; el asistido es oportunista y limitado al editor."
+        },
+        {
+          "type": "uses",
+          "target": "urn:term:ai-augmented-engineering:human-in-the-loop",
+          "label": "Utiliza",
+          "note": "La validación humana es una puerta obligatoria en el desarrollo aumentado por IA."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:ai-assisted-development",
+      "slug": "ai-assisted-development",
+      "title": "Desarrollo Asistido por IA",
+      "category": "Desarrollo Aumentado por IA",
+      "shortDefinition": "Uso oportunista de herramientas de IA dentro del editor para sugerencias de código, autocompletado y explicaciones, con el desarrollador en control total.",
+      "fullDefinition": "El desarrollo asistido por IA (AI-assisted development) se limita al uso de IA para autocompletado de declaraciones y bloques cortos, refactorizaciones dentro de un archivo, generación de plantillas cuando el ingeniero lo solicita, y explicación de código o mensajes de error. Es oportunista: el ingeniero recurre a la IA cuando le resulta útil, sin integración estructural en el ciclo de vida.",
+      "synonyms": ["AI-Assisted Development", "Desarrollo Asistido por IA", "Coding Assistant"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "alcance": "Limitado al editor y al archivo actual",
+        "disciplina": "Oportunista, a petición del ingeniero"
+      },
+      "components": [
+        "Autocompletado en línea",
+        "Sugerencias de refactorización",
+        "Explicación de código y errores",
+        "Generación de plantillas bajo demanda"
+      ],
+      "applications": [
+        "Escritura rápida de código repetitivo",
+        "Comprensión de código desconocido",
+        "Depuración asistida de errores locales"
+      ],
+      "examples": [
+        "GitHub Copilot sugeriendo completado de una función mientras el desarrollador escribe",
+        "Un chat integrado en el IDE que explica un mensaje de error del compilador"
+      ],
+      "relations": [
+        {
+          "type": "differsFrom",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Se diferencia de",
+          "note": "El desarrollo asistido es limitado al editor; el aumentado cubre todo el ciclo de vida con gobernanza."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:ai-dlc",
+      "slug": "ai-dlc",
+      "title": "Ciclo de Vida Impulsado por IA (AI-DLC)",
+      "category": "Ciclo de Vida Impulsado por IA",
+      "shortDefinition": "Metodología de desarrollo de software construida en torno a la IA, tratando al modelo de lenguaje como colaborador activo en cada etapa del SDLC.",
+      "fullDefinition": "El AI-DLC (AI-Driven Development Lifecycle) es una ampliación del ciclo de vida tradicional de desarrollo de software donde la IA no es solo una herramienta de generación de código, sino un colaborador activo en todas las etapas. Los ingenieros humanos pasan a un rol más supervisorio, describiendo intenciones mientras la IA planifica, ejecuta, valida y mantiene, buscando activamente aprobación humana. Enfatiza el desarrollo basado en especificaciones (Spec-Driven Development) y unidades de trabajo derivadas de intenciones.",
+      "synonyms": ["AI-DLC", "AI-Driven Development Lifecycle", "Ciclo de Vida Impulsado por IA"],
+      "level": "arquitectura",
+      "status": "canonical",
+      "attributes": {
+        "modeloColaboracion": "IA como colaborador activo, humano como supervisor",
+        "enfoque": "Intenciones en lugar de procesos rígidos"
+      },
+      "components": [
+        "Especificación como artefacto de aceptación",
+        "Unidades de trabajo derivadas de intenciones",
+        "Iteraciones (bolts) de ejecución de unidades",
+        "Validación humana en el bucle"
+      ],
+      "applications": [
+        "Desarrollo de software donde la IA planifica y ejecuta cambios multi-archivo",
+        "Equipos donde los ingenieros supervisan en lugar de escribir cada línea",
+        "Proyectos con especificaciones abiertas implementadas por IA"
+      ],
+      "examples": [
+        "Un ingeniero describe la intención de una característica y la IA crea un plan, ejecuta, valida y pide aprobación antes de fusionar",
+        "Un sistema AI-DLC que mantiene un código base corrigiendo errores y refactorizando de forma proactiva"
+      ],
+      "relations": [
+        {
+          "type": "isPartOf",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Es parte de",
+          "note": "El AI-DLC es una metodología concreta dentro del desarrollo aumentado por IA."
+        },
+        {
+          "type": "uses",
+          "target": "urn:term:ai-augmented-engineering:spec-driven-development",
+          "label": "Utiliza",
+          "note": "El AI-DLC se basa en el desarrollo impulsado por especificaciones."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:genai-copilot",
+      "slug": "genai-copilot",
+      "title": "Copiloto GenAI",
+      "category": "Agentes y Copilotos de Ingeniería",
+      "shortDefinition": "Herramienta de IA generativa integrada en el IDE o pipeline CI/CD que automatiza tareas de ingeniería de software bajo supervisión del desarrollador.",
+      "fullDefinition": "Un Copiloto GenAI es una herramienta de IA —ya sea independiente o integrada en un IDE o pipeline CI/CD— que automatiza diversas tareas de ingeniería de software como elicitación de requisitos, generación de código, creación de pruebas y reparación de programas. Opera como una herramienta bajo control del desarrollador, no como un agente autónomo con su propio hilo de control.",
+      "synonyms": ["GenAI Copilot", "Copiloto de IA", "AI Coding Assistant"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "rol": "Herramienta bajo control del desarrollador",
+        "tareas": "Requisitos, generación de código, pruebas, reparación de programas"
+      },
+      "components": [
+        "Modelo de lenguaje grande (LLM) como motor",
+        "Integración con IDE o pipeline CI/CD",
+        "Contexto del repositorio para sugerencias relevantes",
+        "Interfaz de aceptación o rechazo del desarrollador"
+      ],
+      "applications": [
+        "Generación de código a partir de descripciones en lenguaje natural",
+        "Creación automática de casos de prueba",
+        "Reparación automática de errores detectados en pruebas"
+      ],
+      "examples": [
+        "GitHub Copilot generando una función completa a partir de un comentario",
+        "Un copiloto que escribe pruebas unitarias para una función existente"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:ai-augmented-engineering:ai-assisted-development",
+          "label": "Es un tipo de",
+          "note": "Un copiloto GenAI es una forma concreta de desarrollo asistido por IA."
+        },
+        {
+          "type": "differsFrom",
+          "target": "urn:term:ai-augmented-engineering:genai-teammate",
+          "label": "Se diferencia de",
+          "note": "El copiloto es una herramienta reactiva; el compañero de equipo GenAI actúa de forma proactiva y autónoma."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:genai-teammate",
+      "slug": "genai-teammate",
+      "title": "Compañero de Equipo GenAI",
+      "category": "Agentes y Copilotos de Ingeniería",
+      "shortDefinition": "Agente GenAI (semi)autónomo y orientado a objetivos que participa proactivamente en el proceso de desarrollo de software como miembro del equipo.",
+      "fullDefinition": "Un Compañero de Equipo GenAI es un agente GenAI (semi)autónomo y orientado a objetivos que colabora con ingenieros de software humanos en flujos de trabajo reales. A diferencia de un copiloto, que espera instrucciones, el compañero de equipo tiene su propio hilo de control y puede iniciar, revisar y evolucionar código de forma proactiva, actuando en roles como programador autónomo, revisor o mantenedor dentro de ecosistemas de código abierto.",
+      "synonyms": ["GenAI Teammate", "Compañero de Equipo de IA", "Agente de Ingeniería Autónomo"],
+      "level": "arquitectura",
+      "status": "canonical",
+      "attributes": {
+        "nivelAutonomia": "Semi-autónomo a autónomo",
+        "rol": "Participa como miembro del equipo de ingeniería"
+      },
+      "components": [
+        "Agente GenAI con hilo de control propio",
+        "Capacidad de iniciación proactiva de tareas",
+        "Integración con flujos de trabajo de desarrollo (PRs, issues, CI)",
+        "Colaboración en tiempo real con ingenieros humanos"
+      ],
+      "applications": [
+        "Agentes de programación autónomos que abren y cierran issues",
+        "Revisión automática de pull requests por agentes de IA",
+        "Mantenimiento proactivo de código base en ecosistemas open source"
+      ],
+      "examples": [
+        "Un agente GenAI que inicia, revisa y evoluciona código en repositorios de código abierto",
+        "Un compañero de equipo IA que asigna y resuelve tareas de desarrollo de forma autónoma"
+      ],
+      "relations": [
+        {
+          "type": "differsFrom",
+          "target": "urn:term:ai-augmented-engineering:genai-copilot",
+          "label": "Se diferencia de",
+          "note": "El compañero de equipo es proactivo y autónomo; el copiloto es reactivo y bajo control del desarrollador."
+        },
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Es un tipo de",
+          "note": "Un compañero de equipo GenAI es una forma avanzada de desarrollo aumentado por IA."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:human-in-the-loop",
+      "slug": "human-in-the-loop",
+      "title": "Humano en el Bucle",
+      "category": "Gobernanza y Validación de Salidas de IA",
+      "shortDefinition": "Validación y supervisión humana de las decisiones y salidas de la IA, asegurando que el juicio humano intervenga antes de que el código generado por IA se integre al producto.",
+      "fullDefinition": "El humano en el bucle (human-in-the-loop) es un principio de gobernanza en el desarrollo aumentado por IA donde las decisiones y resultados de la IA deben ser revisados, aprobados o rechazados por un ingeniero humano antes de ser integrados. Esto incluye revisión de código, pruebas estáticas, análisis de seguridad y validación de criterios de aceptación. El objetivo es asegurar que la salida de la IA se integre porque pasó validación, no por defecto.",
+      "synonyms": ["Human-in-the-Loop", "Validación Humana", "Supervisión Humana"],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "funcion": "Control de calidad y responsabilidad",
+        "alcance": "Revisión de código, pruebas, seguridad, criterios de aceptación"
+      },
+      "components": [
+        "Revisión humana de código generado por IA",
+        "Análisis estático y pruebas de seguridad",
+        "Puertas de CI que bloquean integración sin aprobación",
+        "Metadatos de atribución de contribución de IA"
+      ],
+      "applications": [
+        "Prevención de vulnerabilidades de seguridad en código generado por IA",
+        "Mantenimiento de estándares de código en proyectos asistidos por IA",
+        "Trazabilidad de contribuciones de IA vs humanas"
+      ],
+      "examples": [
+        "Un pipeline CI que rechaza un pull request generado por IA hasta que un humano lo apruebe",
+        "Un ingeniero que revisa y modifica una sugerencia de código de Copilot antes de aceptarla"
+      ],
+      "relations": [
+        {
+          "type": "usedBy",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Es utilizado por",
+          "note": "El desarrollo aumentado por IA depende de la validación humana en el bucle."
+        },
+        {
+          "type": "isPartOf",
+          "target": "urn:term:ai-augmented-engineering:ai-dlc",
+          "label": "Es parte de",
+          "note": "El AI-DLC enfatiza la validación humana como paso obligatorio."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:spec-driven-development",
+      "slug": "spec-driven-development",
+      "title": "Desarrollo Basado en Especificaciones",
+      "category": "Ciclo de Vida Impulsado por IA",
+      "shortDefinition": "Metodología donde la especificación es un artefacto de primera clase y los criterios de aceptación; la IA implementa contra la especificación, que define lo que se debe construir.",
+      "fullDefinition": "El desarrollo basado en especificaciones (Spec-Driven Development, SDD) es un enfoque donde la especificación se trata como el artefacto central y los criterios de aceptación del sistema. La IA implementa contra la especificación en lugar de seguir procesos rígidos. Las intenciones se derivan en unidades de trabajo que representan el camino de la IA hacia el cumplimiento de esas especificaciones, permitiendo que la IA determine la mejor implementación que cumpla con los requisitos.",
+      "synonyms": ["Spec-Driven Development", "SDD", "Desarrollo Impulsado por Especificaciones"],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "artefactoCentral": "Especificación como criterios de aceptación",
+        "rolDeIA": "Implementa contra la especificación dada"
+      },
+      "components": [
+        "Especificación escrita y versionada",
+        "Criterios de aceptación medibles",
+        "Unidades de trabajo derivadas de intenciones",
+        "Validación de la implementación contra la especificación"
+      ],
+      "applications": [
+        "Proyectos donde la IA construye funcionalidad a partir de especificaciones",
+        "Equipos que separan definición de requisitos de implementación",
+        "Desarrollo donde la IA determina la mejor implementación para cumplir requisitos"
+      ],
+      "examples": [
+        "Un equipo escribe una especificación OpenAPI y la IA implementa el servicio que cumple con ella",
+        "Un ingeniero describe el comportamiento deseado y la IA genera el código y las pruebas que lo validan"
+      ],
+      "relations": [
+        {
+          "type": "usedBy",
+          "target": "urn:term:ai-augmented-engineering:ai-dlc",
+          "label": "Es utilizado por",
+          "note": "El AI-DLC se basa en el desarrollo basado en especificaciones."
+        },
+        {
+          "type": "isPartOf",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Es parte de",
+          "note": "El SDD es una práctica dentro del desarrollo aumentado por IA."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "agent-architecture",
+  "title": "Arquitectura de Agentes & Sistemas Multiagente",
+  "slug": "agent-architecture",
+  "version": "1.0.0",
+  "created": "2026-11-02T00:00:00Z",
+  "updated": "2026-11-02T00:00:00Z",
+  "license": "Local Knowledge Base",
+  "author": "DocWeb Knowledge Team",
+  "domain": "Software Agents, Multi-Agent Systems, Agent-Oriented Architecture",
+  "categories": [
+    "Agentes y Autonomía",
+    "Arquitecturas de Agentes",
+    "Interacción Multiagente",
+    "Ontologías de Agentes"
+  ]
+}

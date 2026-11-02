@@ -99,9 +99,57 @@
         "Síntesis Temporal & Video Neuronal",
         "Alineación, Guía & Muestreo"
       ]
+    },
+    {
+      "id": "agent-architecture",
+      "slug": "agent-architecture",
+      "title": "Arquitectura de Agentes & Sistemas Multiagente",
+      "description": "Glosario canónico de arquitecturas de agentes software, sistemas multiagente, modelos mentales BDI, sensores y efectores, roles, compromisos y ontologías de agentes para arquitecturas orientadas a agentes.",
+      "dataPath": "./AgentArchitecture/data/terms.json",
+      "metadataPath": "./AgentArchitecture/data/glossary.json",
+      "domain": "Software Agents, Multi-Agent Systems, Agent-Oriented Architecture",
+      "termCount": 9,
+      "categories": [
+        "Agentes y Autonomía",
+        "Arquitecturas de Agentes",
+        "Interacción Multiagente",
+        "Ontologías de Agentes"
+      ]
+    },
+    {
+      "id": "ai-augmented-engineering",
+      "slug": "ai-augmented-engineering",
+      "title": "Ingeniería de Software Aumentada por IA",
+      "description": "Glosario canónico de ingeniería de software aumentada por IA, cubriendo desarrollo asistido y aumentado, ciclo de vida impulsado por IA, agentes de ingeniería, copilotos, gobernanza de salidas de IA y validación humana en el bucle.",
+      "dataPath": "./AIAugmentedEngineering/data/terms.json",
+      "metadataPath": "./AIAugmentedEngineering/data/glossary.json",
+      "domain": "AI-Augmented Software Development, LLM-Assisted Engineering, Agentic IDEs",
+      "termCount": 7,
+      "categories": [
+        "Desarrollo Aumentado por IA",
+        "Ciclo de Vida Impulsado por IA",
+        "Agentes y Copilotos de Ingeniería",
+        "Gobernanza y Validación de Salidas de IA"
+      ]
+    },
+    {
+      "id": "prompt-engineering",
+      "slug": "prompt-engineering",
+      "title": "Ingeniería de Prompts",
+      "description": "Glosario canónico de ingeniería de prompts para modelos de base y grandes modelos de lenguaje, cubriendo técnicas de prompting, mensajes del sistema, plantillas, cadenas de prompts, ingeniería de contexto y optimización de instrucciones.",
+      "dataPath": "./PromptEngineering/data/terms.json",
+      "metadataPath": "./PromptEngineering/data/glossary.json",
+      "domain": "Prompt Engineering, Foundation Models, LLM Prompting Techniques",
+      "termCount": 7,
+      "categories": [
+        "Fundamentos de Prompts",
+        "Técnicas de Ingeniería de Prompts",
+        "Contexto y Mensajes del Sistema",
+        "Cadenas y Optimización de Prompts"
+      ]
     }
   ],
-  "_dataHash": "d51cd98f8f4be0f83c9ae461905170f370eefa30a1aecc35d55b7ccdcc9ea719",
-  "_lastCompiled": "2026-11-01T11:15:35.889Z",
-  "_totalTerms": 272
+  "_dataHash": "7ac028d8f8c2e4da61694d2bb2057414fb96d88e5755a4a89b92bd78b89818f4",
+  "_lastCompiled": "2026-11-02T12:32:14.694Z",
+  "_totalTerms": 295
 }

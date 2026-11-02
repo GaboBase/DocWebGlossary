@@ -59,13 +59,13 @@ function runCrossDomainSearchTests() {
     { feature: 'F9', tier: 1 }
   );
   runner.assert(
-    allTerms.length === 272,
-    'Catalog loaded 272 canonical terms across 5 domains',
+    allTerms.length === 295,
+    'Catalog loaded 295 canonical terms across 8 domains',
     { feature: 'F9', tier: 1 }
   );
   runner.assert(
-    glossaryIds.length === 5,
-    'Five glossary domains registered',
+    glossaryIds.length === 8,
+    'Eight glossary domains registered',
     { feature: 'F9', tier: 1 }
   );
 

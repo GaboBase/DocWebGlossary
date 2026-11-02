@@ -1,13 +1,13 @@
 /**
  * DOCWEB MULTIGLOSSARY — Paquete Canónico de Datos Local (Autónomo & Offline)
- * Hash SHA-256: d51cd98f8f4be0f83c9ae461905170f370eefa30a1aecc35d55b7ccdcc9ea719
- * Fecha de Compilación: 2026-11-01T11:15:35.889Z
+ * Hash SHA-256: 7ac028d8f8c2e4da61694d2bb2057414fb96d88e5755a4a89b92bd78b89818f4
+ * Fecha de Compilación: 2026-11-02T12:32:14.694Z
  * Permite funcionamiento íntegro bajo protocolo file:/// sin restricciones CORS.
  */
 window.DocWebCanonicalData = {
-  _dataHash: "d51cd98f8f4be0f83c9ae461905170f370eefa30a1aecc35d55b7ccdcc9ea719",
-  _compiledAt: "2026-11-01T11:15:35.889Z",
-  _totalTerms: 272,
+  _dataHash: "7ac028d8f8c2e4da61694d2bb2057414fb96d88e5755a4a89b92bd78b89818f4",
+  _compiledAt: "2026-11-02T12:32:14.694Z",
+  _totalTerms: 295,
   catalog: {
   "$schema": "./schema/glossaries-manifest.json",
   "version": "1.0.0",
@@ -109,11 +109,59 @@ window.DocWebCanonicalData = {
         "Síntesis Temporal & Video Neuronal",
         "Alineación, Guía & Muestreo"
       ]
+    },
+    {
+      "id": "agent-architecture",
+      "slug": "agent-architecture",
+      "title": "Arquitectura de Agentes & Sistemas Multiagente",
+      "description": "Glosario canónico de arquitecturas de agentes software, sistemas multiagente, modelos mentales BDI, sensores y efectores, roles, compromisos y ontologías de agentes para arquitecturas orientadas a agentes.",
+      "dataPath": "./AgentArchitecture/data/terms.json",
+      "metadataPath": "./AgentArchitecture/data/glossary.json",
+      "domain": "Software Agents, Multi-Agent Systems, Agent-Oriented Architecture",
+      "termCount": 9,
+      "categories": [
+        "Agentes y Autonomía",
+        "Arquitecturas de Agentes",
+        "Interacción Multiagente",
+        "Ontologías de Agentes"
+      ]
+    },
+    {
+      "id": "ai-augmented-engineering",
+      "slug": "ai-augmented-engineering",
+      "title": "Ingeniería de Software Aumentada por IA",
+      "description": "Glosario canónico de ingeniería de software aumentada por IA, cubriendo desarrollo asistido y aumentado, ciclo de vida impulsado por IA, agentes de ingeniería, copilotos, gobernanza de salidas de IA y validación humana en el bucle.",
+      "dataPath": "./AIAugmentedEngineering/data/terms.json",
+      "metadataPath": "./AIAugmentedEngineering/data/glossary.json",
+      "domain": "AI-Augmented Software Development, LLM-Assisted Engineering, Agentic IDEs",
+      "termCount": 7,
+      "categories": [
+        "Desarrollo Aumentado por IA",
+        "Ciclo de Vida Impulsado por IA",
+        "Agentes y Copilotos de Ingeniería",
+        "Gobernanza y Validación de Salidas de IA"
+      ]
+    },
+    {
+      "id": "prompt-engineering",
+      "slug": "prompt-engineering",
+      "title": "Ingeniería de Prompts",
+      "description": "Glosario canónico de ingeniería de prompts para modelos de base y grandes modelos de lenguaje, cubriendo técnicas de prompting, mensajes del sistema, plantillas, cadenas de prompts, ingeniería de contexto y optimización de instrucciones.",
+      "dataPath": "./PromptEngineering/data/terms.json",
+      "metadataPath": "./PromptEngineering/data/glossary.json",
+      "domain": "Prompt Engineering, Foundation Models, LLM Prompting Techniques",
+      "termCount": 7,
+      "categories": [
+        "Fundamentos de Prompts",
+        "Técnicas de Ingeniería de Prompts",
+        "Contexto y Mensajes del Sistema",
+        "Cadenas y Optimización de Prompts"
+      ]
     }
   ],
-  "_dataHash": "d51cd98f8f4be0f83c9ae461905170f370eefa30a1aecc35d55b7ccdcc9ea719",
-  "_lastCompiled": "2026-11-01T11:15:35.889Z",
-  "_totalTerms": 272
+  "_dataHash": "7ac028d8f8c2e4da61694d2bb2057414fb96d88e5755a4a89b92bd78b89818f4",
+  "_lastCompiled": "2026-11-02T12:32:14.694Z",
+  "_totalTerms": 295
 },
   glossaries: {
   "render-3d-animations": [
@@ -24954,6 +25002,1128 @@ window.DocWebCanonicalData = {
         "sourceIndex": 10,
         "originalTitle": "Incrustaciones Multimodales CLIP"
       }
+    }
+  ],
+  "agent-architecture": [
+    {
+      "id": "urn:term:agent-architecture:agent",
+      "slug": "agent",
+      "title": "Agente Software",
+      "category": "Agentes y Autonomía",
+      "shortDefinition": "Entidad de software situada en un entorno capaz de acción autónoma flexible para cumplir sus objetivos de diseño.",
+      "fullDefinition": "Un agente software es una entidad computacional autónoma que percibe su entorno a través de sensores, actúa sobre él mediante efectores, y puede operar de forma independiente para alcanzar objetivos específicos sin intervención continua de un usuario humano. Se caracteriza por autonomía, reactividad, proactividad y habilidad social.",
+      "synonyms": [
+        "Agente",
+        "Agente Software",
+        "Software Agent"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "propiedadesClave": "Autonomía, reactividad, proactividad, habilidad social",
+        "paradigma": "Programación Orientada a Agentes (AOP)"
+      },
+      "components": [
+        "Módulo de percepción (sensores)",
+        "Módulo de acción (efectores)",
+        "Base de conocimientos local",
+        "Motor de toma de decisiones"
+      ],
+      "applications": [
+        "Sistemas multiagente distribuidos",
+        "Asistentes virtuales autónomos",
+        "Robótica y sistemas embebidos inteligentes"
+      ],
+      "examples": [
+        "Un agente de navegación que percibe obstáculos y ajusta su ruta en tiempo real",
+        "Un agente de negociación electrónica que representa a un usuario en subastas automatizadas"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:agent-architecture:multi-agent-system",
+          "label": "Es un componente de",
+          "note": "Un agente es la unidad básica que compone un sistema multiagente."
+        },
+        {
+          "type": "hasComponent",
+          "target": "urn:term:agent-architecture:sensor",
+          "label": "Tiene como componente",
+          "note": "El agente percibe el entorno mediante sensores."
+        },
+        {
+          "type": "hasComponent",
+          "target": "urn:term:agent-architecture:effector",
+          "label": "Tiene como componente",
+          "note": "El agente actúa sobre el entorno mediante efectores."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:multi-agent-system",
+      "slug": "multi-agent-system",
+      "title": "Sistema Multiagente (MAS)",
+      "category": "Interacción Multiagente",
+      "shortDefinition": "Organización compuesta por agentes autónomos y proactivos que interactúan entre sí para alcanzar objetivos comunes o privados.",
+      "fullDefinition": "Un Sistema Multiagente (MAS) es una colección de entidades computacionales autónomas, posiblemente heterogéneas, cada una con capacidades propias de resolución de problemas, capaces de interactuar entre sí mediante protocolos y lenguajes de alto nivel para alcanzar una meta global. Las interacciones típicas incluyen cooperación, coordinación y negociación.",
+      "synonyms": [
+        "Sistema de Agentes Múltiples",
+        "MAS",
+        "Multi-Agent System"
+      ],
+      "level": "arquitectura",
+      "status": "canonical",
+      "attributes": {
+        "naturaleza": "Descentralizada y posiblemente heterogénea",
+        "tiposInteraccion": "Cooperación, coordinación, negociación"
+      },
+      "components": [
+        "Agentes autónomos",
+        "Protocolo de comunicación entre agentes",
+        "Infraestructura de conocimiento y recursos",
+        "Topología de configuración"
+      ],
+      "applications": [
+        "Simulaciones de tráfico y transporte",
+        "Comercio electrónico y subastas automatizadas",
+        "Sistemas de gestión de energía distribuida"
+      ],
+      "examples": [
+        "Un MAS de robots coordinados para exploración de terrenos desconocidos",
+        "Agentes de negociación en mercados electrónicos de energía"
+      ],
+      "relations": [
+        {
+          "type": "composedOf",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Está compuesto por",
+          "note": "Un MAS es una organización de múltiples agentes autónomos."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:agent-architecture:role",
+          "label": "Depende de",
+          "note": "Los agentes dentro del MAS desempeñan roles definidos con responsabilidades específicas."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:commitment",
+          "label": "Está relacionado con",
+          "note": "Los compromisos modelan obligaciones entre agentes en el MAS."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:bdi-agent",
+      "slug": "bdi-agent",
+      "title": "Agente BDI (Beliefs-Desires-Intentions)",
+      "category": "Arquitecturas de Agentes",
+      "shortDefinition": "Modelo de arquitectura de agente basado en creencias, deseos e intenciones para razonamiento práctico y toma de decisiones autónoma.",
+      "fullDefinition": "El modelo BDI es una arquitectura de agente software donde el estado mental del agente se representa mediante tres componentes: creencias (lo que el agente cree sobre el mundo), deseos (objetivos o estados preferidos) e intenciones (planes comprometidos que el agente está ejecutando). Permite razonamiento práctico deliberado y ejecución de planes para alcanzar objetivos.",
+      "synonyms": [
+        "BDI",
+        "Beliefs-Desires-Intentions",
+        "Agente BDI"
+      ],
+      "level": "teorico-avanzado",
+      "status": "canonical",
+      "attributes": {
+        "componentes": "Creencias, Deseos, Intenciones",
+        "ciclo": "Percepción -> Deliberación -> Medios-fines -> Ejecución"
+      },
+      "components": [
+        "Base de creencias (Belief Base)",
+        "Base de deseos o objetivos (Goal Base)",
+        "Base de intenciones o planes (Intention/Plan Base)",
+        "Función de deliberación y selección de planes"
+      ],
+      "applications": [
+        "Agentes de negociación autónoma",
+        "Sistemas de planificación automática",
+        "Agentes de control en sistemas críticos"
+      ],
+      "examples": [
+        "Un agente BDI que planifica una ruta de entrega ajustándose a creencias sobre tráfico en tiempo real",
+        "Un agente de gestión de crisis que adopta intenciones basadas en nuevas informaciones del entorno"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Es un tipo de",
+          "note": "El agente BDI es una arquitectura concreta de agente software."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:agent-architecture:goal",
+          "label": "Depende de",
+          "note": "Las intenciones del agente BDI derivan de sus deseos y objetivos."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:commitment",
+          "label": "Está relacionado con",
+          "note": "Las intenciones del agente BDI generan compromisos hacia otros agentes."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:reactive-agent",
+      "slug": "reactive-agent",
+      "title": "Agente Reactivo",
+      "category": "Arquitecturas de Agentes",
+      "shortDefinition": "Agente que responde a estímulos del entorno sin razonamiento deliberativo interno, priorizando tiempo de respuesta bajo sobre planificación compleja.",
+      "fullDefinition": "Un agente reactivo es una arquitectura de agente que renuncia a la representación simbólica interna y al razonamiento deliberativo, respondiendo directamente a percepciones del entorno mediante reglas condición-acción (stimulus-response). Es adecuado para entornos dinámicos donde el tiempo de respuesta es crítico y no requiere planificación a largo plazo.",
+      "synonyms": [
+        "Agente Reactivo",
+        "Reactive Agent",
+        "Agente de Respuesta a Estímulos"
+      ],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "modelo": "Reglas condición-acción (if-then)",
+        "tiempoRespuesta": "Baja latencia, adecuado para entornos dinámicos"
+      },
+      "components": [
+        "Sensores de percepción",
+        "Reglas condición-acción",
+        "Efectores de acción directa"
+      ],
+      "applications": [
+        "Control de robots reactivos en tiempo real",
+        "Sistemas de evitación de obstáculos",
+        "Agentes de control de procesos industriales"
+      ],
+      "examples": [
+        "Un robot aspirador que cambia de dirección al detectar una pared",
+        "Un agente de control de semáforos que responde al flujo de tráfico"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Es un tipo de",
+          "note": "El agente reactivo es una clase de arquitectura de agente."
+        },
+        {
+          "type": "differsFrom",
+          "target": "urn:term:agent-architecture:bdi-agent",
+          "label": "Se diferencia de",
+          "note": "A diferencia del agente BDI, el agente reactivo no delibera ni mantiene estado simbólico interno."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:sensor",
+      "slug": "sensor",
+      "title": "Sensor de Agente",
+      "category": "Agentes y Autonomía",
+      "shortDefinition": "Componente de un agente que percibe el entorno y proporciona datos de entrada para la toma de decisiones.",
+      "fullDefinition": "Un sensor es la interfaz de percepción de un agente software que captura información del entorno externo o interno y la convierte en señales o datos interpretables por el agente. El sensor requiere un conjunto de servicios del entorno para funcionar y constituye el canal de entrada del agente en su interacción con el mundo.",
+      "synonyms": [
+        "Sensor",
+        "Perceptor",
+        "Módulo de Percepción"
+      ],
+      "level": "estructural",
+      "status": "canonical",
+      "attributes": {
+        "funcion": "Entrada de datos del entorno al agente",
+        "tipoDatos": "Puede ser discreto o continuo, estructurado o no estructurado"
+      },
+      "components": [
+        "Interfaz de captura de datos",
+        "Procesamiento de señal de entrada",
+        "Adaptador al formato interno del agente"
+      ],
+      "applications": [
+        "Cámaras y LiDAR en robots autónomos",
+        "APIs de datos de mercado en agentes financieros",
+        "Sensores de red en agentes de monitorización"
+      ],
+      "examples": [
+        "Un sensor de temperatura que alimenta datos a un agente de control climático",
+        "Un sensor de visión que permite a un agente navegar un entorno físico"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Se utiliza para",
+          "note": "El agente utiliza el sensor para percibir su entorno."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:effector",
+          "label": "Está relacionado con",
+          "note": "Sensores y efectores forman la interfaz completa del agente con el entorno."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:effector",
+      "slug": "effector",
+      "title": "Efector de Agente",
+      "category": "Agentes y Autonomía",
+      "shortDefinition": "Componente de un agente que actúa sobre el entorno, proporcionando servicios o realizando acciones concretas.",
+      "fullDefinition": "Un efectoor es la interfaz de acción de un agente software que ejecuta operaciones sobre el entorno externo. Proporciona al entorno un conjunto de servicios y constituye el canal de salida del agente. Mientras los sensores captan información, los efectores materializan las decisiones del agente en cambios del mundo.",
+      "synonyms": [
+        "Effector",
+        "Actuador",
+        "Módulo de Acción"
+      ],
+      "level": "estructural",
+      "status": "canonical",
+      "attributes": {
+        "funcion": "Salida de acciones del agente al entorno",
+        "tipoAccion": "Puede ser física (movimiento) o digital (envío de mensajes, llamadas API)"
+      },
+      "components": [
+        "Interfaz de ejecución de acciones",
+        "Traductores de decisión interna a acción externa",
+        "Mecanismos de retroalimentación de ejecución"
+      ],
+      "applications": [
+        "Motores y actuadores en robótica",
+        "Envío de comandos API en agentes de automatización",
+        "Generación de respuestas en agentes conversacionales"
+      ],
+      "examples": [
+        "Un brazo robótico que mueve un objeto bajo control de un agente",
+        "Un agente de correo electrónico que envía mensajes automáticamente"
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Se utiliza para",
+          "note": "El agente utiliza el efector para actuar sobre su entorno."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:sensor",
+          "label": "Está relacionado con",
+          "note": "Efectores y sensores forman la interfaz completa del agente con el entorno."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:role",
+      "slug": "role",
+      "title": "Rol de Agente",
+      "category": "Interacción Multiagente",
+      "shortDefinition": "Conjunto de servicios y responsabilidades que un agente desempeña dentro de un sistema multiagente.",
+      "fullDefinition": "Un rol define las capacidades, habilidades y responsabilidades que un agente debe tener para realizar una tarea dentro de un MAS. Un agente puede desempeñar uno o varios roles simultáneamente, y los roles organizan la estructura social y funcional del sistema multiagente, definiendo quién hace qué y con qué recursos.",
+      "synonyms": [
+        "Role",
+        "Rol",
+        "Función de Agente"
+      ],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "cardinalidad": "Un agente puede desempeñar múltiples roles",
+        "ambito": "Define responsabilidades y servicios provistos"
+      },
+      "components": [
+        "Servicios proporcionados por el agente",
+        "Responsabilidades asignadas",
+        "Capacidades y habilidades requeridas"
+      ],
+      "applications": [
+        "Organización de equipos de agentes de software",
+        "Asignación de tareas en MAS de fabricación",
+        "Gestión de permisos y autorizaciones en sistemas multiagente"
+      ],
+      "examples": [
+        "Un agente que desempeña el rol de coordinador en un MAS de logística",
+        "Un agente con el rol de validador en una red de agentes de consenso"
+      ],
+      "relations": [
+        {
+          "type": "isPlayedBy",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Es desempeñado por",
+          "note": "Un rol es desempeñado por uno o más agentes en el MAS."
+        },
+        {
+          "type": "dependsOn",
+          "target": "urn:term:agent-architecture:multi-agent-system",
+          "label": "Depende de",
+          "note": "Los roles adquieren significado dentro del contexto de un MAS."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:goal",
+      "slug": "goal",
+      "title": "Objetivo de Agente",
+      "category": "Agentes y Autonomía",
+      "shortDefinition": "Estado deseado o meta que un agente se compromete a alcanzar mediante su comportamiento autónomo.",
+      "fullDefinition": "Un objetivo representa un estado preferido del mundo que el agente desea lograr. En arquitecturas de agentes como BDI, los objetivos guían la deliberación y la selección de planes. Los objetivos pueden ser de logro (achievement), mantenimiento (maintenance) o evitación (avoidance), y pueden ser adoptados, abandonados o suspendidos según las creencias del agente sobre el entorno.",
+      "synonyms": [
+        "Goal",
+        "Objetivo",
+        "Meta del Agente"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "tipos": "Logro, mantenimiento, evitación",
+        "estado": "Adoptado, activo, completado, abandonado"
+      },
+      "components": [
+        "Descripción del estado deseado",
+        "Criterios de satisfacción",
+        "Prioridad y urgencia"
+      ],
+      "applications": [
+        "Planificación automática de agentes",
+        "Gestión de tareas en sistemas multiagente",
+        "Toma de decisiones basada en objetivos"
+      ],
+      "examples": [
+        "Un agente de entrega con el objetivo de entregar un paquete antes de las 18:00",
+        "Un agente de refrigeración con el objetivo de mantener la temperatura por debajo de 25°C"
+      ],
+      "relations": [
+        {
+          "type": "adoptedBy",
+          "target": "urn:term:agent-architecture:bdi-agent",
+          "label": "Es adoptado por",
+          "note": "Un agente BDI adopta objetivos como deseos que se convierten en intenciones."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:commitment",
+          "label": "Está relacionado con",
+          "note": "Los objetivos de un agente pueden generar compromisos hacia otros agentes."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:commitment",
+      "slug": "commitment",
+      "title": "Compromiso de Agente",
+      "category": "Interacción Multiagente",
+      "shortDefinition": "Obligación formal que un agente asume hacia otro dentro de un sistema multiagente, modelando interacciones confiables y responsables.",
+      "fullDefinition": "Un compromiso es una obligación semántica que un agente (deudor) contrae con otro agente (acreedor) sobre la realización de una acción o el logro de un estado. Los compromisos son fundamentales en ontologías de agentes como OASIS para representar interacciones confiables, permitiendo que los agentes razonen sobre las responsabilidades de sus pares sin conocer sus detalles internos de implementación.",
+      "synonyms": [
+        "Commitment",
+        "Compromiso",
+        "Obligación Agente-Agente"
+      ],
+      "level": "teorico-avanzado",
+      "status": "canonical",
+      "attributes": {
+        "partes": "Deudor (deudor) y acreedor",
+        "estados": "Activo, cumplido, liberado, expirado, violado"
+      },
+      "components": [
+        "Agente deudor que asume el compromiso",
+        "Agente acreedor al que se debe el compromiso",
+        "Condición de cumplimiento o acción esperada",
+        "Estado del compromiso"
+      ],
+      "applications": [
+        "Contratos electrónicos entre agentes autónomos",
+        "Protocolos de negociación en MAS",
+        "Gestión de responsabilidades en sistemas multiagente abiertos"
+      ],
+      "examples": [
+        "Un agente de venta se compromete a entregar un producto al agente comprador tras recibir el pago",
+        "Un agente de transporte se compromete a entregar una mercancía en una fecha determinada"
+      ],
+      "relations": [
+        {
+          "type": "assumedBy",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Es asumido por",
+          "note": "Un compromiso es asumido por un agente deudor hacia un acreedor."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:multi-agent-system",
+          "label": "Está relacionado con",
+          "note": "Los compromisos son la base de la interacción confiable en un MAS."
+        }
+      ]
+    }
+  ],
+  "ai-augmented-engineering": [
+    {
+      "id": "urn:term:ai-augmented-engineering:ai-augmented-development",
+      "slug": "ai-augmented-development",
+      "title": "Desarrollo Aumentado por IA",
+      "category": "Desarrollo Aumentado por IA",
+      "shortDefinition": "Integración estructural de IA a lo largo de todo el ciclo de vida del software, con presencia de IA en cada etapa y puertas de validación que garantizan la calidad de la salida.",
+      "fullDefinition": "El desarrollo aumentado por IA (AI-augmented development) va más allá del simple autocomplete dentro del editor. Integra la IA en todas las etapas del ciclo de vida del software: descubrimiento, especificación, construcción, pruebas, revisión, despliegue y operación. Se caracteriza por ser estructural (la IA está presente en cada etapa con metadatos que registran su contribución) y disciplinado (puertas de CI validan la salida de la IA antes de que se fusione).",
+      "synonyms": [
+        "AI-Augmented Development",
+        "Ingeniería Aumentada por IA",
+        "AI-Augmented Software Engineering"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "alcance": "Todo el ciclo de vida del software (SDLC)",
+        "disciplina": "Estructural, con puertas de validación y metadatos de contribución"
+      },
+      "components": [
+        "IDE agente que planifica cambios multi-archivo",
+        "Servidores MCP para contexto de herramientas",
+        "Especificación como artefacto de primera clase",
+        "Puertas de CI que validan salida de IA"
+      ],
+      "applications": [
+        "Entrega de software 40-50% más rápida en proyectos aumentados",
+        "Reducción de carga cognitiva del ingeniero",
+        "Mejora de tasas de defectos y aceptación"
+      ],
+      "examples": [
+        "Un IDE agente que lee múltiples archivos, propone un plan de cambios y abre un pull request para aprobación humana",
+        "Un pipeline CI que rechaza código generado por IA si no pasa pruebas de seguridad y estándares"
+      ],
+      "relations": [
+        {
+          "type": "differsFrom",
+          "target": "urn:term:ai-augmented-engineering:ai-assisted-development",
+          "label": "Se diferencia de",
+          "note": "El desarrollo aumentado es estructural y de ciclo completo; el asistido es oportunista y limitado al editor."
+        },
+        {
+          "type": "uses",
+          "target": "urn:term:ai-augmented-engineering:human-in-the-loop",
+          "label": "Utiliza",
+          "note": "La validación humana es una puerta obligatoria en el desarrollo aumentado por IA."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:ai-assisted-development",
+      "slug": "ai-assisted-development",
+      "title": "Desarrollo Asistido por IA",
+      "category": "Desarrollo Aumentado por IA",
+      "shortDefinition": "Uso oportunista de herramientas de IA dentro del editor para sugerencias de código, autocompletado y explicaciones, con el desarrollador en control total.",
+      "fullDefinition": "El desarrollo asistido por IA (AI-assisted development) se limita al uso de IA para autocompletado de declaraciones y bloques cortos, refactorizaciones dentro de un archivo, generación de plantillas cuando el ingeniero lo solicita, y explicación de código o mensajes de error. Es oportunista: el ingeniero recurre a la IA cuando le resulta útil, sin integración estructural en el ciclo de vida.",
+      "synonyms": [
+        "AI-Assisted Development",
+        "Desarrollo Asistido por IA",
+        "Coding Assistant"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "alcance": "Limitado al editor y al archivo actual",
+        "disciplina": "Oportunista, a petición del ingeniero"
+      },
+      "components": [
+        "Autocompletado en línea",
+        "Sugerencias de refactorización",
+        "Explicación de código y errores",
+        "Generación de plantillas bajo demanda"
+      ],
+      "applications": [
+        "Escritura rápida de código repetitivo",
+        "Comprensión de código desconocido",
+        "Depuración asistida de errores locales"
+      ],
+      "examples": [
+        "GitHub Copilot sugeriendo completado de una función mientras el desarrollador escribe",
+        "Un chat integrado en el IDE que explica un mensaje de error del compilador"
+      ],
+      "relations": [
+        {
+          "type": "differsFrom",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Se diferencia de",
+          "note": "El desarrollo asistido es limitado al editor; el aumentado cubre todo el ciclo de vida con gobernanza."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:ai-dlc",
+      "slug": "ai-dlc",
+      "title": "Ciclo de Vida Impulsado por IA (AI-DLC)",
+      "category": "Ciclo de Vida Impulsado por IA",
+      "shortDefinition": "Metodología de desarrollo de software construida en torno a la IA, tratando al modelo de lenguaje como colaborador activo en cada etapa del SDLC.",
+      "fullDefinition": "El AI-DLC (AI-Driven Development Lifecycle) es una ampliación del ciclo de vida tradicional de desarrollo de software donde la IA no es solo una herramienta de generación de código, sino un colaborador activo en todas las etapas. Los ingenieros humanos pasan a un rol más supervisorio, describiendo intenciones mientras la IA planifica, ejecuta, valida y mantiene, buscando activamente aprobación humana. Enfatiza el desarrollo basado en especificaciones (Spec-Driven Development) y unidades de trabajo derivadas de intenciones.",
+      "synonyms": [
+        "AI-DLC",
+        "AI-Driven Development Lifecycle",
+        "Ciclo de Vida Impulsado por IA"
+      ],
+      "level": "arquitectura",
+      "status": "canonical",
+      "attributes": {
+        "modeloColaboracion": "IA como colaborador activo, humano como supervisor",
+        "enfoque": "Intenciones en lugar de procesos rígidos"
+      },
+      "components": [
+        "Especificación como artefacto de aceptación",
+        "Unidades de trabajo derivadas de intenciones",
+        "Iteraciones (bolts) de ejecución de unidades",
+        "Validación humana en el bucle"
+      ],
+      "applications": [
+        "Desarrollo de software donde la IA planifica y ejecuta cambios multi-archivo",
+        "Equipos donde los ingenieros supervisan en lugar de escribir cada línea",
+        "Proyectos con especificaciones abiertas implementadas por IA"
+      ],
+      "examples": [
+        "Un ingeniero describe la intención de una característica y la IA crea un plan, ejecuta, valida y pide aprobación antes de fusionar",
+        "Un sistema AI-DLC que mantiene un código base corrigiendo errores y refactorizando de forma proactiva"
+      ],
+      "relations": [
+        {
+          "type": "isPartOf",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Es parte de",
+          "note": "El AI-DLC es una metodología concreta dentro del desarrollo aumentado por IA."
+        },
+        {
+          "type": "uses",
+          "target": "urn:term:ai-augmented-engineering:spec-driven-development",
+          "label": "Utiliza",
+          "note": "El AI-DLC se basa en el desarrollo impulsado por especificaciones."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:genai-copilot",
+      "slug": "genai-copilot",
+      "title": "Copiloto GenAI",
+      "category": "Agentes y Copilotos de Ingeniería",
+      "shortDefinition": "Herramienta de IA generativa integrada en el IDE o pipeline CI/CD que automatiza tareas de ingeniería de software bajo supervisión del desarrollador.",
+      "fullDefinition": "Un Copiloto GenAI es una herramienta de IA —ya sea independiente o integrada en un IDE o pipeline CI/CD— que automatiza diversas tareas de ingeniería de software como elicitación de requisitos, generación de código, creación de pruebas y reparación de programas. Opera como una herramienta bajo control del desarrollador, no como un agente autónomo con su propio hilo de control.",
+      "synonyms": [
+        "GenAI Copilot",
+        "Copiloto de IA",
+        "AI Coding Assistant"
+      ],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "rol": "Herramienta bajo control del desarrollador",
+        "tareas": "Requisitos, generación de código, pruebas, reparación de programas"
+      },
+      "components": [
+        "Modelo de lenguaje grande (LLM) como motor",
+        "Integración con IDE o pipeline CI/CD",
+        "Contexto del repositorio para sugerencias relevantes",
+        "Interfaz de aceptación o rechazo del desarrollador"
+      ],
+      "applications": [
+        "Generación de código a partir de descripciones en lenguaje natural",
+        "Creación automática de casos de prueba",
+        "Reparación automática de errores detectados en pruebas"
+      ],
+      "examples": [
+        "GitHub Copilot generando una función completa a partir de un comentario",
+        "Un copiloto que escribe pruebas unitarias para una función existente"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:ai-augmented-engineering:ai-assisted-development",
+          "label": "Es un tipo de",
+          "note": "Un copiloto GenAI es una forma concreta de desarrollo asistido por IA."
+        },
+        {
+          "type": "differsFrom",
+          "target": "urn:term:ai-augmented-engineering:genai-teammate",
+          "label": "Se diferencia de",
+          "note": "El copiloto es una herramienta reactiva; el compañero de equipo GenAI actúa de forma proactiva y autónoma."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:genai-teammate",
+      "slug": "genai-teammate",
+      "title": "Compañero de Equipo GenAI",
+      "category": "Agentes y Copilotos de Ingeniería",
+      "shortDefinition": "Agente GenAI (semi)autónomo y orientado a objetivos que participa proactivamente en el proceso de desarrollo de software como miembro del equipo.",
+      "fullDefinition": "Un Compañero de Equipo GenAI es un agente GenAI (semi)autónomo y orientado a objetivos que colabora con ingenieros de software humanos en flujos de trabajo reales. A diferencia de un copiloto, que espera instrucciones, el compañero de equipo tiene su propio hilo de control y puede iniciar, revisar y evolucionar código de forma proactiva, actuando en roles como programador autónomo, revisor o mantenedor dentro de ecosistemas de código abierto.",
+      "synonyms": [
+        "GenAI Teammate",
+        "Compañero de Equipo de IA",
+        "Agente de Ingeniería Autónomo"
+      ],
+      "level": "arquitectura",
+      "status": "canonical",
+      "attributes": {
+        "nivelAutonomia": "Semi-autónomo a autónomo",
+        "rol": "Participa como miembro del equipo de ingeniería"
+      },
+      "components": [
+        "Agente GenAI con hilo de control propio",
+        "Capacidad de iniciación proactiva de tareas",
+        "Integración con flujos de trabajo de desarrollo (PRs, issues, CI)",
+        "Colaboración en tiempo real con ingenieros humanos"
+      ],
+      "applications": [
+        "Agentes de programación autónomos que abren y cierran issues",
+        "Revisión automática de pull requests por agentes de IA",
+        "Mantenimiento proactivo de código base en ecosistemas open source"
+      ],
+      "examples": [
+        "Un agente GenAI que inicia, revisa y evoluciona código en repositorios de código abierto",
+        "Un compañero de equipo IA que asigna y resuelve tareas de desarrollo de forma autónoma"
+      ],
+      "relations": [
+        {
+          "type": "differsFrom",
+          "target": "urn:term:ai-augmented-engineering:genai-copilot",
+          "label": "Se diferencia de",
+          "note": "El compañero de equipo es proactivo y autónomo; el copiloto es reactivo y bajo control del desarrollador."
+        },
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Es un tipo de",
+          "note": "Un compañero de equipo GenAI es una forma avanzada de desarrollo aumentado por IA."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:human-in-the-loop",
+      "slug": "human-in-the-loop",
+      "title": "Humano en el Bucle",
+      "category": "Gobernanza y Validación de Salidas de IA",
+      "shortDefinition": "Validación y supervisión humana de las decisiones y salidas de la IA, asegurando que el juicio humano intervenga antes de que el código generado por IA se integre al producto.",
+      "fullDefinition": "El humano en el bucle (human-in-the-loop) es un principio de gobernanza en el desarrollo aumentado por IA donde las decisiones y resultados de la IA deben ser revisados, aprobados o rechazados por un ingeniero humano antes de ser integrados. Esto incluye revisión de código, pruebas estáticas, análisis de seguridad y validación de criterios de aceptación. El objetivo es asegurar que la salida de la IA se integre porque pasó validación, no por defecto.",
+      "synonyms": [
+        "Human-in-the-Loop",
+        "Validación Humana",
+        "Supervisión Humana"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "funcion": "Control de calidad y responsabilidad",
+        "alcance": "Revisión de código, pruebas, seguridad, criterios de aceptación"
+      },
+      "components": [
+        "Revisión humana de código generado por IA",
+        "Análisis estático y pruebas de seguridad",
+        "Puertas de CI que bloquean integración sin aprobación",
+        "Metadatos de atribución de contribución de IA"
+      ],
+      "applications": [
+        "Prevención de vulnerabilidades de seguridad en código generado por IA",
+        "Mantenimiento de estándares de código en proyectos asistidos por IA",
+        "Trazabilidad de contribuciones de IA vs humanas"
+      ],
+      "examples": [
+        "Un pipeline CI que rechaza un pull request generado por IA hasta que un humano lo apruebe",
+        "Un ingeniero que revisa y modifica una sugerencia de código de Copilot antes de aceptarla"
+      ],
+      "relations": [
+        {
+          "type": "usedBy",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Es utilizado por",
+          "note": "El desarrollo aumentado por IA depende de la validación humana en el bucle."
+        },
+        {
+          "type": "isPartOf",
+          "target": "urn:term:ai-augmented-engineering:ai-dlc",
+          "label": "Es parte de",
+          "note": "El AI-DLC enfatiza la validación humana como paso obligatorio."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:spec-driven-development",
+      "slug": "spec-driven-development",
+      "title": "Desarrollo Basado en Especificaciones",
+      "category": "Ciclo de Vida Impulsado por IA",
+      "shortDefinition": "Metodología donde la especificación es un artefacto de primera clase y los criterios de aceptación; la IA implementa contra la especificación, que define lo que se debe construir.",
+      "fullDefinition": "El desarrollo basado en especificaciones (Spec-Driven Development, SDD) es un enfoque donde la especificación se trata como el artefacto central y los criterios de aceptación del sistema. La IA implementa contra la especificación en lugar de seguir procesos rígidos. Las intenciones se derivan en unidades de trabajo que representan el camino de la IA hacia el cumplimiento de esas especificaciones, permitiendo que la IA determine la mejor implementación que cumpla con los requisitos.",
+      "synonyms": [
+        "Spec-Driven Development",
+        "SDD",
+        "Desarrollo Impulsado por Especificaciones"
+      ],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "artefactoCentral": "Especificación como criterios de aceptación",
+        "rolDeIA": "Implementa contra la especificación dada"
+      },
+      "components": [
+        "Especificación escrita y versionada",
+        "Criterios de aceptación medibles",
+        "Unidades de trabajo derivadas de intenciones",
+        "Validación de la implementación contra la especificación"
+      ],
+      "applications": [
+        "Proyectos donde la IA construye funcionalidad a partir de especificaciones",
+        "Equipos que separan definición de requisitos de implementación",
+        "Desarrollo donde la IA determina la mejor implementación para cumplir requisitos"
+      ],
+      "examples": [
+        "Un equipo escribe una especificación OpenAPI y la IA implementa el servicio que cumple con ella",
+        "Un ingeniero describe el comportamiento deseado y la IA genera el código y las pruebas que lo validan"
+      ],
+      "relations": [
+        {
+          "type": "usedBy",
+          "target": "urn:term:ai-augmented-engineering:ai-dlc",
+          "label": "Es utilizado por",
+          "note": "El AI-DLC se basa en el desarrollo basado en especificaciones."
+        },
+        {
+          "type": "isPartOf",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Es parte de",
+          "note": "El SDD es una práctica dentro del desarrollo aumentado por IA."
+        }
+      ]
+    }
+  ],
+  "prompt-engineering": [
+    {
+      "id": "urn:term:prompt-engineering:prompt-concepto",
+      "slug": "prompt-concepto",
+      "title": "Prompt",
+      "category": "Fundamentos de Prompts",
+      "shortDefinition": "Entrada de texto o instrucción proporcionada a un modelo de IA generativa para guiar su salida hacia una respuesta o tarea específica.",
+      "fullDefinition": "Un prompt es una entrada —generalmente texto, pero puede incluir imágenes, audio o código— proporcionada a un modelo generativo de IA (como un LLM) para elicit una respuesta específica o realizar una tarea. Puede incluir instrucciones, contexto, ejemplos o preguntas, y puede seguir formatos o patrones específicos. A diferencia del fine-tuning, el prompting no modifica los pesos o parámetros internos del modelo; solo elabora mejores entradas para obtener salidas deseadas del modelo existente.",
+      "synonyms": [
+        "Prompt",
+        "Instrucción",
+        "Entrada de Modelo"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "contenido": "Puede incluir instrucciones, contexto, ejemplos o preguntas",
+        "formato": "Puede seguir formatos o patrones específicos"
+      },
+      "components": [
+        "Directiva o instrucción principal",
+        "Contexto opcional",
+        "Ejemplos o demostraciones (shots)",
+        "Pregunta o tarea a realizar"
+      ],
+      "applications": [
+        "Clasificación de texto y respuesta a preguntas",
+        "Generación de código y resumen",
+        "Extracción de entidades y tareas de dominio especializado"
+      ],
+      "examples": [
+        "Clasifica el sentimiento de la siguiente reseña en: positivo, neutro, negativo. Texto: <reseña>",
+        "Escribe una función en Python que calcule la secuencia de Fibonacci"
+      ],
+      "relations": [
+        {
+          "type": "isInputTo",
+          "target": "urn:term:prompt-engineering:prompt-engineering",
+          "label": "Es entrada de",
+          "note": "El prompt es el objeto principal de la ingeniería de prompts."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:prompt-template",
+          "label": "Está relacionado con",
+          "note": "Un prompt puede ser una instancia de una plantilla de prompt."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:prompt-engineering",
+      "slug": "prompt-engineering",
+      "title": "Ingeniería de Prompts",
+      "category": "Fundamentos de Prompts",
+      "shortDefinition": "Proceso iterativo de diseñar, probar y refinar prompts para que un modelo de lenguaje produzca de forma fiable la salida deseada para una tarea.",
+      "fullDefinition": "La ingeniería de prompts es la práctica de estructurar entradas de lenguaje natural (prompts) para producir salidas específicas de un modelo generativo de IA. Implica entender cómo interpreta el modelo el lenguaje e incluir técnicas como few-shot prompting, chain-of-thought prompting y asignación de roles. Es un proceso iterativo que consiste en realizar inferencia en un conjunto de datos, evaluar el rendimiento y modificar la plantilla de prompt. No modifica los pesos del modelo; solo optimiza las entradas.",
+      "synonyms": [
+        "Prompt Engineering",
+        "Ingeniería de Instrucciones",
+        "Diseño de Prompts"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "naturaleza": "Proceso iterativo de diseño y refinamiento",
+        "tecnicas": "Few-shot, chain-of-thought, asignación de roles"
+      },
+      "components": [
+        "Diseño del prompt inicial",
+        "Ejecución de inferencia sobre datos",
+        "Evaluación del rendimiento de la salida",
+        "Modificación de la plantilla de prompt"
+      ],
+      "applications": [
+        "Optimización de respuestas de LLM para tareas específicas",
+        "Creación de agentes conversacionales efectivos",
+        "Generación de contenido estructurado y confiable"
+      ],
+      "examples": [
+        "Refinar un prompt de clasificación de sentimientos añadiendo ejemplos etiquetados",
+        "Añadir instrucciones de razonamiento paso a paso a un prompt de resolución de problemas matemáticos"
+      ],
+      "relations": [
+        {
+          "type": "uses",
+          "target": "urn:term:prompt-engineering:prompt-concepto",
+          "label": "Utiliza",
+          "note": "La ingeniería de prompts diseña y refina prompts."
+        },
+        {
+          "type": "includes",
+          "target": "urn:term:prompt-engineering:few-shot-prompting",
+          "label": "Incluye",
+          "note": "El few-shot prompting es una técnica dentro de la ingeniería de prompts."
+        },
+        {
+          "type": "includes",
+          "target": "urn:term:prompt-engineering:chain-of-thought",
+          "label": "Incluye",
+          "note": "El chain-of-thought es una técnica dentro de la ingeniería de prompts."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:few-shot-prompting",
+      "slug": "few-shot-prompting",
+      "title": "Few-Shot Prompting",
+      "category": "Técnicas de Ingeniería de Prompts",
+      "shortDefinition": "Técnica de prompting que proporciona ejemplos de una tarea completada (exemplares o shots) dentro del prompt para guiar al modelo hacia el resultado deseado.",
+      "fullDefinition": "El few-shot prompting es una técnica en la que se incluyen uno o más ejemplos de una tarea ya resuelta dentro del prompt, para que el modelo aprenda por imitación el patrón esperado y lo aplique a la nueva entrada. Los ejemplos actúan como demostraciones que guían al modelo generativo para realizar la tarea sin modificar sus parámetros. Cuantos más ejemplos relevantes se proporcionen (hasta los límites de contexto del modelo), generalmente mejor es el rendimiento.",
+      "synonyms": [
+        "Few-Shot Prompting",
+        "Aprendizaje de Pocos Ejemplos",
+        "Exemplar Prompting"
+      ],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "numeroEjemplos": "Generalmente entre 1 y varios ejemplos dentro del límite de contexto",
+        "funcion": "Demostración por imitación del patrón esperado"
+      },
+      "components": [
+        "Ejemplos de entrada-salida (exemplares)",
+        "Instrucción de tarea opcional",
+        "Entrada para la cual se espera una salida"
+      ],
+      "applications": [
+        "Clasificación de texto con ejemplos etiquetados",
+        "Generación de código a partir de ejemplos de entrada-salida",
+        "Extracción de entidades con ejemplos de anotación"
+      ],
+      "examples": [
+        "Proporcionar 3 ejemplos de reseñas clasificadas como positivo/neutro/negativo antes de pedir la clasificación de una nueva reseña",
+        "Dar ejemplos de consultas en lenguaje natural traducidas a SQL antes de pedir una nueva traducción"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:prompt-engineering:prompt-engineering",
+          "label": "Es una técnica de",
+          "note": "El few-shot prompting es una técnica dentro de la ingeniería de prompts."
+        },
+        {
+          "type": "differsFrom",
+          "target": "urn:term:prompt-engineering:few-shot-prompting",
+          "label": "Se diferencia de",
+          "note": "El few-shot incluye ejemplos; el zero-shot no proporciona ningún ejemplo."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:chain-of-thought",
+      "slug": "chain-of-thought",
+      "title": "Chain-of-Thought Prompting",
+      "category": "Técnicas de Ingeniería de Prompts",
+      "shortDefinition": "Técnica de prompting que instruye al modelo a mostrar su proceso de razonamiento paso a paso antes de producir la respuesta final.",
+      "fullDefinition": "El chain-of-thought (CoT) prompting es una técnica que pide al modelo de lenguaje descomponer problemas complejos en pasos intermedios de razonamiento, generando una cadena de pensamiento antes de llegar a la conclusión final. Esto mejora significativamente el rendimiento en tareas que requieren razonamiento aritmético, lógico o de sentido común, al forzar al modelo a estructurar su pensamiento de manera explícita y verificable.",
+      "synonyms": [
+        "Chain-of-Thought",
+        "CoT",
+        "Razonamiento Paso a Paso",
+        "Pensamiento en Cadena"
+      ],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "tipoTarea": "Razonamiento aritmético, lógico, sentido común",
+        "formato": "Cadena de pasos de razonamiento antes de la respuesta final"
+      },
+      "components": [
+        "Instrucción de razonamiento paso a paso",
+        "Pasos intermedios de pensamiento",
+        "Respuesta final derivada del razonamiento"
+      ],
+      "applications": [
+        "Resolución de problemas matemáticos",
+        "Razonamiento lógico y de sentido común",
+        "Tomas de decisiones complejas en agentes de IA"
+      ],
+      "examples": [
+        "Preguntar al modelo que resuelva un problema matemático mostrando cada paso del cálculo antes de dar la respuesta",
+        "Solicitar a un agente de IA que explique su razonamiento antes de recomendar una acción"
+      ],
+      "relations": [
+        {
+          "type": "isTypeOf",
+          "target": "urn:term:prompt-engineering:prompt-engineering",
+          "label": "Es una técnica de",
+          "note": "El chain-of-thought es una técnica dentro de la ingeniería de prompts."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:chain-of-thought",
+          "label": "Está relacionado con",
+          "note": "Tree-of-thought extiende chain-of-thought explorando múltiples caminos de razonamiento."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:system-message",
+      "slug": "system-message",
+      "title": "Mensaje del Sistema",
+      "category": "Contexto y Mensajes del Sistema",
+      "shortDefinition": "Instrucción especializada proporcionada a un modelo de lenguaje que define su rol, comportamiento y parámetros de operación para la interacción subsiguiente.",
+      "fullDefinition": "Un mensaje del sistema (system message) es una instrucción de contexto proporcionada al modelo de lenguaje que define su rol, comportamiento y parámetros de operación para la interacción posterior. Suele tener prioridad superior frente a los mensajes del usuario regulares y se utiliza para establecer el tono, estilo, restricciones y reglas de la conversación. Es un elemento clave de la ingeniería de contexto, que gestiona los elementos no-prompt que acompañan a las entradas del usuario.",
+      "synonyms": [
+        "System Message",
+        "Instrucción del Sistema",
+        "Mensaje de Sistema"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "prioridad": "Superior a los mensajes del usuario",
+        "propósito": "Definir rol, comportamiento, contexto y restricciones"
+      },
+      "components": [
+        "Definición del rol del modelo (por ejemplo, asistente, experto)",
+        "Instrucciones de comportamiento y tono",
+        "Reglas y restricciones de la interacción",
+        "Contexto inicial de la conversación"
+      ],
+      "applications": [
+        "Configurar asistentes de IA con roles específicos",
+        "Establecer restricciones de seguridad y estilo en conversaciones",
+        "Definir el comportamiento de agentes conversacionales"
+      ],
+      "examples": [
+        "Eres un asistente experto en programación Python. Responde de forma concisa y proporciona ejemplos de código.",
+        "Actúa como un traductor profesional entre español e inglés, manteniendo el tono formal."
+      ],
+      "relations": [
+        {
+          "type": "partOf",
+          "target": "urn:term:prompt-engineering:context-engineering",
+          "label": "Es parte de",
+          "note": "El mensaje del sistema es un componente clave de la ingeniería de contexto."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:prompt-concepto",
+          "label": "Está relacionado con",
+          "note": "El mensaje del sistema acompaña al prompt del usuario en la interacción."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:context-engineering",
+      "slug": "context-engineering",
+      "title": "Ingeniería de Contexto",
+      "category": "Contexto y Mensajes del Sistemas",
+      "shortDefinition": "Área de ingeniería de software enfocada en la gestión de los elementos de contexto que acompañan a los prompts, incluyendo instrucciones del sistema, conocimiento recuperado, definiciones de herramientas, resúmenes de conversación y metadatos de tarea.",
+      "fullDefinition": "La ingeniería de contexto es el área relacionada con la ingeniería de prompts que se enfoca en la gestión de los elementos de contexto no-prompt suministrados al modelo generativo. Incluye mensajes del sistema, conocimiento recuperado (RAG), definiciones de herramientas, resúmenes de conversación, metadatos de tarea y tokens. El objetivo es optimizar la información relevante disponible para el modelo en cada interacción, mejorando la precisión y relevancia de las respuestas sin modificar los pesos del modelo.",
+      "synonyms": [
+        "Context Engineering",
+        "Ingeniería de Contexto",
+        "Gestión de Contexto de LLM"
+      ],
+      "level": "intermedio",
+      "status": "canonical",
+      "attributes": {
+        "elementos": "Mensajes del sistema, conocimiento recuperado, definiciones de herramientas, resúmenes",
+        "objetivo": "Optimizar información relevante para el modelo en cada interacción"
+      },
+      "components": [
+        "Mensajes del sistema e instrucciones de rol",
+        "Conocimiento recuperado mediante RAG",
+        "Definiciones de herramientas y API disponibles",
+        "Resúmenes de conversación y estado de sesión",
+        "Metadatos de tarea y tokens de contexto"
+      ],
+      "applications": [
+        "Asistentes de IA con acceso a documentación empresarial",
+        "Agentes que usan herramientas externas mediante definiciones de contexto",
+        "Conversaciones de largo plazo con resumen de historial"
+      ],
+      "examples": [
+        "Un sistema RAG que recupera fragmentos de documentos relevantes y los incluye como contexto en el prompt",
+        "Un agente de programación que incluye definiciones de API y ejemplos de uso en el contexto del modelo"
+      ],
+      "relations": [
+        {
+          "type": "includes",
+          "target": "urn:term:prompt-engineering:system-message",
+          "label": "Incluye",
+          "note": "El mensaje del sistema es un componente de la ingeniería de contexto."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:prompt-concepto",
+          "label": "Está relacionado con",
+          "note": "La ingeniería de contexto complementa el diseño de prompts con elementos no-prompt."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:prompt-template",
+      "slug": "prompt-template",
+      "title": "Plantilla de Prompt",
+      "category": "Fundamentos de Prompts",
+      "shortDefinition": "Función o estructura que contiene una o más variables que son reemplazadas por contenido específico para crear un prompt concreto.",
+      "fullDefinition": "Una plantilla de prompt es una estructura que contiene una o más variables que se sustituyen por medios (generalmente texto) para crear un prompt específico. Permite crear prompts consistentes y reutilizables donde partes fijas de la instrucción se combinan con contenido variable. Las plantillas son fundamentales para la ingeniería de prompts sistemática, permitiendo aplicar la misma estructura de instrucción a diferentes entradas.",
+      "synonyms": [
+        "Prompt Template",
+        "Plantilla de Instrucción",
+        "Prompt Pattern"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "variables": "Uno o más placeholders reemplazados por contenido dinámico",
+        "reutilizabilidad": "Misma estructura aplicada a diferentes entradas"
+      },
+      "components": [
+        "Texto fijo de la plantilla",
+        "Variables o placeholders para contenido dinámico",
+        "Reglas de sustitución de variables"
+      ],
+      "applications": [
+        "Generación de prompts consistentes para tareas repetitivas",
+        "Sistemas de prompts parametrizados en aplicaciones de IA",
+        "Creación de flujos de prompts reutilizables"
+      ],
+      "examples": [
+        "Una plantilla de traducción: 'Traduce el siguiente texto de {idioma_origen} a {idioma_destino}: {texto}'",
+        "Una plantilla de clasificación: 'Clasifica el siguiente texto en {categorias}: {texto_entrada}'"
+      ],
+      "relations": [
+        {
+          "type": "usedToCreate",
+          "target": "urn:term:prompt-engineering:prompt-concepto",
+          "label": "Se utiliza para crear",
+          "note": "Una plantilla de prompt se instancia con variables para crear un prompt concreto."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:prompt-engineering",
+          "label": "Está relacionado con",
+          "note": "Las plantillas de prompt son una herramienta fundamental en la ingeniería de prompts."
+        }
+      ]
     }
   ]
 }

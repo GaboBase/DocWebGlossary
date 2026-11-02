@@ -1,0 +1,17 @@
+{
+  "id": "ai-augmented-engineering",
+  "title": "Ingeniería de Software Aumentada por IA",
+  "slug": "ai-augmented-engineering",
+  "version": "1.0.0",
+  "created": "2026-11-02T00:00:00Z",
+  "updated": "2026-11-02T00:00:00Z",
+  "license": "Local Knowledge Base",
+  "author": "DocWeb Knowledge Team",
+  "domain": "AI-Augmented Software Development, LLM-Assisted Engineering, Agentic IDEs",
+  "categories": [
+    "Desarrollo Aumentado por IA",
+    "Ciclo de Vida Impulsado por IA",
+    "Agentes y Copilotos de Ingeniería",
+    "Gobernanza y Validación de Salidas de IA"
+  ]
+}

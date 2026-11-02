@@ -1,0 +1,17 @@
+{
+  "id": "prompt-engineering",
+  "title": "Ingeniería de Prompts",
+  "slug": "prompt-engineering",
+  "version": "1.0.0",
+  "created": "2026-11-02T00:00:00Z",
+  "updated": "2026-11-02T00:00:00Z",
+  "license": "Local Knowledge Base",
+  "author": "DocWeb Knowledge Team",
+  "domain": "Prompt Engineering, Foundation Models, LLM Prompting Techniques",
+  "categories": [
+    "Fundamentos de Prompts",
+    "Técnicas de Ingeniería de Prompts",
+    "Contexto y Mensajes del Sistema",
+    "Cadenas y Optimización de Prompts"
+  ]
+}
