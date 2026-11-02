@@ -19,6 +19,8 @@ const { runPromptOrientatorTests } = require('./test_prompt_orientator');
 const { runStorageCapsuleTests } = require('./test_storage_capsule');
 const { runDataParityTests } = require('./test_data_parity');
 const { runM4M6AdversarialTests } = require('./test_m4_m6_adversarial');
+const { runDomSecurityTests } = require('./test_dom_security');
+const { runCrossDomainSearchTests } = require('./test_cross_domain_search');
 const { FEATURES, TIERS, COLORS } = require('./test_utils');
 
 async function runAllTests() {
@@ -30,7 +32,18 @@ async function runAllTests() {
 
   const suiteResults = [];
 
-  // 1. Autonomy & Preservation
+  // 1. Data Parity & Freshness (Hash SHA-256 & Deterministic Sync) — MANDATORY EARLY CHECK
+  // Runs before the application suites so a stale generated bundle is detected
+  // immediately, even when the ordinary tests would otherwise pass.
+  try {
+    const res = runDataParityTests();
+    suiteResults.push(res);
+  } catch (e) {
+    console.error('Fatal error in Data Parity suite:', e);
+    suiteResults.push({ suite: 'Data Parity & Freshness', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
+  }
+
+  // 2. Autonomy & Preservation
   try {
     const res = runAutonomyTests();
     suiteResults.push(res);
@@ -84,15 +97,6 @@ async function runAllTests() {
     suiteResults.push({ suite: 'Persistence & Storage Capsule', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
   }
 
-  // 7. Data Parity & Freshness (Hash SHA-256 & Deterministic Sync)
-  try {
-    const res = runDataParityTests();
-    suiteResults.push(res);
-  } catch (e) {
-    console.error('Fatal error in Data Parity suite:', e);
-    suiteResults.push({ suite: 'Data Parity & Freshness', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
-  }
-
   // 8. Adversarial Coverage Hardening (Milestones 4, 5 & 6)
   try {
     const res = runM4M6AdversarialTests();
@@ -102,7 +106,25 @@ async function runAllTests() {
     suiteResults.push({ suite: 'Adversarial Hardening (M4-M6)', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
   }
 
-  // 9. Master Test Runner Integrity (F24 & F25)
+  // 9. DOM Security & Sanitization (Phase C — Client Security)
+  try {
+    const res = runDomSecurityTests();
+    suiteResults.push(res);
+  } catch (e) {
+    console.error('Fatal error in DOM Security suite:', e);
+    suiteResults.push({ suite: 'DOM Security & Sanitization', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
+  }
+
+  // 10. Cross-Domain Search & Term Provenance (Phase 2 / B-10 foundation)
+  try {
+    const res = runCrossDomainSearchTests();
+    suiteResults.push(res);
+  } catch (e) {
+    console.error('Fatal error in Cross-Domain Search suite:', e);
+    suiteResults.push({ suite: 'Cross-Domain Search & Provenance', total: 1, passed: 0, failed: 1, pending: 0, results: [] });
+  }
+
+  // 11. Master Test Runner Integrity (F24 & F25)
   const masterRunner = new (require('./test_utils').TestRunner)('Master E2E Verification & Hardening');
   console.log(`\n=== Running ${masterRunner.suiteName} ===`);
 

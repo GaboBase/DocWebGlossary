@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DOCWEB MULTIGLOSSARY — Base de Conocimiento Local</title>
   <meta name="description" content="Sistema multiglosario semántico, local, persistente y extensible para consulta, exploración e investigación técnica.">
-  <!-- Política de Seguridad de Contenido Estricta (100% Autónomo, Cero Conexiones Externas) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self';">
+  <!-- Strict Content Security Policy (100% autonomous, zero external connections).
+       Matches the required policy: default-src 'self'; script-src 'self';
+       style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'.
+       Inline event handlers were removed from the markup and moved to delegated
+       event listeners in app/js/app.js so the page remains functional under a
+       strict script-src without 'unsafe-inline'. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self';">
   <!-- Paquete Canónico de Datos Local (Cero dependencias remotas, soporte offline file:///) -->
   <script src="./app/data/bundle.js"></script>
   <!-- Estilos Locales Autónomos -->
@@ -201,6 +206,61 @@
           <!-- Inyectado dinámicamente por app.js -->
         </div>
       </section>
+
+      <!-- ===================================================================== -->
+      -- VISTA: COMPOSICIÓN INTERDOMINIO (B-10)                                 --
+      -- ===================================================================== -->
+      <section class="portal-section" aria-label="Composición Interdominio de Términos">
+        <div class="portal-section-header">
+          <div>
+            <h2 class="portal-section-title">Composición Interdominio de Términos</h2>
+            <p class="portal-section-desc">Selecciona conceptos de varios dominios ontológicos simultáneamente para compilar prompts técnicos conscientes de relaciones, con trazabilidad de procedencia por dominio.</p>
+          </div>
+          <span class="term-badge-primary" id="composition-count-badge">0 términos seleccionados</span>
+        </div>
+
+        <!-- Selector de Dominios para Composición -->
+        <div class="faceted-filter-bar" style="margin-top: 1rem;">
+          <div class="filter-group">
+            <label for="filter-comp-domain" class="filter-group-label">Dominios de Origen</label>
+            <div id="composition-domain-chips" class="category-tags" style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+              <!-- Chips de dominio inyectados por app.js -->
+            </div>
+          </div>
+          <div class="filter-group" style="flex: 1 1 250px;">
+            <label for="filter-comp-text" class="filter-group-label">Buscar Términos</label>
+            <input type="text" id="filter-comp-text" name="filter-comp-text" class="form-input filter-text-input" placeholder="Buscar términos para agregar a la composición...">
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-clear-composition" title="Limpiar selección de composición">
+            🗑️ Limpiar
+          </button>
+        </div>
+
+        <!-- Términos Seleccionados (Cesta de Composición) -->
+        <div style="margin-top: 1rem;">
+          <div class="filter-group-label" style="margin-bottom:0.5rem;">Términos Seleccionados para Composición</div>
+          <div id="composed-terms-container" style="display:flex; flex-wrap:wrap; gap:0.5rem; padding:0.75rem; background:var(--background); border:1px dashed var(--border); border-radius:var(--radius); min-height:60px;">
+            <!-- Términos seleccionados inyectados por app.js -->
+            <div style="grid-column: 1 / -1; padding:1rem; text-align:center; color:var(--muted-foreground); font-size:0.85rem;">
+              No hay términos seleccionados. Busca y selecciona conceptos de cualquier dominio para comenzar.
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultado de Composición de Prompt -->
+        <div style="margin-top: 1rem;">
+          <div class="filter-group-label" style="margin-bottom:0.5rem;">Prompt Técnico Compuesto</div>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-compose-prompt" data-cmd="composeCrossDomainPrompt" title="Generar prompt técnico a partir de los términos seleccionados">
+            ✨ Compilar Prompt Interdominio
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-composed-prompt" data-cmd="copyComposedPrompt" title="Copiar prompt compuesto al portapapeles" style="margin-left:0.5rem;">
+            📋 Copiar
+          </button>
+          <pre id="composed-prompt-output" class="spec-prompt-content" style="margin-top:0.75rem; padding:1rem; background:var(--background); border:1px solid var(--border); border-radius:var(--radius); font-size:0.85rem; line-height:1.5; white-space: pre-wrap; min-height:120px;">
+            <!-- Prompt compuesto inyectado por app.js -->
+          </pre>
+        </div>
+      </section>
     </div>
   </section>
 
@@ -266,7 +326,7 @@
         <button type="button" class="btn btn-sm" id="btn-close-orientator" aria-label="Cerrar modal de Orientador">✕</button>
       </header>
 
-      <form id="orientator-form" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 1rem;">
+      <form id="orientator-form" style="display: flex; flex-direction: column; gap: 1rem;">
         <!-- Selectores de Dominio y Producto Objetivo Adaptados al Glosario Activo -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem;">
           <div class="form-group">

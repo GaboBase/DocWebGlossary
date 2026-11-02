@@ -351,10 +351,36 @@ class SemanticKnowledgeEngine {
     return tree;
   }
 
+  /**
+   * Search terms across the ontological catalog.
+   *
+   * @param {string} query Free-text search query (matched against title,
+   *   definitions, synonyms and components). Empty query returns all terms.
+   * @param {string|string[]|null} glossaryFilter Single glossary id, 'all',
+   *   an array of glossary ids for multi-domain search, or null/undefined for
+   *   every domain. Backward compatible: a single string behaves as before.
+   * @param {string|null} categoryFilter Single category id or null/undefined.
+   * @returns {Array<Object>} Matching term objects (original references).
+   */
   searchTerms(query, glossaryFilter = null, categoryFilter = null) {
     const q = (query || '').toLowerCase().trim();
+
+    // Normalize the glossary filter into a Set of ids for O(1) lookups.
+    // null / undefined / 'all' means every domain; a single string keeps the
+    // historical single-domain contract; an array enables cross-domain search.
+    // An empty array is treated as "no restriction" (every domain), matching
+    // the intuitive multi-select behavior of clearing all domain chips.
+    let allowedGlossaries = null;
+    if (glossaryFilter !== null && glossaryFilter !== undefined && glossaryFilter !== 'all') {
+      const ids = Array.isArray(glossaryFilter) ? glossaryFilter : [String(glossaryFilter)];
+      const filtered = ids.filter(Boolean);
+      if (filtered.length > 0) {
+        allowedGlossaries = new Set(filtered);
+      }
+    }
+
     return this.getAllTerms().filter(term => {
-      if (glossaryFilter && glossaryFilter !== 'all' && term.glossaryId !== glossaryFilter) {
+      if (allowedGlossaries && !allowedGlossaries.has(term.glossaryId)) {
         return false;
       }
       if (categoryFilter && categoryFilter !== 'all' && term.category !== categoryFilter) {
@@ -372,6 +398,87 @@ class SemanticKnowledgeEngine {
 
       return titleMatch || defMatch || fullDefMatch || synMatch || compMatch;
     });
+  }
+
+  /**
+   * Cross-domain search that returns results annotated with term provenance
+   * (domain traceability). Each result carries the originating glossary id,
+   * title and domain so consumers can trace every selected term back to its
+   * canonical source. A derived, read-only view: it never mutates domain data.
+   *
+   * @param {string} query Free-text search query.
+   * @param {string[]} glossaryIds Ordered list of glossary ids to search.
+   *   Defaults to every registered domain when omitted or empty.
+   * @param {Object} options Optional { categoryFilter, limit }.
+   * @returns {Array<{term, glossaryId, glossaryTitle, domain, relevance}>}
+   *   Results ordered by relevance (title matches first, then definition,
+   *   synonym, component matches) then alphabetically by title.
+   */
+  searchCrossDomain(query, glossaryIds = null, options = {}) {
+    const { categoryFilter = null, limit = null } = options || {};
+    const terms = this.searchTerms(query, glossaryIds, categoryFilter);
+
+    const results = terms.map(term => {
+      const glossary = this.getGlossary(term.glossaryId) || {};
+      let relevance = 0;
+      const q = (query || '').toLowerCase().trim();
+      if (q) {
+        const title = (term.title || '').toLowerCase();
+        const shortDef = (term.shortDefinition || '').toLowerCase();
+        const definition = (term.definition || '').toLowerCase();
+        const synonyms = Array.isArray(term.synonyms) ? term.synonyms.join(' ').toLowerCase() : '';
+        if (title.includes(q)) relevance += 4;
+        else if (title.startsWith(q)) relevance += 3;
+        if (shortDef.includes(q) || definition.includes(q)) relevance += 2;
+        if (synonyms.includes(q)) relevance += 1;
+        if (Array.isArray(term.components) && term.components.some(c => typeof c === 'string' && c.toLowerCase().includes(q))) relevance += 1;
+      }
+
+      return {
+        term,
+        glossaryId: term.glossaryId,
+        glossaryTitle: glossary.title || term.glossaryId,
+        domain: glossary.domain || '',
+        relevance
+      };
+    });
+
+    // Stable ordering: relevance desc, then title asc (case-insensitive).
+    results.sort((a, b) => {
+      if (b.relevance !== a.relevance) return b.relevance - a.relevance;
+      const ta = (a.term.title || '').toLowerCase();
+      const tb = (b.term.title || '').toLowerCase();
+      if (ta < tb) return -1;
+      if (ta > tb) return 1;
+      return 0;
+    });
+
+    if (limit !== null && limit !== undefined) {
+      return results.slice(0, Math.max(0, Number(limit) || 0));
+    }
+    return results;
+  }
+
+  /**
+   * Resolve provenance for a single term: its originating glossary and domain.
+   * Read-only; returns null when the term is unknown.
+   *
+   * @param {string} termId Canonical term id (URN).
+   * @returns {Object|null}
+   */
+  getTermProvenance(termId) {
+    const term = this.getTerm(termId);
+    if (!term) return null;
+    const glossary = this.getGlossary(term.glossaryId) || {};
+    return {
+      termId: term.id,
+      title: term.title,
+      glossaryId: term.glossaryId,
+      glossaryTitle: glossary.title || term.glossaryId,
+      domain: glossary.domain || '',
+      category: term.category || 'General',
+      ontologyLevel: this.getOntologyLevel(term).id
+    };
   }
 
   generateJsonLd(term) {
@@ -536,7 +643,7 @@ class SemanticKnowledgeEngine {
       const targetLevel = targetTerm ? this.getOntologyLevel(targetTerm) : { id: 'L4' };
 
       svg.push(`
-        <g class="cursor-pointer transition-transform hover:opacity-80" onclick="window.DocWebApp.navigateToTerm('${targetNavId}')" role="button" tabindex="0">
+        <g class="cursor-pointer transition-transform hover:opacity-80" data-cmd="navigateToTerm" data-cmd-arg="${targetNavId}" role="button" tabindex="0">
           <rect x="${targetX}" y="${targetY}" width="200" height="54" rx="8" fill="var(--background, #f8fafc)" stroke="${isCross ? '#8b5cf6' : strokeColor}" stroke-width="${isCross ? '2' : '1.2'}" filter="url(#shadow)"/>
           <text x="${targetX + 12}" y="${targetY + 20}" font-size="11" font-weight="600" fill="var(--foreground, #0f172a)">${this.escapeXml(this.truncateText(targetTitle, 22))}</text>
           <text x="${targetX + 12}" y="${targetY + 36}" font-size="9" fill="${isCross ? '#7c3aed' : 'var(--muted-foreground, #64748b)'}">${isCross ? 'Inter-Glosario ⤻' : this.escapeXml(targetTerm ? targetTerm.category : 'Relación')}</text>
@@ -579,7 +686,7 @@ class SemanticKnowledgeEngine {
       const srcLevel = sourceTerm ? this.getOntologyLevel(sourceTerm) : { id: 'L4' };
 
       svg.push(`
-        <g class="cursor-pointer transition-transform hover:opacity-80" onclick="window.DocWebApp.navigateToTerm('${sourceNavId}')" role="button" tabindex="0">
+        <g class="cursor-pointer transition-transform hover:opacity-80" data-cmd="navigateToTerm" data-cmd-arg="${sourceNavId}" role="button" tabindex="0">
           <rect x="${leftX}" y="${sourceY}" width="190" height="54" rx="8" fill="var(--background, #f8fafc)" stroke="${isCross ? '#8b5cf6' : strokeColor}" stroke-width="${isCross ? '2' : '1.2'}" filter="url(#shadow)"/>
           <text x="${leftX + 12}" y="${sourceY + 20}" font-size="11" font-weight="600" fill="var(--foreground, #0f172a)">${this.escapeXml(this.truncateText(rel.sourceTitle, 21))}</text>
           <text x="${leftX + 12}" y="${sourceY + 36}" font-size="9" fill="${isCross ? '#7c3aed' : 'var(--muted-foreground, #64748b)'}">${isCross ? 'Origen Inter-Glosario ⤻' : 'Referencia Inversa'}</text>
@@ -706,7 +813,7 @@ class SemanticKnowledgeEngine {
 
         svg.push(`
           <path d="M ${catX + 200} ${catY + 19} H ${termX}" fill="none" stroke="${isSelected ? '#3b82f6' : '#e2e8f0'}" stroke-width="${isSelected ? '2' : '1'}" />
-          <g class="cursor-pointer" onclick="window.DocWebApp.navigateToTerm('${this.escapeJsAttr(tChild.id)}')" role="button" tabindex="0">
+          <g class="cursor-pointer" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(tChild.id)}" role="button" tabindex="0">
             <rect x="${termX}" y="${itemY}" width="210" height="24" rx="4" fill="${isSelected ? '#2563eb' : 'var(--background, #f8fafc)'}" stroke="${isSelected ? '#1d4ed8' : '#cbd5e1'}" stroke-width="${isSelected ? '1.8' : '0.8'}"/>
             <text x="${termX + 8}" y="${itemY + 16}" font-size="10" font-weight="${isSelected ? 'bold' : 'normal'}" fill="${isSelected ? '#ffffff' : 'var(--foreground, #0f172a)'}">${this.escapeXml(this.truncateText(tChild.title, 25))}</text>
             <rect x="${termX + 175}" y="${itemY + 4}" width="28" height="15" rx="3" fill="${isSelected ? '#1e40af' : '#eff6ff'}" />
@@ -825,7 +932,7 @@ class SemanticKnowledgeEngine {
         const isCurrent = t.id === term.id;
 
         svg.push(`
-          <g class="cursor-pointer" onclick="window.DocWebApp.navigateToTerm('${this.escapeJsAttr(t.id)}')" role="button" tabindex="0">
+          <g class="cursor-pointer" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(t.id)}" role="button" tabindex="0">
             <rect x="${cx}" y="${itemY}" width="${colW}" height="36" rx="6" fill="${isCurrent ? '#2563eb' : 'var(--background, #f8fafc)'}" stroke="${isCurrent ? '#1d4ed8' : '#cbd5e1'}" stroke-width="${isCurrent ? '2' : '1'}" filter="url(#shadow)"/>
             <text x="${cx + 8}" y="${itemY + 16}" font-size="9.5" font-weight="${isCurrent ? 'bold' : '600'}" fill="${isCurrent ? '#ffffff' : 'var(--foreground, #0f172a)'}">${this.escapeXml(this.truncateText(t.title, 19))}</text>
             <text x="${cx + 8}" y="${itemY + 28}" font-size="8" fill="${isCurrent ? '#bfdbfe' : 'var(--muted-foreground, #64748b)'}">${this.escapeXml(t.category)}</text>
@@ -917,7 +1024,7 @@ class SemanticKnowledgeEngine {
         const tLevel = this.getOntologyLevel(t);
 
         svg.push(`
-          <g class="cursor-pointer transition-transform hover:opacity-80 atlas-node" data-urn="${this.escapeXml(t.id)}" onclick="window.DocWebApp.navigateToTerm('${this.escapeJsAttr(t.id)}')" role="button" tabindex="0">
+          <g class="cursor-pointer transition-transform hover:opacity-80 atlas-node" data-urn="${this.escapeXml(t.id)}" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(t.id)}" role="button" tabindex="0">
             <rect x="${clusterX + 8}" y="${itemY}" width="${clusterW - 16}" height="28" rx="4" fill="${isSelected ? '#2563eb' : '#ffffff'}" stroke="${isSelected ? '#1d4ed8' : '#cbd5e1'}" stroke-width="${isSelected ? '2' : '0.8'}" filter="url(#shadow)"/>
             <text x="${clusterX + 16}" y="${itemY + 18}" font-size="9" font-weight="${isSelected ? 'bold' : '500'}" fill="${isSelected ? '#ffffff' : 'var(--foreground, #0f172a)'}">${this.escapeXml(this.truncateText(t.title, 26))}</text>
             <rect x="${clusterX + clusterW - 40}" y="${itemY + 6}" width="22" height="15" rx="3" fill="${isSelected ? '#1e40af' : '#eff6ff'}" />
@@ -1205,7 +1312,7 @@ class SemanticKnowledgeEngine {
         const nodeH = 46;
 
         svg += `
-          <g class="mermaid-interactive-node" onclick="window.DocWebApp.navigateToTerm('${sourceUrn}')" style="cursor:pointer;" filter="url(#mermaid-node-shadow)">
+          <g class="mermaid-interactive-node" data-cmd="navigateToTerm" data-cmd-arg="${sourceUrn}" style="cursor:pointer;" filter="url(#mermaid-node-shadow)">
             <rect x="${nodeX}" y="${ny}" width="${nodeW}" height="${nodeH}" rx="6" ry="6" fill="#1e293b" stroke="${isCross ? '#ec4899' : '#a855f7'}" stroke-width="1.5"/>
             <text x="${nodeX + 10}" y="${ny + 20}" fill="#f8fafc" font-size="11" font-weight="600">${this.escapeXml(title.substring(0, 24))}</text>
             <text x="${nodeX + 10}" y="${ny + 36}" fill="#94a3b8" font-size="9">${isCross ? '🌐 Inter-Glosario' : '📄 ' + (inv.type || 'Inversa')}</text>
@@ -1254,7 +1361,7 @@ class SemanticKnowledgeEngine {
         const nodeH = 46;
 
         svg += `
-          <g class="mermaid-interactive-node" onclick="window.DocWebApp.navigateToTerm('${rel.target}')" style="cursor:pointer;" filter="url(#mermaid-node-shadow)">
+          <g class="mermaid-interactive-node" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(rel.target)}" style="cursor:pointer;" filter="url(#mermaid-node-shadow)">
             <rect x="${nodeX}" y="${ny}" width="${nodeW}" height="${nodeH}" rx="6" ry="6" fill="#1e293b" stroke="${isCross ? '#ec4899' : '#0ea5e9'}" stroke-width="1.5"/>
             <text x="${nodeX + 10}" y="${ny + 20}" fill="#f8fafc" font-size="11" font-weight="600">${this.escapeXml(title.substring(0, 24))}</text>
             <text x="${nodeX + 10}" y="${ny + 36}" fill="#94a3b8" font-size="9">${isCross ? '🌐 Inter-Glosario' : '📄 ' + (rel.type || 'Directa')}</text>
@@ -1342,7 +1449,7 @@ class SemanticKnowledgeEngine {
         const nodeH = 42;
 
         svg += `
-          <g onclick="window.DocWebApp.navigateToTerm('${sourceUrn}')" style="cursor:pointer;">
+          <g data-cmd="navigateToTerm" data-cmd-arg="${sourceUrn}" style="cursor:pointer;">
             <rect x="${nodeX}" y="${ny}" width="${nodeW}" height="${nodeH}" rx="12" ry="12" fill="#1f2937" stroke="${isCross ? '#ec4899' : '#a855f7'}" stroke-width="1.3"/>
             <text x="${nodeX + nodeW / 2}" y="${ny + 25}" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">${this.escapeXml(title.substring(0, 22))}</text>
           </g>
@@ -1390,7 +1497,7 @@ class SemanticKnowledgeEngine {
         const nodeH = 42;
 
         svg += `
-          <g onclick="window.DocWebApp.navigateToTerm('${rel.target}')" style="cursor:pointer;">
+          <g data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(rel.target)}" style="cursor:pointer;">
             <rect x="${nodeX}" y="${ny}" width="${nodeW}" height="${nodeH}" rx="4" ry="4" fill="#1f2937" stroke="${isCross ? '#ec4899' : '#0ea5e9'}" stroke-width="1.3"/>
             <text x="${nodeX + nodeW / 2}" y="${ny + 25}" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">${this.escapeXml(title.substring(0, 22))}</text>
           </g>
@@ -1432,7 +1539,7 @@ class SemanticKnowledgeEngine {
           const family = this.getRelationFamily(r.type);
           return `
             <li class="dom-mindmap-item" data-dom-tag="li" data-dom-role="treeitem" data-relation="${r.type}">
-              <div class="dom-mindmap-card" onclick="window.DocWebApp.navigateToTerm('${this.escapeJsAttr(r.target)}')">
+              <div class="dom-mindmap-card" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(r.target)}">
                 <div class="dom-mindmap-rel-badge badge-direct">${r.type}</div>
                 <div class="dom-mindmap-term-title">${isCross ? '🌐 ' : ''}${this.escapeXml(targetTitle)}</div>
                 <div class="dom-mindmap-term-meta">🏷️ ${this.escapeXml(targetCat)} • <span style="opacity:0.8;">${family}</span></div>
@@ -1453,7 +1560,7 @@ class SemanticKnowledgeEngine {
           const family = r.family || this.getRelationFamily(relType);
           return `
             <li class="dom-mindmap-item" data-dom-tag="li" data-dom-role="treeitem" data-relation="${relType}">
-              <div class="dom-mindmap-card" onclick="window.DocWebApp.navigateToTerm('${this.escapeJsAttr(sourceUrn)}')">
+              <div class="dom-mindmap-card" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(sourceUrn)}">
                 <div class="dom-mindmap-rel-badge badge-inverse">${relType}</div>
                 <div class="dom-mindmap-term-title">${isCross ? '🌐 ' : ''}${this.escapeXml(sourceTitle)}</div>
                 <div class="dom-mindmap-term-meta">🏷️ ${this.escapeXml(sourceCat)} • <span style="opacity:0.8;">${family}</span></div>
@@ -1558,7 +1665,7 @@ class SemanticKnowledgeEngine {
         <td><span class="text-xs" style="color:var(--muted-foreground);">${row.family}</span></td>
         <td><span class="badge ${row.direction.includes('Directa') ? 'badge-primary' : 'badge-secondary'}" style="font-size:0.7rem;">${row.direction}</span></td>
         <td>
-          <button type="button" class="btn btn-sm btn-link" style="text-align:left; padding:0; color:var(--primary); font-weight:600;" onclick="window.DocWebApp.navigateToTerm('${this.escapeJsAttr(row.targetUrn)}')">
+          <button type="button" class="btn btn-sm btn-link" style="text-align:left; padding:0; color:var(--primary); font-weight:600;" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(row.targetUrn)}">
             ${row.isCross ? '🌐 ' : '🔗 '} ${this.escapeXml(row.object)} <small style="color:var(--muted-foreground);">(${this.escapeXml(row.objectCat)})</small>
           </button>
         </td>

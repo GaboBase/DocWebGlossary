@@ -38,6 +38,12 @@ window.DocWebApp = {
   hubFilterQuery: '',
   _isUpdatingHash: false,
 
+  // Estado de Composición Interdominio (B-10)
+  composedTerms: [],      // Array de IDs de términos seleccionados para composición
+  composedPrompt: '',     // Prompt compuesto generado desde términos seleccionados
+  compFilterDomain: 'all', // Dominio filtrado para candidatos de composición
+  compFilterQuery: '',    // Consulta de texto para candidatos de composición
+
   async init() {
     try {
       this.updateStatus('Cargando catálogo canónico...', 'info');
@@ -79,6 +85,7 @@ window.DocWebApp = {
       this.filterAndRenderTerms();
       this.setupViewTabs();
       this.initHomepage();
+      this.initCompositionPanel();
       this.setupHoverSystem();
 
       // 4. Configurar Enrutamiento por Hash en la URL (Deep Linking & Navegación Historial)
@@ -96,6 +103,7 @@ window.DocWebApp = {
       }
 
       this.setupEventListeners();
+      this.setupDelegatedActions();
       this.updateStatus('Sistema listo. Base de conocimiento local activa.', 'success');
     } catch (e) {
       console.error('Error al inicializar DOCWEB MULTIGLOSSARY:', e);
@@ -259,6 +267,54 @@ window.DocWebApp = {
     if (btnCopyDir) {
       btnCopyDir.addEventListener('click', () => this.copyToClipboard('spec-action-directives', 'btn-copy-directives', '📋 Copiar Directivas'));
     }
+  },
+
+  // =========================================================================
+  // DELEGATED EVENT SYSTEM (CSP-SAFE)
+  // Replaces inline event handlers (onclick / onchange / onsubmit) so the page
+  // works under script-src 'self' without 'unsafe-inline'. Reads data-cmd /
+  // data-cmd-arg attributes instead of executing markup-embedded JavaScript.
+  // =========================================================================
+
+  setupDelegatedActions() {
+    if (typeof document === 'undefined') return;
+
+    // Coerce numeric string arguments into real numbers (e.g. zoom steps).
+    const coerceArg = (arg) => {
+      if (arg !== null && arg !== '' && /^-?\d+(\.\d+)?$/.test(String(arg))) {
+        return Number(arg);
+      }
+      return arg;
+    };
+
+    const invokeClick = (target) => {
+      const cmdEl = target.closest('[data-cmd]');
+      if (!cmdEl) return;
+      const method = cmdEl.getAttribute('data-cmd');
+      let arg = cmdEl.getAttribute('data-cmd-arg');
+      if (arg === null) {
+        arg = cmdEl.getAttribute('data-term-id')
+          || cmdEl.getAttribute('data-format')
+          || cmdEl.getAttribute('data-mode')
+          || '';
+      }
+      const fn = window.DocWebApp && window.DocWebApp[method];
+      if (typeof fn === 'function') {
+        fn(coerceArg(arg), cmdEl);
+      }
+    };
+
+    document.addEventListener('click', (e) => invokeClick(e.target), true);
+
+    document.addEventListener('change', (e) => {
+      const select = e.target.closest('[data-cmd]');
+      if (!select) return;
+      const method = select.getAttribute('data-cmd');
+      const fn = window.DocWebApp && window.DocWebApp[method];
+      if (typeof fn === 'function') {
+        fn(select.value);
+      }
+    }, true);
   },
 
   // =========================================================================
@@ -540,22 +596,22 @@ window.DocWebApp = {
 
         const card = document.createElement('div');
         card.className = 'glossary-showcase-card';
-        card.setAttribute('data-hover-info', `Glosario temático: ${g.title}. Dominio: ${g.domain}`);
+        card.setAttribute('data-hover-info', `Glosario temático: ${this.escapeHtml(g.title)}. Dominio: ${this.escapeHtml(g.domain)}`);
         card.innerHTML = `
           <div>
             <div class="glossary-card-header">
-              <h3 class="glossary-card-title">${g.title}</h3>
+              <h3 class="glossary-card-title">${this.escapeHtml(g.title)}</h3>
               <span class="glossary-card-count">${termsInG.length} conceptos</span>
             </div>
-            <div class="glossary-card-domain" style="margin-top:0.4rem;">${g.domain}</div>
-            <p class="glossary-card-desc" style="margin-top:0.6rem;">${g.description}</p>
+            <div class="glossary-card-domain" style="margin-top:0.4rem;">${this.escapeHtml(g.domain)}</div>
+            <p class="glossary-card-desc" style="margin-top:0.6rem;">${this.escapeHtml(g.description)}</p>
           </div>
           <div>
             <div class="glossary-card-tags">
-              ${topCategories.map(cat => `<span class="glossary-tag-chip">🏷️ ${cat}</span>`).join('')}
+              ${topCategories.map(cat => `<span class="glossary-tag-chip">🏷️ ${this.escapeHtml(cat)}</span>`).join('')}
             </div>
             <div class="glossary-card-footer">
-              <span style="font-size:0.75rem; color:var(--muted-foreground);">v${g.version || '1.0.0'}</span>
+              <span style="font-size:0.75rem; color:var(--muted-foreground);">v${this.escapeHtml(g.version || '1.0.0')}</span>
               <button type="button" class="btn btn-sm btn-primary btn-explore-glossary" data-glossary-id="${gid}">
                 Explorar Glosario ➔
               </button>
@@ -584,6 +640,372 @@ window.DocWebApp = {
 
     // 3. Renderizar resultados del explorador transversal
     this.filterAndRenderHubTerms();
+
+    // 4. Renderizar panel de composición interdominio
+    this.renderCompositionPanel();
+  },
+
+  // =========================================================================
+  // COMPOSICIÓN INTERDOMINIO (B-10)
+  // Selección de términos desde múltiples dominios con procedencia de dominio
+  // y composición de prompts consciente de relaciones.
+  // =========================================================================
+
+  initCompositionPanel() {
+    if (typeof document === 'undefined') return;
+
+    // Selector de dominios de origen (chips)
+    const domainChipsContainer = document.getElementById('composition-domain-chips');
+    if (domainChipsContainer && window.DocWebSemantics) {
+      domainChipsContainer.innerHTML = '';
+      const allChip = document.createElement('button');
+      allChip.type = 'button';
+      allChip.className = 'cat-chip active';
+      allChip.textContent = 'Todos los Dominios';
+      allChip.setAttribute('data-cmd', 'selectCompositionDomain');
+      allChip.setAttribute('data-cmd-arg', 'all');
+      allChip.setAttribute('role', 'button');
+      allChip.setAttribute('tabindex', '0');
+      allChip.onclick = () => this.selectCompositionDomain('all');
+      domainChipsContainer.appendChild(allChip);
+
+      window.DocWebSemantics.glossaries.forEach((g, gid) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'cat-chip';
+        chip.textContent = `📚 ${g.title}`;
+        chip.setAttribute('data-cmd', 'selectCompositionDomain');
+        chip.setAttribute('data-cmd-arg', gid);
+        chip.setAttribute('role', 'button');
+        chip.setAttribute('tabindex', '0');
+        chip.onclick = () => this.selectCompositionDomain(gid);
+        domainChipsContainer.appendChild(chip);
+      });
+    }
+
+    // Campo de búsqueda de composición
+    const compText = document.getElementById('filter-comp-text');
+    if (compText) {
+      compText.addEventListener('input', (e) => {
+        this.compFilterQuery = e.target.value.toLowerCase().trim();
+        this.renderComposedTermsCandidates();
+      });
+    }
+
+    // Botón limpiar composición
+    const btnClear = document.getElementById('btn-clear-composition');
+    if (btnClear) {
+      btnClear.addEventListener('click', () => this.clearComposition());
+    }
+  },
+
+  selectCompositionDomain(domainId) {
+    this.compFilterDomain = domainId;
+    // Actualizar chips activos
+    const container = document.getElementById('composition-domain-chips');
+    if (container) {
+      container.querySelectorAll('.cat-chip').forEach(chip => {
+        const arg = chip.getAttribute('data-cmd-arg');
+        chip.classList.toggle('active', arg === domainId);
+      });
+    }
+    this.renderComposedTermsCandidates();
+  },
+
+  toggleComposedTerm(termId) {
+    const idx = this.composedTerms.indexOf(termId);
+    if (idx >= 0) {
+      this.composedTerms.splice(idx, 1);
+    } else {
+      this.composedTerms.push(termId);
+    }
+    this.renderCompositionPanel();
+    this.updateStatus(
+      `Término ${idx >= 0 ? 'eliminado de' : 'agregado a'} la composición interdominio`,
+      'info'
+    );
+  },
+
+  isTermComposed(termId) {
+    return this.composedTerms.includes(termId);
+  },
+
+  clearComposition() {
+    this.composedTerms = [];
+    this.composedPrompt = '';
+    const output = document.getElementById('composed-prompt-output');
+    if (output) output.textContent = '';
+    this.renderCompositionPanel();
+    this.updateStatus('Composición interdominio limpiada', 'info');
+  },
+
+  renderCompositionPanel() {
+    // Actualizar contador
+    const badge = document.getElementById('composition-count-badge');
+    if (badge) {
+      badge.textContent = `${this.composedTerms.length} término${this.composedTerms.length !== 1 ? 's' : ''} seleccionado${this.composedTerms.length !== 1 ? 's' : ''}`;
+    }
+
+    // Renderizar términos seleccionados con procedencia
+    const container = document.getElementById('composed-terms-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (this.composedTerms.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; padding:1rem; text-align:center; color:var(--muted-foreground); font-size:0.85rem;">
+          No hay términos seleccionados. Busca y selecciona conceptos de cualquier dominio para comenzar.
+        </div>
+      `;
+      return;
+    }
+
+    this.composedTerms.forEach(termId => {
+      const term = window.DocWebSemantics.getTerm(termId);
+      if (!term) return;
+
+      const provenance = window.DocWebSemantics.getTermProvenance(termId);
+      const glossary = window.DocWebSemantics.getGlossary(term.glossaryId) || {};
+      const relCount = Array.isArray(term.relations) ? term.relations.length : 0;
+      const inverseCount = window.DocWebSemantics.getInverseRelations(termId).length;
+
+      const chip = document.createElement('div');
+      chip.className = 'composed-term-chip';
+      chip.style.cssText = 'display:inline-flex; align-items:center; gap:0.4rem; padding:0.4rem 0.7rem; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); font-size:0.8rem;';
+      chip.setAttribute('data-term-id', termId);
+      chip.setAttribute('role', 'button');
+      chip.setAttribute('tabindex', '0');
+
+      chip.innerHTML = `
+        <span style="font-weight:600; color:var(--foreground);">${this.escapeHtml(term.title)}</span>
+        <span style="font-size:0.65rem; color:var(--muted-foreground);">📚 ${provenance ? this.escapeHtml(provenance.glossaryTitle) : term.glossaryId}</span>
+        <span style="font-size:0.65rem; color:#10b981;">🔗 ${relCount + inverseCount} rels</span>
+        <button type="button" data-cmd="toggleComposedTerm" data-cmd-arg="${this.escapeHtml(termId)}" style="margin-left:auto; background:none; border:none; color:var(--danger); cursor:pointer; font-size:1rem; padding:0 0.2rem;">✕</button>
+      `;
+
+      chip.addEventListener('click', (e) => {
+        // Si se hizo clic en el botón de eliminar, no navegar
+        if (e.target.tagName === 'BUTTON') return;
+        this.switchView('glossary-view');
+        this.selectTerm(termId);
+      });
+
+      container.appendChild(chip);
+    });
+  },
+
+  renderComposedTermsCandidates() {
+    if (!window.DocWebSemantics) return;
+    const container = document.getElementById('explorer-cards-container');
+    if (!container) return;
+
+    const query = this.compFilterQuery || '';
+    const domainFilter = this.compFilterDomain || 'all';
+
+    let terms = window.DocWebSemantics.getAllTerms();
+
+    // Filtrar por dominio
+    if (domainFilter && domainFilter !== 'all') {
+      terms = terms.filter(t => t.glossaryId === domainFilter);
+    }
+
+    // Filtrar por texto
+    if (query) {
+      terms = terms.filter(t => {
+        const text = `${t.title} ${t.slug} ${t.shortDefinition || ''} ${t.definition || ''} ${(t.synonyms || []).join(' ')}`.toLowerCase();
+        return text.includes(query);
+      });
+    }
+
+    // Ordenar alfabéticamente
+    terms.sort((a, b) => (a.title || '').localeCompare(b.title || '', 'es', { sensitivity: 'base' }));
+
+    const counterEl = document.getElementById('explorer-results-counter');
+    if (counterEl) {
+      counterEl.textContent = `Composición: ${terms.length} término${terms.length !== 1 ? 's' : ''} disponible${terms.length !== 1 ? 's' : ''}`;
+    }
+
+    container.innerHTML = '';
+
+    if (terms.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; padding: 3rem; text-align: center; color: var(--muted-foreground); background: var(--card); border: 1px dashed var(--border); border-radius: var(--radius);">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+          <p style="font-size: 0.95rem; font-weight: 600;">No se encontraron términos para la composición.</p>
+        </div>
+      `;
+      return;
+    }
+
+    terms.forEach(term => {
+      const g = window.DocWebSemantics.getGlossary(term.glossaryId);
+      const isSelected = this.isTermComposed(term.id);
+
+      const card = document.createElement('article');
+      card.className = `explorer-term-card ${isSelected ? 'composed-selected' : ''}`;
+      card.setAttribute('data-term-id', term.id);
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.style.cssText = isSelected ? 'border:2px solid var(--primary); background:rgba(37,99,235,0.05);' : '';
+
+      card.innerHTML = `
+        <div>
+          <div class="explorer-term-header">
+            <h4 class="explorer-term-title">${this.escapeHtml(term.title)}</h4>
+            <span class="explorer-term-badge">📚 ${this.escapeHtml(g ? g.slug : term.glossaryId)}</span>
+            ${isSelected ? '<span style="color:var(--primary); font-weight:700;">✓ Seleccionado</span>' : ''}
+          </div>
+          <div class="explorer-term-meta" style="margin: 0.4rem 0;">
+            <span class="term-badge-cat" style="font-size: 0.65rem;">🏷️ ${this.escapeHtml(term.category || 'General')}</span>
+          </div>
+          <p class="explorer-term-snippet">${this.escapeHtml(term.shortDefinition || term.definition || 'Sin definición resumida.')}</p>
+        </div>
+        <div class="explorer-term-footer">
+          <span>🔄 ${(term.relations || []).length} relaciones</span>
+          <span style="font-weight: 600; color: var(--primary);">${isSelected ? 'Quitar de composición' : 'Agregar a composición'}</span>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        this.toggleComposedTerm(term.id);
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.toggleComposedTerm(term.id);
+        }
+      });
+
+      container.appendChild(card);
+    });
+  },
+
+  composeCrossDomainPrompt() {
+    if (!window.DocWebSemantics || this.composedTerms.length === 0) {
+      this.updateStatus('No hay términos seleccionados para componer un prompt.', 'warning');
+      return;
+    }
+
+    const terms = this.composedTerms.map(id => window.DocWebSemantics.getTerm(id)).filter(Boolean);
+    if (terms.length === 0) return;
+
+    // Agrupar por dominio para trazabilidad de procedencia
+    const byDomain = new Map();
+    for (const t of terms) {
+      if (!byDomain.has(t.glossaryId)) {
+        const g = window.DocWebSemantics.getGlossary(t.glossaryId) || {};
+        byDomain.set(t.glossaryId, {
+          glossaryId: t.glossaryId,
+          glossaryTitle: g.title || t.glossaryId,
+          domain: g.domain || '',
+          terms: []
+        });
+      }
+      byDomain.get(t.glossaryId).terms.push(t);
+    }
+
+    // Detectar relaciones entre términos seleccionados (misma pareja o cruzadas)
+    const selectedIds = new Set(this.composedTerms);
+    const crossRelations = [];
+    for (const t of terms) {
+      if (!Array.isArray(t.relations)) continue;
+      for (const rel of t.relations) {
+        if (selectedIds.has(rel.target)) {
+          const target = window.DocWebSemantics.getTerm(rel.target);
+          crossRelations.push({
+            source: t.id,
+            sourceTitle: t.title,
+            target: rel.target,
+            targetTitle: target ? target.title : rel.target,
+            type: rel.type,
+            family: window.DocWebSemantics.getRelationFamily(rel.type).label,
+            isCrossDomain: target && target.glossaryId !== t.glossaryId
+          });
+        }
+      }
+    }
+
+    // Construir el prompt compuesto
+    const lines = [];
+    lines.push('# Prompt Técnico Compuesto — DocWeb MultiGlossary');
+    lines.push('');
+    lines.push('Generado a partir de términos seleccionados de múltiples dominios ontológicos.');
+    lines.push(`Términos: ${terms.length} | Dominios: ${byDomain.size} | Relaciones detectadas: ${crossRelations.length}`);
+    lines.push('');
+
+    // Sección por dominio con procedencia
+    lines.push('## Términos por Dominio (Procedencia de Glosario)');
+    lines.push('');
+    for (const [gid, info] of byDomain) {
+      lines.push(`### ${info.glossaryTitle}`);
+      lines.push(`*Dominio: ${info.domain} | Glosario: ${info.glossaryId}*`);
+      lines.push('');
+      for (const t of info.terms) {
+        const def = t.shortDefinition || t.definition || '';
+        lines.push(`- **${this.escapeHtml(t.title)}** (${t.id}): ${this.escapeHtml(def)}`);
+      }
+      lines.push('');
+    }
+
+    // Sección de relaciones entre términos
+    if (crossRelations.length > 0) {
+      lines.push('## Relaciones Semánticas Detectadas entre Términos Seleccionados');
+      lines.push('');
+      for (const rel of crossRelations) {
+        const domainMarker = rel.isCrossDomain ? ' [Inter-Glosario]' : '';
+        lines.push(`- ${this.escapeHtml(rel.sourceTitle)} → ${this.escapeHtml(rel.targetTitle)}: ${rel.family} (${rel.type})${domainMarker}`);
+      }
+      lines.push('');
+    }
+
+    // Plantilla de prompt técnico
+    lines.push('## Prompt Técnico Sintetizado');
+    lines.push('');
+    lines.push('Utiliza los siguientes conceptos ontológicos, sus definiciones y relaciones para orientar la generación de una especificación técnica:');
+    lines.push('');
+    for (const [gid, info] of byDomain) {
+      lines.push(`### Desde ${info.glossaryTitle}:`);
+      for (const t of info.terms) {
+        lines.push(`- ${this.escapeHtml(t.title)}: ${this.escapeHtml(t.shortDefinition || t.definition || '')}`);
+      }
+      lines.push('');
+    }
+    if (crossRelations.length > 0) {
+      lines.push('Relaciones relevantes entre los conceptos seleccionados:');
+      for (const rel of crossRelations) {
+        lines.push(`- ${this.escapeHtml(rel.sourceTitle)} está ${rel.family.toLowerCase()} con ${this.escapeHtml(rel.targetTitle)}`);
+      }
+      lines.push('');
+    }
+    lines.push('Genera una especificación técnica que integre estos conceptos respetando sus relaciones ontológicas y su procedencia de dominio.');
+
+    this.composedPrompt = lines.join('\n');
+
+    // Mostrar en el output
+    const output = document.getElementById('composed-prompt-output');
+    if (output) {
+      output.textContent = this.composedPrompt;
+    }
+
+    this.updateStatus(`Prompt compuesto generado: ${terms.length} términos de ${byDomain.size} dominios.`, 'success');
+  },
+
+  copyComposedPrompt() {
+    if (!this.composedPrompt) {
+      this.updateStatus('No hay prompt compuesto para copiar.', 'warning');
+      return;
+    }
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(this.composedPrompt).then(() => {
+        this.updateStatus('Prompt compuesto copiado al portapapeles.', 'success');
+      }).catch(() => {
+        prompt('Prompt compuesto:', this.composedPrompt);
+      });
+    } else {
+      prompt('Prompt compuesto:', this.composedPrompt);
+    }
   },
 
   filterAndRenderHubTerms() {
@@ -669,14 +1091,14 @@ window.DocWebApp = {
       card.innerHTML = `
         <div>
           <div class="explorer-term-header">
-            <h4 class="explorer-term-title">${term.title}</h4>
-            <span class="explorer-term-badge">📚 ${g ? g.slug : term.glossaryId}</span>
+            <h4 class="explorer-term-title">${this.escapeHtml(term.title)}</h4>
+            <span class="explorer-term-badge">📚 ${this.escapeHtml(g ? g.slug : term.glossaryId)}</span>
           </div>
           <div class="explorer-term-meta" style="margin: 0.4rem 0;">
-            <span class="term-badge-cat" style="font-size: 0.65rem;">🏷️ ${term.category || 'General'}</span>
-            <span class="term-badge-level" style="font-size: 0.65rem;">📐 ${facets.ontologicalLevel}</span>
+            <span class="term-badge-cat" style="font-size: 0.65rem;">🏷️ ${this.escapeHtml(term.category || 'General')}</span>
+            <span class="term-badge-level" style="font-size: 0.65rem;">📐 ${this.escapeHtml(facets.ontologicalLevel)}</span>
           </div>
-          <p class="explorer-term-snippet">${term.shortDefinition || term.definition || 'Sin definición resumida.'}</p>
+          <p class="explorer-term-snippet">${this.escapeHtml(term.shortDefinition || term.definition || 'Sin definición resumida.')}</p>
         </div>
         <div class="explorer-term-footer">
           <span>🔄 ${(term.relations || []).length} relaciones</span>
@@ -828,30 +1250,30 @@ window.DocWebApp = {
         if (this.hoverMode === 'simple') {
           tooltip.innerHTML = `
             <div class="tooltip-simple-box">
-              <div class="tooltip-simple-title">${term.title}</div>
-              <div class="tooltip-simple-badge">📚 ${glossary ? glossary.title : term.glossaryId} • 🏷️ ${term.category || 'General'}</div>
-              <div class="tooltip-simple-desc">${term.shortDefinition || term.definition || ''}</div>
-              <div style="font-size:0.65rem; color:var(--primary); font-weight:700; margin-top:0.2rem;">📐 ${facets.ontologicalLevel}</div>
+              <div class="tooltip-simple-title">${this.escapeHtml(term.title)}</div>
+              <div class="tooltip-simple-badge">📚 ${this.escapeHtml(glossary ? glossary.title : term.glossaryId)} • 🏷️ ${this.escapeHtml(term.category || 'General')}</div>
+              <div class="tooltip-simple-desc">${this.escapeHtml(term.shortDefinition || term.definition || '')}</div>
+              <div style="font-size:0.65rem; color:var(--primary); font-weight:700; margin-top:0.2rem;">📐 ${this.escapeHtml(facets.ontologicalLevel)}</div>
             </div>
           `;
         } else {
           // Modo Completo
-          const aiTokens = term.aiPromptGuidance ? (term.aiPromptGuidance.promptTokens || []).slice(0, 3).join(', ') : '';
+          const aiTokens = term.aiPromptGuidance ? (term.aiPromptGuidance.promptTokens || []).slice(0, 3).map(t => this.escapeHtml(t)).join(', ') : '';
           tooltip.innerHTML = `
             <div class="tooltip-complete-box">
               <div class="tooltip-complete-header">
-                <div class="tooltip-complete-title">${term.title}</div>
-                <div class="tooltip-complete-urn">${term.id}</div>
+                <div class="tooltip-complete-title">${this.escapeHtml(term.title)}</div>
+                <div class="tooltip-complete-urn">${this.escapeHtml(term.id)}</div>
               </div>
               <div class="tooltip-complete-body">
-                ${term.definition || term.shortDefinition || ''}
+                ${this.escapeHtml(term.definition || term.shortDefinition || '')}
               </div>
               <div class="tooltip-complete-tags">
-                <span class="tooltip-complete-chip">📚 ${glossary ? glossary.title : term.glossaryId}</span>
-                <span class="tooltip-complete-chip">🏷️ ${term.category || 'General'}</span>
-                <span class="tooltip-complete-chip">📐 ${facets.ontologicalLevel}</span>
-                <span class="tooltip-complete-chip">⏳ ${facets.lifecyclePhase}</span>
-                <span class="tooltip-complete-chip">👁️ ${facets.sensoryModality}</span>
+                <span class="tooltip-complete-chip">📚 ${this.escapeHtml(glossary ? glossary.title : term.glossaryId)}</span>
+                <span class="tooltip-complete-chip">🏷️ ${this.escapeHtml(term.category || 'General')}</span>
+                <span class="tooltip-complete-chip">📐 ${this.escapeHtml(facets.ontologicalLevel)}</span>
+                <span class="tooltip-complete-chip">⏳ ${this.escapeHtml(facets.lifecyclePhase)}</span>
+                <span class="tooltip-complete-chip">👁️ ${this.escapeHtml(facets.sensoryModality)}</span>
               </div>
               ${aiTokens ? `<div style="font-size:0.68rem; color:var(--muted-foreground);"><strong style="color:var(--foreground);">Prompt IA:</strong> ${aiTokens}</div>` : ''}
               <div class="tooltip-complete-stats">
@@ -872,7 +1294,7 @@ window.DocWebApp = {
         tooltip.innerHTML = `
           <div class="tooltip-simple-box">
             <div class="tooltip-simple-title" style="color:var(--foreground);">Control de Interfaz</div>
-            <div class="tooltip-simple-desc">${hoverInfo}</div>
+            <div class="tooltip-simple-desc">${this.escapeHtml(hoverInfo)}</div>
           </div>
         `;
         tooltip.style.display = 'block';
@@ -1004,8 +1426,8 @@ window.DocWebApp = {
       chip.setAttribute('data-category', cat);
       chip.setAttribute('role', 'button');
       chip.setAttribute('tabindex', '0');
-      chip.setAttribute('aria-label', `Categoría: ${label} (${count} términos)`);
-      chip.setAttribute('title', `Categoría: ${label}\n• ${count} términos disponibles en esta categoría\n• Clic para filtrar exclusivamente este dominio`);
+      chip.setAttribute('aria-label', `Categoría: ${this.escapeHtml(label)} (${count} términos)`);
+      chip.setAttribute('title', `Categoría: ${this.escapeHtml(label)}\n• ${count} términos disponibles en esta categoría\n• Clic para filtrar exclusivamente este dominio`);
       chip.setAttribute('data-dom-tag', 'span');
       chip.setAttribute('data-dom-role', 'button');
       chip.setAttribute('data-dom-container', 'category-chips-container');
@@ -1130,7 +1552,7 @@ window.DocWebApp = {
       const snippet = term.shortDefinition || term.definition || '';
 
       // Información at-hover enriquecida con metadatos ontológicos, fase, relaciones y URN
-      item.setAttribute('title', `[${term.title}] (${term.category || 'General'})\n• Nivel Ontológico: ${facets.ontologicalLevel}\n• Fase de Flujo: ${facets.lifecyclePhase}\n• Relaciones Activas: ${relCount}\n• Definición: ${snippet.substring(0, 140)}...\n• URN: ${term.id}`);
+      item.setAttribute('title', `[${this.escapeHtml(term.title)}] (${this.escapeHtml(term.category || 'General')})\n• Nivel Ontológico: ${this.escapeHtml(facets.ontologicalLevel)}\n• Fase de Flujo: ${this.escapeHtml(facets.lifecyclePhase)}\n• Relaciones Activas: ${relCount}\n• Definición: ${this.escapeHtml(snippet.substring(0, 140))}...\n• URN: ${this.escapeHtml(term.id)}`);
       item.setAttribute('data-dom-tag', 'div');
       item.setAttribute('data-dom-role', 'listitem');
       item.setAttribute('data-dom-container', 'terms-list');
@@ -1208,13 +1630,13 @@ window.DocWebApp = {
     viewContainer.innerHTML = `
       <article class="content-card semantic-term-entity" itemscope itemtype="https://schema.org/DefinedTerm"
         id="term-entity-card"
-        data-term-id="${term.id}"
-        data-glossary-id="${term.glossaryId}"
-        data-category="${term.category || 'General'}"
-        data-ontological-level="${facets.ontologicalLevel}"
-        data-lifecycle-phase="${facets.lifecyclePhase}"
-        data-sensory-modality="${facets.sensoryModality}"
-        data-toolchain="${facets.toolchainDomain}"
+        data-term-id="${this.escapeHtml(term.id)}"
+        data-glossary-id="${this.escapeHtml(term.glossaryId)}"
+        data-category="${this.escapeHtml(term.category || 'General')}"
+        data-ontological-level="${this.escapeHtml(facets.ontologicalLevel)}"
+        data-lifecycle-phase="${this.escapeHtml(facets.lifecyclePhase)}"
+        data-sensory-modality="${this.escapeHtml(facets.sensoryModality)}"
+        data-toolchain="${this.escapeHtml(facets.toolchainDomain)}"
         data-dom-tag="article"
         data-dom-role="landmark"
         data-dom-container="term-view-container"
@@ -1224,24 +1646,24 @@ window.DocWebApp = {
         
         <header class="term-header-view" data-dom-tag="header" data-dom-container="content-card">
           <div>
-            <dfn class="term-title-large" id="term-title-heading" itemprop="name" data-dom-tag="dfn" title="Definición canónica del término">${term.title}</dfn>
+            <dfn class="term-title-large" id="term-title-heading" itemprop="name" data-dom-tag="dfn" title="Definición canónica del término">${this.escapeHtml(term.title)}</dfn>
             <div class="term-meta-row" data-dom-tag="div">
-              <span class="term-badge-primary" title="Glosario temático al que pertenece este término">📚 ${glossary ? glossary.title : term.glossaryId}</span>
-              <span class="term-badge-primary" title="Categoría primaria de clasificación">🏷️ ${term.category || 'General'}</span>
-              <span class="term-badge-id" title="Identificador uniforme de recursos (URN canónica) persistente e inmutable">${term.id}</span>
+              <span class="term-badge-primary" title="Glosario temático al que pertenece este término">📚 ${this.escapeHtml(glossary ? glossary.title : term.glossaryId)}</span>
+              <span class="term-badge-primary" title="Categoría primaria de clasificación">🏷️ ${this.escapeHtml(term.category || 'General')}</span>
+              <span class="term-badge-id" title="Identificador uniforme de recursos (URN canónica) persistente e inmutable">${this.escapeHtml(term.id)}</span>
               ${term.origin === 'persisted_local' ? '<span class="term-badge-cross" style="color:var(--success); border-color:var(--success);" title="Almacenado localmente en IndexedDB">💾 Persistido Local</span>' : ''}
             </div>
           </div>
           
           <!-- Botones de Acción Inmediata del Término -->
           <div class="term-action-buttons-group" style="display:flex; flex-wrap:wrap; gap:0.35rem; align-items:center;" data-dom-tag="div" data-dom-container="term-header-view">
-            <button type="button" class="btn btn-sm btn-primary" onclick="window.DocWebApp.openTermEditor('${term.id}')" title="Editar o ampliar atributos, relaciones y definiciones de este término" aria-label="Editar o ampliar término">✏️ Editar</button>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.copyTermDeepLink('${term.id}')" title="Copiar enlace directo URL con hash al portapapeles" aria-label="Copiar enlace directo">🔗 Enlace</button>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.copyTermUrn('${term.id}')" title="Copiar identificador URN canónico al portapapeles" aria-label="Copiar URN canónica">📋 Copiar URN</button>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.copyTermJsonLd('${term.id}')" title="Copiar especificación Schema.org DefinedTerm JSON-LD estructurado" aria-label="Copiar JSON-LD">📄 JSON-LD</button>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.focusInDiagram()" title="Desplazarse y enfocar este término en el Diagrama Contextual de Relaciones" aria-label="Enfocar en diagrama">🎯 Ver Diagrama</button>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.orientInAiModal('${term.id}')" title="Abrir Orientador de Intenciones Audiovisuales para IA con este término vinculado" aria-label="Orientar en IA">🎬 Orientar IA</button>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.downloadTermJson('${term.id}')" title="Descargar ficha técnica estructurada en JSON local autónomo" aria-label="Descargar JSON del término">📥 Descargar JSON</button>
+            <button type="button" class="btn btn-sm btn-primary" data-cmd="openTermEditor" data-cmd-arg="${term.id}" title="Editar o ampliar atributos, relaciones y definiciones de este término" aria-label="Editar o ampliar término">✏️ Editar</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="copyTermDeepLink" data-cmd-arg="${term.id}" title="Copiar enlace directo URL con hash al portapapeles" aria-label="Copiar enlace directo">🔗 Enlace</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="copyTermUrn" data-cmd-arg="${term.id}" title="Copiar identificador URN canónico al portapapeles" aria-label="Copiar URN canónica">📋 Copiar URN</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="copyTermJsonLd" data-cmd-arg="${term.id}" title="Copiar especificación Schema.org DefinedTerm JSON-LD estructurado" aria-label="Copiar JSON-LD">📄 JSON-LD</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="focusInDiagram" title="Desplazarse y enfocar este término en el Diagrama Contextual de Relaciones" aria-label="Enfocar en diagrama">🎯 Ver Diagrama</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="orientInAiModal" data-cmd-arg="${term.id}" title="Abrir Orientador de Intenciones Audiovisuales para IA con este término vinculado" aria-label="Orientar en IA">🎬 Orientar IA</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="downloadTermJson" data-cmd-arg="${term.id}" title="Descargar ficha técnica estructurada en JSON local autónomo" aria-label="Descargar JSON del término">📥 Descargar JSON</button>
           </div>
         </header>
 
@@ -1255,29 +1677,29 @@ window.DocWebApp = {
           </div>
           <div class="additive-facets-chips" style="display:flex; flex-wrap:wrap; gap:0.4rem;">
             <span class="facet-chip" style="background:var(--card); border:1px solid var(--border); font-size:0.72rem; padding:0.2rem 0.5rem; border-radius:4px; display:inline-flex; align-items:center; gap:0.25rem;" title="Nivel en la jerarquía ontológica de 6 niveles (L1 a L6)" data-dom-tag="span">
-              🌳 <strong>Nivel:</strong> <span style="color:var(--primary); font-weight:600;">${facets.ontologicalLevel}</span>
+              🌳 <strong>Nivel:</strong> <span style="color:var(--primary); font-weight:600;">${this.escapeHtml(facets.ontologicalLevel)}</span>
             </span>
             <span class="facet-chip" style="background:var(--card); border:1px solid var(--border); font-size:0.72rem; padding:0.2rem 0.5rem; border-radius:4px; display:inline-flex; align-items:center; gap:0.25rem;" title="Fase cronológica de producción audiovisual donde interviene" data-dom-tag="span">
-              ⏱️ <strong>Fase de Flujo:</strong> <span style="color:#10b981; font-weight:600;">${facets.lifecyclePhase}</span>
+              ⏱️ <strong>Fase de Flujo:</strong> <span style="color:#10b981; font-weight:600;">${this.escapeHtml(facets.lifecyclePhase)}</span>
             </span>
             <span class="facet-chip" style="background:var(--card); border:1px solid var(--border); font-size:0.72rem; padding:0.2rem 0.5rem; border-radius:4px; display:inline-flex; align-items:center; gap:0.25rem;" title="Modalidad sensorial o técnica que compromete" data-dom-tag="span">
-              👁️ <strong>Modalidad:</strong> <span style="color:#ec4899; font-weight:600;">${facets.sensoryModality}</span>
+              👁️ <strong>Modalidad:</strong> <span style="color:#ec4899; font-weight:600;">${this.escapeHtml(facets.sensoryModality)}</span>
             </span>
             <span class="facet-chip" style="background:var(--card); border:1px solid var(--border); font-size:0.72rem; padding:0.2rem 0.5rem; border-radius:4px; display:inline-flex; align-items:center; gap:0.25rem;" title="Herramienta o entorno técnico principal" data-dom-tag="span">
-              🛠️ <strong>Toolchain:</strong> <span style="color:#f59e0b; font-weight:600;">${facets.toolchainDomain}</span>
+              🛠️ <strong>Toolchain:</strong> <span style="color:#f59e0b; font-weight:600;">${this.escapeHtml(facets.toolchainDomain)}</span>
             </span>
             <span class="facet-chip" style="background:var(--card); border:1px solid var(--border); font-size:0.72rem; padding:0.2rem 0.5rem; border-radius:4px; display:inline-flex; align-items:center; gap:0.25rem;" title="Marcado semántico estándar Schema.org" data-dom-tag="span">
-              🏛️ <strong>Esquema Web:</strong> Schema.org <span style="color:#8b5cf6; font-weight:600;">${facets.schemaOrgType}</span>
+              🏛️ <strong>Esquema Web:</strong> Schema.org <span style="color:#8b5cf6; font-weight:600;">${this.escapeHtml(facets.schemaOrgType)}</span>
             </span>
           </div>
         </section>
 
         <section class="term-definition-section" aria-label="Definición y desarrollo conceptual" data-dom-tag="section" data-dom-container="content-card">
           <div class="section-label" data-dom-tag="div">Definición Concisa</div>
-          <p class="definition-lead" itemprop="description" data-dom-tag="p">${term.shortDefinition || term.definition || 'Sin definición corta'}</p>
+          <p class="definition-lead" itemprop="description" data-dom-tag="p">${this.escapeHtml(term.shortDefinition || term.definition || 'Sin definición corta')}</p>
 
           <div class="section-label" data-dom-tag="div">Desarrollo Conceptual Extendido</div>
-          <div class="definition-full" itemprop="disambiguatingDescription" data-dom-tag="div">${term.fullDefinition || term.extendedDefinition || 'Sin definición detallada'}</div>
+          <div class="definition-full" itemprop="disambiguatingDescription" data-dom-tag="div">${this.escapeHtml(term.fullDefinition || term.extendedDefinition || 'Sin definición detallada')}</div>
         </section>
 
         <!-- Marco de Expresión Basada en Intenciones Operativas y Efectos Concretos -->
@@ -1289,7 +1711,7 @@ window.DocWebApp = {
               <h3 style="font-size:0.95rem; font-weight:700; margin:0; color:var(--foreground);">Expresión Basada en Intenciones Operativas</h3>
             </div>
             <span class="badge" style="background:rgba(56,189,248,0.15); color:#38bdf8; font-weight:700; font-size:0.72rem; padding:0.18rem 0.5rem; border-radius:0.3rem;">
-              ${intention.badge}
+              ${this.escapeHtml(intention.badge)}
             </span>
           </div>
 
@@ -1299,7 +1721,7 @@ window.DocWebApp = {
                 🎯 Propósito / Intención Primaria
               </div>
               <div style="font-size:0.78rem; color:var(--foreground); line-height:1.45;">
-                ${intention.primaryIntent}
+                ${this.escapeHtml(intention.primaryIntent)}
               </div>
             </div>
 
@@ -1308,7 +1730,7 @@ window.DocWebApp = {
                 ⚡ Efecto & Transformación Concreta
               </div>
               <div style="font-size:0.78rem; color:var(--foreground); line-height:1.45;">
-                ${intention.concreteEffect}
+                ${this.escapeHtml(intention.concreteEffect)}
               </div>
             </div>
           </div>
@@ -1319,16 +1741,16 @@ window.DocWebApp = {
                 🤖 Directiva de Prompt Basada en Intención
               </span>
               <div style="display:flex; gap:0.3rem;">
-                <button type="button" class="btn btn-sm btn-secondary" style="font-size:0.68rem; padding:0.15rem 0.45rem;" onclick="window.DocWebApp.copyToClipboardDirect('${intention.operationalDirective.replace(/'/g, "\\'")}', this, '📋 Copiado!')">
+                <button type="button" class="btn btn-sm btn-secondary" style="font-size:0.68rem; padding:0.15rem 0.45rem;" data-cmd="copyToClipboardDirect" data-cmd-arg="${this.escapeHtml(intention.operationalDirective)}">
                   📋 Copiar Directiva
                 </button>
-                <button type="button" class="btn btn-sm btn-primary" style="font-size:0.68rem; padding:0.15rem 0.45rem;" onclick="window.DocWebApp.orientInAiModal('${term.id}')">
+                <button type="button" class="btn btn-sm btn-primary" style="font-size:0.68rem; padding:0.15rem 0.45rem;" data-cmd="orientInAiModal" data-cmd-arg="${term.id}">
                   ✨ Usar en Orientador IA
                 </button>
               </div>
             </div>
             <div style="font-size:0.78rem; color:var(--muted-foreground); font-family:monospace; line-height:1.45; background:var(--background); padding:0.45rem 0.65rem; border-radius:0.3rem; border:1px solid var(--border);">
-              ${intention.operationalDirective}
+              ${this.escapeHtml(intention.operationalDirective)}
             </div>
           </div>
         </section>
@@ -1340,7 +1762,7 @@ window.DocWebApp = {
             <div class="info-block" data-dom-tag="div">
               <dt class="info-block-title" data-dom-tag="dt">⚙️ Atributos Específicos</dt>
               <dd class="info-block-content" data-dom-tag="dd">
-                ${term.attributes && Object.keys(term.attributes).length > 0 ? Object.entries(term.attributes).map(([k, v]) => `<div><strong>${k}:</strong> ${v}</div>`).join('') : '<span class="text-xs text-[var(--muted-foreground)]">No definidos</span>'}
+                ${term.attributes && Object.keys(term.attributes).length > 0 ? Object.entries(term.attributes).map(([k, v]) => `<div><strong>${this.escapeHtml(k)}:</strong> ${this.escapeHtml(v)}</div>`).join('') : '<span class="text-xs text-[var(--muted-foreground)]">No definidos</span>'}
               </dd>
             </div>
 
@@ -1348,7 +1770,7 @@ window.DocWebApp = {
               <dt class="info-block-title" data-dom-tag="dt">🧩 Componentes y Estructura</dt>
               <dd class="info-block-content" data-dom-tag="dd">
                 ${term.components && term.components.length > 0 
-                  ? `<ul style="padding-left:1.2rem;">${term.components.map(c => `<li>${c}</li>`).join('')}</ul>` 
+                  ? `<ul style="padding-left:1.2rem;">${term.components.map(c => `<li>${this.escapeHtml(c)}</li>`).join('')}</ul>` 
                   : '<span class="text-xs text-[var(--muted-foreground)]">Sin componentes declarados</span>'}
               </dd>
             </div>
@@ -1357,7 +1779,7 @@ window.DocWebApp = {
               <dt class="info-block-title" data-dom-tag="dt">🎯 Aplicaciones Prácticas</dt>
               <dd class="info-block-content" data-dom-tag="dd">
                 ${term.applications && term.applications.length > 0 
-                  ? `<ul style="padding-left:1.2rem;">${term.applications.map(a => `<li>${a}</li>`).join('')}</ul>` 
+                  ? `<ul style="padding-left:1.2rem;">${term.applications.map(a => `<li>${this.escapeHtml(a)}</li>`).join('')}</ul>` 
                   : '<span class="text-xs text-[var(--muted-foreground)]">Sin aplicaciones registradas</span>'}
               </dd>
             </div>
@@ -1366,7 +1788,7 @@ window.DocWebApp = {
               <dt class="info-block-title" data-dom-tag="dt">💡 Ejemplos Documentados</dt>
               <dd class="info-block-content" data-dom-tag="dd">
                 ${term.examples && term.examples.length > 0 
-                  ? `<ul style="padding-left:1.2rem;">${term.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>` 
+                  ? `<ul style="padding-left:1.2rem;">${term.examples.map(ex => `<li>${this.escapeHtml(ex)}</li>`).join('')}</ul>` 
                   : '<span class="text-xs text-[var(--muted-foreground)]">Sin ejemplos registrados</span>'}
               </dd>
             </div>
@@ -1375,13 +1797,13 @@ window.DocWebApp = {
               <div class="info-block" style="grid-column: 1 / -1; border-color: var(--accent);" data-dom-tag="div">
                 <dt class="info-block-title" style="color: var(--accent);" data-dom-tag="dt">🤖 Orientación para Modelos de IA Generativa</dt>
                 <dd class="info-block-content" data-dom-tag="dd">
-                  <p style="margin-bottom:0.4rem;"><strong>Relevancia:</strong> ${term.aiPromptGuidance.relevance || ''}</p>
+                  <p style="margin-bottom:0.4rem;"><strong>Relevancia:</strong> ${this.escapeHtml(term.aiPromptGuidance.relevance || '')}</p>
                   ${term.aiPromptGuidance.promptTokens && term.aiPromptGuidance.promptTokens.length > 0 ? `
-                    <div style="margin-bottom:0.3rem;"><strong>Tokens Clave:</strong> <span class="tag-cloud" style="display:inline-flex; gap:0.25rem;">${term.aiPromptGuidance.promptTokens.map(t => `<span class="tag-item" style="color:var(--primary);">${t}</span>`).join('')}</span></div>` : ''}
+                    <div style="margin-bottom:0.3rem;"><strong>Tokens Clave:</strong> <span class="tag-cloud" style="display:inline-flex; gap:0.25rem;">${term.aiPromptGuidance.promptTokens.map(t => `<span class="tag-item" style="color:var(--primary);">${this.escapeHtml(t)}</span>`).join('')}</span></div>` : ''}
                   ${term.aiPromptGuidance.negativeTokens && term.aiPromptGuidance.negativeTokens.length > 0 ? `
-                    <div style="margin-bottom:0.3rem;"><strong>Tokens Negativos:</strong> <span class="tag-cloud" style="display:inline-flex; gap:0.25rem;">${term.aiPromptGuidance.negativeTokens.map(t => `<span class="tag-item" style="color:var(--danger);">${t}</span>`).join('')}</span></div>` : ''}
+                    <div style="margin-bottom:0.3rem;"><strong>Tokens Negativos:</strong> <span class="tag-cloud" style="display:inline-flex; gap:0.25rem;">${term.aiPromptGuidance.negativeTokens.map(t => `<span class="tag-item" style="color:var(--danger);">${this.escapeHtml(t)}</span>`).join('')}</span></div>` : ''}
                   ${term.aiPromptGuidance.modelCompatibility && term.aiPromptGuidance.modelCompatibility.length > 0 ? `
-                    <div><strong>Compatibilidad:</strong> ${term.aiPromptGuidance.modelCompatibility.join(', ')}</div>` : ''}
+                    <div><strong>Compatibilidad:</strong> ${term.aiPromptGuidance.modelCompatibility.map(t => this.escapeHtml(t)).join(', ')}</div>` : ''}
                 </dd>
               </div>
             ` : ''}
@@ -1390,7 +1812,7 @@ window.DocWebApp = {
 
         <!-- Motor de Cuestionamiento Adaptativo Ontológico (Sección XVII de la Ontología Integral) -->
         <section class="socratic-questioning-card" aria-label="Motor de Cuestionamiento Adaptativo Ontológico" data-dom-tag="section" data-dom-container="content-card" style="margin-top:1rem; background:rgba(139,92,246,0.04); border:1px solid rgba(139,92,246,0.25); border-radius:var(--radius); padding:0.85rem;">
-          <header style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="window.DocWebApp.toggleSocraticSection()" title="Alternar panel de cuestionamiento ontológico socrático">
+          <header style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" data-cmd="toggleSocraticSection" title="Alternar panel de cuestionamiento ontológico socrático">
             <div style="display:flex; align-items:center; gap:0.5rem;">
               <span style="font-size:1.3rem;">🧐</span>
               <div>
@@ -1405,12 +1827,12 @@ window.DocWebApp = {
             ${questions.map(q => `
               <div class="socratic-question-box" style="background:var(--card); border:1px solid var(--border); border-radius:0.4rem; padding:0.65rem; display:flex; flex-direction:column; gap:0.3rem;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <span style="font-size:0.72rem; font-weight:700; color:var(--primary);">${q.icon} ${q.category}</span>
+                  <span style="font-size:0.72rem; font-weight:700; color:var(--primary);">${this.escapeHtml(q.icon)} ${this.escapeHtml(q.category)}</span>
                   <span style="font-size:0.65rem; padding:0.1rem 0.35rem; border-radius:0.2rem; background:${q.status === 'verified' ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)'}; color:${q.status === 'verified' ? '#10b981' : '#f59e0b'}; font-weight:700;">${q.status === 'verified' ? '✔ Verificada' : 'ℹ Inferencia'}</span>
                 </div>
-                <div style="font-size:0.76rem; font-weight:600; color:var(--foreground); line-height:1.3;">${q.question}</div>
-                <div style="font-size:0.72rem; color:var(--muted-foreground); line-height:1.4;">${q.answer}</div>
-                <div style="font-size:0.65rem; font-family:monospace; color:var(--muted-foreground); border-top:1px solid var(--border); padding-top:0.25rem; margin-top:0.2rem;">${q.evidence}</div>
+                <div style="font-size:0.76rem; font-weight:600; color:var(--foreground); line-height:1.3;">${this.escapeHtml(q.question)}</div>
+                <div style="font-size:0.72rem; color:var(--muted-foreground); line-height:1.4;">${this.escapeHtml(q.answer)}</div>
+                <div style="font-size:0.65rem; font-family:monospace; color:var(--muted-foreground); border-top:1px solid var(--border); padding-top:0.25rem; margin-top:0.2rem;">${this.escapeHtml(q.evidence)}</div>
               </div>
             `).join('')}
           </div>
@@ -1429,11 +1851,11 @@ window.DocWebApp = {
           <div class="diagram-toolbar" style="display:flex; flex-wrap:wrap; align-items:center; gap:0.4rem;" data-dom-tag="div">
             <!-- Selector de Formato de Expresión -->
             <div class="btn-group" role="group" aria-label="Formato de expresión del diagrama" data-dom-tag="div">
-              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'svg' ? 'btn-primary' : 'btn-secondary'}" data-format="svg" onclick="window.DocWebApp.setDiagramExpressionFormat('svg')" title="Renderizado gráfico vectorial SVG con zoom interactivo">🎨 SVG Gráfico</button>
-              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'html' ? 'btn-primary' : 'btn-secondary'}" data-format="html" onclick="window.DocWebApp.setDiagramExpressionFormat('html')" title="Mapa mental interactivo con elementos HTML semánticos y ramas accesibles">📄 HTML Mindmap</button>
-              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'mermaid' ? 'btn-primary' : 'btn-secondary'}" data-format="mermaid" onclick="window.DocWebApp.setDiagramExpressionFormat('mermaid')" title="Diagrama en código Mermaid.js compatible con markdown y documentación">🧜 Mermaid.js</button>
-              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'dot' ? 'btn-primary' : 'btn-secondary'}" data-format="dot" onclick="window.DocWebApp.setDiagramExpressionFormat('dot')" title="Especificación formal Graphviz DOT para ingeniería de grafos">📊 Graphviz DOT</button>
-              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'matrix' ? 'btn-primary' : 'btn-secondary'}" data-format="matrix" onclick="window.DocWebApp.setDiagramExpressionFormat('matrix')" title="Matriz relacional de adyacencia y navegación tabular directa">📋 Matriz Relacional</button>
+              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'svg' ? 'btn-primary' : 'btn-secondary'}" data-format="svg" data-cmd="setDiagramExpressionFormat" title="Renderizado gráfico vectorial SVG con zoom interactivo">🎨 SVG Gráfico</button>
+              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'html' ? 'btn-primary' : 'btn-secondary'}" data-format="html" data-cmd="setDiagramExpressionFormat" title="Mapa mental interactivo con elementos HTML semánticos y ramas accesibles">📄 HTML Mindmap</button>
+              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'mermaid' ? 'btn-primary' : 'btn-secondary'}" data-format="mermaid" data-cmd="setDiagramExpressionFormat" title="Diagrama en código Mermaid.js compatible con markdown y documentación">🧜 Mermaid.js</button>
+              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'dot' ? 'btn-primary' : 'btn-secondary'}" data-format="dot" data-cmd="setDiagramExpressionFormat" title="Especificación formal Graphviz DOT para ingeniería de grafos">📊 Graphviz DOT</button>
+              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'matrix' ? 'btn-primary' : 'btn-secondary'}" data-format="matrix" data-cmd="setDiagramExpressionFormat" title="Matriz relacional de adyacencia y navegación tabular directa">📋 Matriz Relacional</button>
             </div>
           </div>
         </header>
@@ -1441,14 +1863,14 @@ window.DocWebApp = {
         <!-- Sub-barra de Controles Específicos para SVG (visible solo en formato SVG) -->
         <div id="diagram-svg-controls" style="display:${this.diagramExpressionFormat === 'svg' ? 'flex' : 'none'}; flex-wrap:wrap; align-items:center; gap:0.4rem; margin-bottom:0.6rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border);" data-dom-tag="div">
           <div class="btn-group" role="group" aria-label="Modo de vista de diagrama SVG">
-            <button type="button" class="btn btn-sm diagram-mode-btn ${this.diagramViewMode === 'focal' ? 'btn-primary' : 'btn-secondary'}" data-mode="focal" onclick="window.DocWebApp.setDiagramViewMode('focal')" title="Vista Focal centrada en el término y sus enlaces">🎯 Focal</button>
-            <button type="button" class="btn btn-sm diagram-mode-btn ${this.diagramViewMode === 'hierarchy' ? 'btn-primary' : 'btn-secondary'}" data-mode="hierarchy" onclick="window.DocWebApp.setDiagramViewMode('hierarchy')" title="Jerarquía Ontológica de 6 Niveles L1 a L6">🌳 Jerarquía L1-L6</button>
-            <button type="button" class="btn btn-sm diagram-mode-btn ${this.diagramViewMode === 'pipeline' ? 'btn-primary' : 'btn-secondary'}" data-mode="pipeline" onclick="window.DocWebApp.setDiagramViewMode('pipeline')" title="Flujo Secuencial del Pipeline de Producción">⛓️ Pipeline</button>
-            <button type="button" class="btn btn-sm diagram-mode-btn ${this.diagramViewMode === 'atlas' ? 'btn-primary' : 'btn-secondary'}" data-mode="atlas" onclick="window.DocWebApp.setDiagramViewMode('atlas')" title="Atlas Interactivo de Todos los Términos">🌐 Atlas (Todos)</button>
+            <button type="button" class="btn btn-sm diagram-mode-btn ${this.diagramViewMode === 'focal' ? 'btn-primary' : 'btn-secondary'}" data-mode="focal" data-cmd="setDiagramViewMode" title="Vista Focal centrada en el término y sus enlaces">🎯 Focal</button>
+            <button type="button" class="btn btn-sm diagram-mode-btn ${this.diagramViewMode === 'hierarchy' ? 'btn-primary' : 'btn-secondary'}" data-mode="hierarchy" data-cmd="setDiagramViewMode" title="Jerarquía Ontológica de 6 Niveles L1 a L6">🌳 Jerarquía L1-L6</button>
+            <button type="button" class="btn btn-sm diagram-mode-btn ${this.diagramViewMode === 'pipeline' ? 'btn-primary' : 'btn-secondary'}" data-mode="pipeline" data-cmd="setDiagramViewMode" title="Flujo Secuencial del Pipeline de Producción">⛓️ Pipeline</button>
+            <button type="button" class="btn btn-sm diagram-mode-btn ${this.diagramViewMode === 'atlas' ? 'btn-primary' : 'btn-secondary'}" data-mode="atlas" data-cmd="setDiagramViewMode" title="Atlas Interactivo de Todos los Términos">🌐 Atlas (Todos)</button>
           </div>
 
           <!-- Filtro de Familia de Relación -->
-          <select id="diagram-filter-family" name="diagram-filter-family" class="form-select form-select-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; height:auto; width:auto;" onchange="window.DocWebApp.setDiagramFilterFamily(this.value)" aria-label="Filtrar por familia de relación">
+          <select id="diagram-filter-family" name="diagram-filter-family" class="form-select form-select-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; height:auto; width:auto;" data-cmd="setDiagramFilterFamily" aria-label="Filtrar por familia de relación">
             <option value="all" ${this.diagramFilterFamily === 'all' ? 'selected' : ''}>Todas las Familias</option>
             <option value="taxonomy" ${this.diagramFilterFamily === 'taxonomy' ? 'selected' : ''}>Taxonomía</option>
             <option value="mereology" ${this.diagramFilterFamily === 'mereology' ? 'selected' : ''}>Composición / Mereología</option>
@@ -1461,7 +1883,7 @@ window.DocWebApp = {
           </select>
 
           <!-- Filtro de Nivel Ontológico -->
-          <select id="diagram-filter-level" name="diagram-filter-level" class="form-select form-select-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; height:auto; width:auto;" onchange="window.DocWebApp.setDiagramFilterLevel(this.value)" aria-label="Filtrar por nivel de jerarquía">
+          <select id="diagram-filter-level" name="diagram-filter-level" class="form-select form-select-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; height:auto; width:auto;" data-cmd="setDiagramFilterLevel" aria-label="Filtrar por nivel de jerarquía">
             <option value="all" ${this.diagramFilterLevel === 'all' ? 'selected' : ''}>Nivel: Todos</option>
             <option value="L1" ${this.diagramFilterLevel === 'L1' ? 'selected' : ''}>L1 Dominio</option>
             <option value="L2" ${this.diagramFilterLevel === 'L2' ? 'selected' : ''}>L2 Familia</option>
@@ -1473,9 +1895,9 @@ window.DocWebApp = {
 
           <!-- Controles de Zoom -->
           <div class="btn-group" role="group" aria-label="Controles de zoom">
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.zoomDiagram(0.15)" title="Acercar zoom">🔍 +</button>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.zoomDiagram(-0.15)" title="Alejar zoom">🔍 -</button>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.resetDiagramZoom()" title="Restablecer zoom">↺ 100%</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="zoomDiagram" data-cmd-arg="0.15" title="Acercar zoom">🔍 +</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="zoomDiagram" data-cmd-arg="-0.15" title="Alejar zoom">🔍 -</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-cmd="resetDiagramZoom" title="Restablecer zoom">↺ 100%</button>
           </div>
         </div>
 
@@ -1498,16 +1920,16 @@ window.DocWebApp = {
               <div class="relation-card">
                 <div class="relation-info">
                   <div style="display:flex; align-items:center; gap:0.5rem;">
-                    <span class="relation-type-tag">${rel.type}</span>
-                    <span style="font-size:0.75rem; color:var(--muted-foreground);">${rel.label || ''}</span>
+                    <span class="relation-type-tag">${this.escapeHtml(rel.type)}</span>
+                    <span style="font-size:0.75rem; color:var(--muted-foreground);">${this.escapeHtml(rel.label || '')}</span>
                     ${isCross ? '<span class="relation-badge-cross">Inter-Glosario ⤻</span>' : ''}
                   </div>
-                  <a class="relation-target-title" onclick="window.DocWebApp.navigateToTerm('${rel.target}')">
-                    ${targetT ? targetT.title : rel.target}
+                  <a class="relation-target-title" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeHtml(rel.target)}">
+                    ${this.escapeHtml(targetT ? targetT.title : rel.target)}
                   </a>
-                  <div class="relation-note">${rel.note || ''}</div>
+                  <div class="relation-note">${this.escapeHtml(rel.note || '')}</div>
                 </div>
-                <button class="btn btn-sm" onclick="window.DocWebApp.navigateToTerm('${rel.target}')">Explorar →</button>
+                <button class="btn btn-sm" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeHtml(rel.target)}">Explorar →</button>
               </div>
             `;
           }).join('') : '<div class="text-xs text-[var(--muted-foreground)]">No posee relaciones salientes declaradas.</div>'}
@@ -1521,16 +1943,16 @@ window.DocWebApp = {
               <div class="relation-card">
                 <div class="relation-info">
                   <div style="display:flex; align-items:center; gap:0.5rem;">
-                    <span class="relation-type-tag inverse">${inv.type} (${inv.originalType})</span>
-                    <span style="font-size:0.75rem; color:var(--muted-foreground);">${inv.label || ''}</span>
+                    <span class="relation-type-tag inverse">${this.escapeHtml(inv.type)} (${this.escapeHtml(inv.originalType)})</span>
+                    <span style="font-size:0.75rem; color:var(--muted-foreground);">${this.escapeHtml(inv.label || '')}</span>
                     ${isCross ? '<span class="relation-badge-cross">Inter-Glosario ⤻</span>' : ''}
                   </div>
-                  <a class="relation-target-title" onclick="window.DocWebApp.navigateToTerm('${inv.sourceTermId}')">
-                    ${inv.sourceTitle}
+                  <a class="relation-target-title" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeHtml(inv.sourceTermId)}">
+                    ${this.escapeHtml(inv.sourceTitle)}
                   </a>
-                  <div class="relation-note">${inv.note || ''}</div>
+                  <div class="relation-note">${this.escapeHtml(inv.note || '')}</div>
                 </div>
-                <button class="btn btn-sm" onclick="window.DocWebApp.navigateToTerm('${inv.sourceTermId}')">Ir al origen ←</button>
+                <button class="btn btn-sm" data-cmd="navigateToTerm" data-cmd-arg="${this.escapeHtml(inv.sourceTermId)}">Ir al origen ←</button>
               </div>
             `;
           }).join('') : '<div class="text-xs text-[var(--muted-foreground)]">Ningún otro término referencia directamente a esta entidad.</div>'}
@@ -1563,39 +1985,39 @@ window.DocWebApp = {
       <div class="modal-content">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <h2 style="font-size:1.15rem; font-weight:700;">${isNew ? '✨ Nuevo Término de Conocimiento' : '✏️ Ampliar Término Existente'}</h2>
-          <button class="btn btn-sm" onclick="document.getElementById('term-editor-modal').remove()">✕</button>
+          <button class="btn btn-sm" data-cmd="closeTermEditor">✕</button>
         </div>
 
         <div class="form-group">
           <label class="form-label">Glosario Destino</label>
           <select id="edit-glossary" class="form-select">
-            ${glossariesList.map(g => `<option value="${g.id}" ${existing && existing.glossaryId === g.id ? 'selected' : ''}>${g.title}</option>`).join('')}
+            ${glossariesList.map(g => `<option value="${this.escapeHtml(g.id)}" ${existing && existing.glossaryId === g.id ? 'selected' : ''}>${this.escapeHtml(g.title)}</option>`).join('')}
           </select>
         </div>
 
         <div class="form-group">
           <label class="form-label">Título del Término</label>
-          <input type="text" id="edit-title" class="form-input" value="${existing ? existing.title : ''}" placeholder="Ej. Trazado de Trayectorias">
+          <input type="text" id="edit-title" class="form-input" value="${this.escapeHtml(existing ? existing.title : '')}" placeholder="Ej. Trazado de Trayectorias">
         </div>
 
         <div class="form-group">
           <label class="form-label">Categoría Temática</label>
-          <input type="text" id="edit-category" class="form-input" value="${existing ? existing.category : ''}" placeholder="Ej. Renderizado">
+          <input type="text" id="edit-category" class="form-input" value="${this.escapeHtml(existing ? existing.category : '')}" placeholder="Ej. Renderizado">
         </div>
 
         <div class="form-group">
           <label class="form-label">Definición Concisa (Lead)</label>
-          <textarea id="edit-shortDef" class="form-textarea" placeholder="Resumen directo del concepto">${existing ? existing.shortDefinition : ''}</textarea>
+          <textarea id="edit-shortDef" class="form-textarea" placeholder="Resumen directo del concepto">${this.escapeHtml(existing ? existing.shortDefinition : '')}</textarea>
         </div>
 
         <div class="form-group">
           <label class="form-label">Definición Completa y Rigurosa</label>
-          <textarea id="edit-fullDef" class="form-textarea" style="min-height:100px;" placeholder="Fundamentación conceptual, matemática o técnica">${existing ? existing.fullDefinition : ''}</textarea>
+          <textarea id="edit-fullDef" class="form-textarea" style="min-height:100px;" placeholder="Fundamentación conceptual, matemática o técnica">${this.escapeHtml(existing ? existing.fullDefinition : '')}</textarea>
         </div>
 
         <div class="form-group">
           <label class="form-label">Componentes (separados por coma)</label>
-          <input type="text" id="edit-components" class="form-input" value="${existing && existing.components ? existing.components.join(', ') : ''}" placeholder="Comp 1, Comp 2">
+          <input type="text" id="edit-components" class="form-input" value="${this.escapeHtml(existing && existing.components ? existing.components.join(', ') : '')}" placeholder="Comp 1, Comp 2">
         </div>
 
         <div class="form-group">
@@ -1604,8 +2026,8 @@ window.DocWebApp = {
         </div>
 
         <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1rem;">
-          <button class="btn" onclick="document.getElementById('term-editor-modal').remove()">Cancelar</button>
-          <button class="btn btn-primary" onclick="window.DocWebApp.saveEditorTerm('${termId || ''}')">💾 Guardar y Persistir Localmente</button>
+          <button class="btn" data-cmd="closeTermEditor">Cancelar</button>
+          <button class="btn btn-primary" data-cmd="saveEditorTerm" data-cmd-arg="${termId || ''}">💾 Guardar y Persistir Localmente</button>
         </div>
       </div>
     `;
@@ -1665,6 +2087,13 @@ window.DocWebApp = {
     }
   },
 
+  closeTermEditor() {
+    const modal = document.getElementById('term-editor-modal');
+    if (modal) {
+      modal.remove();
+    }
+  },
+
   // --- Métodos de Navegación e Interacción del Diagrama Semántico (Milestone 2) ---
 
   renderDiagramOutput(term) {
@@ -1693,8 +2122,8 @@ window.DocWebApp = {
           <div class="code-export-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; flex-wrap:wrap; gap:0.4rem;">
             <span style="font-size:0.8rem; font-weight:700; color:var(--primary);">🧜 Especificación Mermaid.js (Código Fuente)</span>
             <div style="display:flex; gap:0.35rem;">
-              <button type="button" class="btn btn-sm btn-primary" onclick="window.DocWebApp.copyDiagramCode('mermaid')">📋 Copiar Código Mermaid</button>
-              <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.toggleDiagramCode('mermaid')">👁️ Mostrar/Ocultar Código</button>
+              <button type="button" class="btn btn-sm btn-primary" data-cmd="copyDiagramCode" data-cmd-arg="mermaid">📋 Copiar Código Mermaid</button>
+              <button type="button" class="btn btn-sm btn-secondary" data-cmd="toggleDiagramCode" data-cmd-arg="mermaid">👁️ Mostrar/Ocultar Código</button>
             </div>
           </div>
           <pre class="code-export-pre" id="mermaid-code-pre" style="display:none; background:var(--background); border:1px solid var(--border); padding:0.85rem; border-radius:var(--radius); font-size:0.75rem; color:#f8fafc; font-family:monospace; line-height:1.5; overflow-x:auto;"><code id="mermaid-code-content">${window.DocWebSemantics.escapeXml(mermaidCode)}</code></pre>
@@ -1718,8 +2147,8 @@ window.DocWebApp = {
           <div class="code-export-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; flex-wrap:wrap; gap:0.4rem;">
             <span style="font-size:0.8rem; font-weight:700; color:var(--primary);">📊 Especificación Graphviz DOT Formal (Código Fuente)</span>
             <div style="display:flex; gap:0.35rem;">
-              <button type="button" class="btn btn-sm btn-primary" onclick="window.DocWebApp.copyDiagramCode('dot')">📋 Copiar Especificación DOT</button>
-              <button type="button" class="btn btn-sm btn-secondary" onclick="window.DocWebApp.toggleDiagramCode('dot')">👁️ Mostrar/Ocultar Código</button>
+              <button type="button" class="btn btn-sm btn-primary" data-cmd="copyDiagramCode" data-cmd-arg="dot">📋 Copiar Especificación DOT</button>
+              <button type="button" class="btn btn-sm btn-secondary" data-cmd="toggleDiagramCode" data-cmd-arg="dot">👁️ Mostrar/Ocultar Código</button>
             </div>
           </div>
           <pre class="code-export-pre" id="dot-code-pre" style="display:none; background:var(--background); border:1px solid var(--border); padding:0.85rem; border-radius:var(--radius); font-size:0.75rem; color:#f8fafc; font-family:monospace; line-height:1.5; overflow-x:auto;"><code id="dot-code-content">${window.DocWebSemantics.escapeXml(dotCode)}</code></pre>
@@ -2098,6 +2527,13 @@ window.DocWebApp = {
     if (btn) btn.focus();
   },
 
+  closeOrientatorAndNavigate(termId) {
+    this.closeOrientatorModal();
+    if (termId) {
+      this.navigateToTerm(termId);
+    }
+  },
+
   populateOrientatorProductSelect(forcedGlossaryId = null) {
     const select = document.getElementById('orientator-product-select');
     if (!select || !window.DocWebPromptOrientator) return;
@@ -2379,7 +2815,7 @@ window.DocWebApp = {
               termsBadges = t.linkedTerms.map(urn => {
                 const termObj = window.DocWebSemantics ? window.DocWebSemantics.getTerm(urn) : null;
                 const title = termObj ? termObj.title : (urn.includes(':') ? urn.split(':').pop() : urn);
-                return `<button type="button" class="spec-term-badge" style="font-size:0.68rem; padding:0.15rem 0.35rem;" onclick="window.DocWebApp.closeOrientatorModal(); window.DocWebApp.navigateToTerm('${urn}');" title="Ver ${title}">🔗 ${title}</button>`;
+                return `<button type="button" class="spec-term-badge" data-cmd="closeOrientatorAndNavigate" data-cmd-arg="${this.escapeHtml(urn)}" style="font-size:0.68rem; padding:0.15rem 0.35rem;" title="Ver ${title}">🔗 ${title}</button>`;
               }).join(' ');
             }
             return `

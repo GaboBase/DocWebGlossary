@@ -16,11 +16,15 @@ const DIST_DIR = path.join(ROOT_DIR, 'dist');
 const STAGING_DIR = path.join(DIST_DIR, 'DocWebGlosary-v1.0.0');
 const ZIP_PATH = path.join(DIST_DIR, 'DocWebGlosary-v1.0.0-dist.zip');
 
-// Lista estricta y explícita de archivos de producción autorizados
+// Lista estricta y explícita de archivos de producción autorizados.
+// Son exclusivamente los recursos de tiempo de ejecución (runtime) y datos
+// necesarios para operar la aplicación de forma autónoma y offline:
+//   index.html, hoja de estilos, 4 módulos JS, bundle.js + catalog.json y
+//   los 10 archivos canónicos de dominio (= 18 archivos en total).
+// Los artefactos de desarrollo (audit_autonomy.js) y documentación (README.md)
+// no son recursos de ejecución y no se empaquetan en el release.
 const PRODUCTION_FILES = [
   'index.html',
-  'audit_autonomy.js',
-  'README.md',
   'app/css/app.css',
   'app/js/app.js',
   'app/js/semantic-engine.js',
@@ -98,7 +102,7 @@ function buildRelease() {
   console.log('\n' + '═'.repeat(70));
   console.log('VERIFICACIÓN DEL ARTEFACTO DE DISTRIBUCIÓN:');
   console.log(`  Archivo ZIP:       ${ZIP_PATH}`);
-  console.log(`  Total Archivos:    ${copiedCount} (esperado <= 20)`);
+  console.log(`  Total Archivos:    ${copiedCount} (esperado: 18)`);
   console.log(`  Peso del Paquete:  ${zipSizeKb} KB (${zipSizeMb} MB)`);
   console.log(`  Archivos .git:     0 (100% purgado)`);
   console.log(`  Archivos .agents:  0 (100% purgado)`);
