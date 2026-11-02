@@ -1844,7 +1844,7 @@ window.DocWebApp = {
         <header class="term-header-view" style="margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;" data-dom-tag="header">
           <div>
             <h2 style="font-size:1.15rem; font-weight:700; margin:0;" data-dom-tag="h2">🗺️ Diagrama Contextual de Relaciones</h2>
-            <p style="font-size:0.8rem; color:var(--muted-foreground); margin:0;" data-dom-tag="p">Visualización interactiva multimodal. Explora en SVG, HTML Semántico, Mermaid.js, Graphviz DOT o Matriz.</p>
+            <p style="font-size:0.8rem; color:var(--muted-foreground); margin:0;" data-dom-tag="p">Visualización interactiva multimodal. Explora en SVG, HTML Semántico, Mermaid.js, Graphviz DOT, Matriz o Grafo Interactivo (B-10).</p>
           </div>
 
           <!-- Barra de Herramientas Principal: Formatos de Expresión -->
@@ -1856,6 +1856,7 @@ window.DocWebApp = {
               <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'mermaid' ? 'btn-primary' : 'btn-secondary'}" data-format="mermaid" data-cmd="setDiagramExpressionFormat" title="Diagrama en código Mermaid.js compatible con markdown y documentación">🧜 Mermaid.js</button>
               <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'dot' ? 'btn-primary' : 'btn-secondary'}" data-format="dot" data-cmd="setDiagramExpressionFormat" title="Especificación formal Graphviz DOT para ingeniería de grafos">📊 Graphviz DOT</button>
               <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'matrix' ? 'btn-primary' : 'btn-secondary'}" data-format="matrix" data-cmd="setDiagramExpressionFormat" title="Matriz relacional de adyacencia y navegación tabular directa">📋 Matriz Relacional</button>
+              <button type="button" class="btn btn-sm diagram-format-btn ${this.diagramExpressionFormat === 'interactive-graph' ? 'btn-primary' : 'btn-secondary'}" data-format="interactive-graph" data-cmd="setDiagramExpressionFormat" title="Grafo semántico interactivo: nodos de término, aristas tipadas por familia y navegación entre dominios">🌐 Grafo Interactivo</button>
             </div>
           </div>
         </header>
@@ -2157,6 +2158,12 @@ window.DocWebApp = {
     } else if (format === 'matrix') {
       return window.DocWebSemantics.generateSemanticMatrix(term, {
         selectedGlossaryId: this.currentGlossaryId || 'all'
+      });
+    } else if (format === 'interactive-graph') {
+      return window.DocWebSemantics.generateInteractiveGraphSvg(term, {
+        maxNodes: 24,
+        filterFamily: this.diagramFilterFamily || 'all',
+        composedTermIds: this.composedTerms || []
       });
     }
 

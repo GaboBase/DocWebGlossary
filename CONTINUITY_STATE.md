@@ -4,8 +4,8 @@ This record allows a completely different editor to understand the project and r
 
 > Status: Stabilization cycle complete (v1.0.0 validated); Phase 2 — Cross-Domain
 > Synthesis and Interactive Knowledge Graph v1.1.0 in progress (B-10 semantic
-> foundation validated and merged; cross-domain composition UI — COMPLETED;
-> interactive graph pending). B-11 (browser E2E / PWA) deferred — see section 6.
+> foundation validated; cross-domain composition UI — COMPLETED; **interactive
+> semantic graph viewer — COMPLETED**). B-11 (browser E2E / PWA) deferred — see section 6.
 
 ---
 
@@ -103,7 +103,7 @@ Preserved historical artifacts (NOT deleted):
 | `searchCrossDomain()` with provenance + relevance | COMPLETED AND VALIDATED |
 | `getTermProvenance()` domain traceability | COMPLETED AND VALIDATED |
 | Cross-domain composition UI (multi-domain selector) | COMPLETED AND VALIDATED |
-| Interactive semantic graph viewer (B-10) | PENDING |
+| Interactive semantic graph viewer (B-10) | COMPLETED AND VALIDATED |
 | Browser E2E testing (B-11) | DEFERRED — headless browser broken in container |
 | PWA (B-11) | DEFERRED — separate deployment mode |
 
@@ -157,7 +157,7 @@ Release:
 ### Files modified
 - `index.html` — CSP set to the required policy (`default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'`); removed inline `onsubmit`; **added B-10 Cross-Domain Composition panel section (domain selector chips, term selection basket, prompt compilation output)**.
 - `app/js/app.js` — replaced all inline event handlers with a delegated `data-cmd`/`data-cmd-arg` event system (CSP-safe); applied `escapeHtml` to all term-data DOM insertions; **added B-10 cross-domain composition UI (`initCompositionPanel`, `selectCompositionDomain`, `toggleComposedTerm`, `renderCompositionPanel`, `renderComposedTermsCandidates`, `composeCrossDomainPrompt`, `copyComposedPrompt`) with multi-domain term selection, domain provenance tracking, relationship-aware prompt compilation, and copy-to-clipboard**; added `closeTermEditor()` and `closeOrientatorAndNavigate()`
-- `app/js/semantic-engine.js` — replaced inline SVG `onclick` handlers with `data-cmd`/`data-cmd-arg`; **extended `searchTerms` to accept a multi-domain glossary-filter array (backward compatible); added `searchCrossDomain()` with provenance annotation and relevance ordering; added `getTermProvenance()` for domain traceability**
+- `app/js/semantic-engine.js` — replaced inline SVG `onclick` handlers with `data-cmd`/`data-cmd-arg`; **extended `searchTerms` to accept a multi-domain glossary-filter array (backward compatible); added `searchCrossDomain()` with provenance annotation and relevance ordering; added `getTermProvenance()` for domain traceability**; **added `generateInteractiveGraphSvg()` (B-10): deterministic radial-layout interactive semantic graph over real JSON-LD entities and typed relations, color-coded by relation family, cross-domain edges marked, nodes navigable and addable to composition**.
 - `tools/build_release.js` — release now emits exactly 18 files (removed non-runtime `audit_autonomy.js` and `README.md` from the package); updated expected-count message
 - `tools/run_all_tests.js` — `test_data_parity` moved to a mandatory early check (suite 1); integrated `test_dom_security` (suite 9); integrated `test_cross_domain_search` (suite 10)
 
@@ -214,20 +214,18 @@ Documented as RETIRED/FROZEN in `tools/archive/README.md`; excluded from build/t
 | B-11 browser E2E testing | DEFERRED | Chrome/Edge installed but headless rendering fails in this container (fork errors). Document gap; recommend headless-friendly CI in a compatible environment. |
 | B-11 PWA | DEFERRED | Separate deployment mode; Service Worker not assumed under file://. Preserve standalone app; evaluate later. |
 | B-01 to B-09 (stabilization) | PRESERVED | All complete and validated (693 assertions, 100%); do not reopen without evidence of regression. |
-
 ## 6. Remaining work
 
-- **Interactive semantic graph viewer (B-10):** Build on the semantic foundation and composition UI; Canvas/HTML/native, no external visualization libraries.
 - **Precomputed semantic index (B-10):** Document as a derived, reproducible artifact; implement only when cross-domain search performance justifies it.
 - **Browser E2E acceptance (B-11):** Verify `file://` behavior in a real browser when a compatible environment (working headless Chrome/Edge) is available.
 - **Code coverage:** Add instrumentation only if separately authorized with a reliable zero-dependency tool.
 - **PWA (B-11):** Deferred; separate deployment mode.
 
 ### Prioritized next steps
-1. Interactive semantic graph viewer (Phase 2, after composition foundation).
-2. Browser `file://` acceptance test (when headless browser works in this environment).
-3. Precomputed semantic index (only when cross-domain search performance justifies it).
-4. Confirm or close out B-10/B-11 definitions (none currently in the repository).
+
+1. Browser `file://` acceptance test (when headless browser works in this environment).
+2. Precomputed semantic index (only when cross-domain search performance justifies it).
+3. Confirm or close out B-10/B-11 definitions (none currently in the repository).
 
 ---
 

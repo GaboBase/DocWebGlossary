@@ -1949,6 +1949,204 @@ class SemanticKnowledgeEngine {
       }
     ];
   }
+
+  // --------------------------------------------------------------------------
+  // GRAFO SEMÁNTICO INTERACTIVO (B-10)
+  // Layout radial determinista sobre entidades JSON-LD reales y relaciones
+  // ontológicas tipadas. Cero librerías externas. Cada familia de relación
+  // conserva su color; las aristas inter-glosario se marcan como cruzadas.
+  // Los nodos son navegables (data-cmd) y se pueden agregar a la composición
+  // interdominio. Recibe el estado de composición vía options (no lo almacena).
+  // --------------------------------------------------------------------------
+  generateInteractiveGraphSvg(term, options = {}) {
+    const maxNodes = options.maxNodes !== undefined ? Number(options.maxNodes) || 24 : 24;
+    const filterFamily = options.filterFamily || 'all';
+    const composedTermIds = Array.isArray(options.composedTermIds) ? options.composedTermIds : [];
+
+    if (!term) {
+      return '<svg width="640" height="360" viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg"><text x="320" y="180" font-size="13" fill="#64748b" text-anchor="middle">Seleccione un término para ver su grafo semántico interactivo.</text></svg>';
+    }
+
+    const width = 960;
+    const height = 700;
+    const cx = width / 2;
+    const cy = height / 2;
+
+    // Recopilar aristas: directas (term → target) e inversas (source → term)
+    const edgesByTarget = new Map();
+    const addEdge = (sourceId, targetId, rel) => {
+      const family = this.getRelationFamily(rel.type || 'relatedTo');
+      if (filterFamily !== 'all' && family.id !== filterFamily) return;
+      const sourceTerm = this.getTerm(sourceId);
+      const targetTerm = this.getTerm(targetId);
+      const isCross = sourceTerm && targetTerm && sourceTerm.glossaryId !== targetTerm.glossaryId;
+      // Deduplicar por nodo extremo (mantener primera relación tipada)
+      const otherId = sourceId === term.id ? targetId : sourceId;
+      if (edgesByTarget.has(otherId)) return;
+      edgesByTarget.set(otherId, {
+        sourceId, targetId,
+        type: rel.type || 'relatedTo',
+        label: rel.label || family.label,
+        family: family.id,
+        familyColor: family.color || '#64748b',
+        isCross
+      });
+    };
+
+    const directRels = (Array.isArray(term.relations) ? term.relations : []).filter(r => r && r.target);
+    const inverseRels = this.getInverseRelations(term.id) || [];
+    directRels.forEach(rel => addEdge(term.id, rel.target, rel));
+    inverseRels.forEach(rel => addEdge(rel.sourceTermId, term.id, rel));
+
+    const edges = Array.from(edgesByTarget.values());
+    edges.sort((a, b) => {
+      if (a.family !== b.family) return a.family.localeCompare(b.family);
+      const ta = (a.sourceId === term.id ? a.targetId : a.sourceId);
+      const tb = (b.sourceId === term.id ? b.targetId : b.sourceId);
+      return ta.localeCompare(tb);
+    });
+    const limited = edges.slice(0, maxNodes);
+
+    // Nodos únicos
+    const nodeMap = new Map();
+    nodeMap.set(term.id, {
+      id: term.id, title: term.title, glossaryId: term.glossaryId,
+      category: term.category || 'General', level: this.getOntologyLevel(term).id, isCentral: true
+    });
+    limited.forEach(e => {
+      const otherId = e.sourceId === term.id ? e.targetId : e.sourceId;
+      if (nodeMap.has(otherId)) return;
+      const otherTerm = this.getTerm(otherId);
+      if (otherTerm) {
+        nodeMap.set(otherId, {
+          id: otherId, title: otherTerm.title, glossaryId: otherTerm.glossaryId,
+          category: otherTerm.category || 'General', level: this.getOntologyLevel(otherTerm).id, isCentral: false
+        });
+      } else {
+        nodeMap.set(otherId, { id: otherId, title: otherId, glossaryId: '', category: 'General', level: 'L4', isCentral: false });
+      }
+    });
+
+    const nodes = Array.from(nodeMap.values());
+    const nSurrounding = nodes.length - 1;
+
+    const R = 250;
+    const centralW = 250, centralH = 76;
+    const nodeW = 176, nodeH = 52;
+
+    const rectPerimeter = (centerX, centerY, w, h, angle) => {
+      const dx = Math.cos(angle);
+      const dy = Math.sin(angle);
+      const tX = dx !== 0 ? (w / 2) / Math.abs(dx) : Infinity;
+      const tY = dy !== 0 ? (h / 2) / Math.abs(dy) : Infinity;
+      const t = Math.min(tX, tY);
+      return { x: centerX + dx * t, y: centerY + dy * t, dx, dy };
+    };
+
+    let svg = [];
+    svg.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" class="w-full h-auto overflow-visible select-none font-sans" role="img" aria-label="Grafo semántico interactivo centrado en ${this.escapeXml(term.title)}">`);
+    svg.push(`<defs>`);
+    svg.push(`<marker id="arrow-direct" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#3b82f6" /></marker>`);
+    svg.push(`<marker id="arrow-inverse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#10b981" /></marker>`);
+    svg.push(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.14"/></filter>`);
+    svg.push(`</defs>`);
+    svg.push(`<rect width="${width}" height="${height}" rx="12" fill="var(--card, #ffffff)" stroke="var(--border, #e2e8f0)" stroke-width="1" />`);
+
+    svg.push(`<text x="24" y="30" font-size="13" font-weight="bold" fill="var(--foreground, #0f172a)">GRAFO SEMÁNTICO INTERACTIVO</text>`);
+    svg.push(`<text x="24" y="46" font-size="9" fill="var(--muted-foreground, #64748b)">Nodo central: ${this.escapeXml(term.title)} · ${nodes.length} entidad${nodes.length !== 1 ? 'es' : ''} · ${limited.length} relación${limited.length !== 1 ? 'es' : ''} tipada</text>`);
+
+    // Aristas (detrás de nodos)
+    limited.forEach((e, idx) => {
+      const otherId = e.sourceId === term.id ? e.targetId : e.sourceId;
+      const otherNode = nodeMap.get(otherId);
+      if (!otherNode) return;
+
+      const angle = (idx / Math.max(nSurrounding, 1)) * 2 * Math.PI;
+      const centralP = rectPerimeter(cx, cy, centralW, centralH, angle);
+      const nodeCenterX = cx + R * Math.cos(angle);
+      const nodeCenterY = cy + R * Math.sin(angle);
+      const nodeP = rectPerimeter(nodeCenterX, nodeCenterY, nodeW, nodeH, angle + Math.PI);
+
+      const isDirect = e.sourceId === term.id;
+      const start = isDirect ? centralP : nodeP;
+      const end = isDirect ? nodeP : centralP;
+      const marker = isDirect ? 'arrow-direct' : 'arrow-inverse';
+
+      const midX = (start.x + end.x) / 2;
+      const midY = (start.y + end.y) / 2;
+      const perpX = -Math.sin(angle);
+      const perpY = Math.cos(angle);
+      const cpX = midX + perpX * 55;
+      const cpY = midY + perpY * 55;
+
+      const stroke = e.isCross ? '#8b5cf6' : e.familyColor;
+      const dash = e.isCross ? 'stroke-dasharray="6 4"' : '';
+      const strokeWidth = e.isCross ? '2' : '1.6';
+
+      svg.push(`<path d="M ${start.x} ${start.y} Q ${cpX} ${cpY}, ${end.x} ${end.y}" fill="none" stroke="${stroke}" stroke-width="${strokeWidth}" ${dash} marker-end="url(#${marker})" opacity="0.85"/>`);
+
+      const lx = midX + Math.cos(angle) * 14;
+      const ly = midY + Math.sin(angle) * 14;
+      svg.push(`<text x="${lx}" y="${ly}" font-size="7.5" fill="${stroke}" font-weight="700" text-anchor="middle" pointer-events="none">${this.escapeXml(e.type)}</text>`);
+    });
+
+    // Nodos periféricos
+    nodes.forEach((node, i) => {
+      if (node.isCentral) return;
+      const edge = limited.find(e => {
+        const oid = e.sourceId === term.id ? e.targetId : e.sourceId;
+        return oid === node.id;
+      });
+      const idx = edge ? limited.indexOf(edge) : i - 1;
+      const angle = (idx / Math.max(nSurrounding, 1)) * 2 * Math.PI;
+      const nx = cx + R * Math.cos(angle);
+      const ny = cy + R * Math.sin(angle);
+      const isCross = node.glossaryId && node.glossaryId !== term.glossaryId;
+      const border = isCross ? '#8b5cf6' : (edge ? this.getRelationFamily(edge.type).color : '#cbd5e1');
+      const isComposed = composedTermIds.includes(node.id);
+
+      svg.push(`<g data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(node.id)}" role="button" tabindex="0" style="cursor:pointer;" filter="url(#shadow)" transform="translate(${nx - nodeW/2}, ${ny - nodeH/2})">`);
+      svg.push(`<rect width="${nodeW}" height="${nodeH}" rx="8" fill="#ffffff" stroke="${border}" stroke-width="${isCross ? '2.2' : '1.4'}" />`);
+      svg.push(`<text x="8" y="${nodeH/2 - 4}" font-size="10" font-weight="700" fill="var(--foreground, #0f172a)" pointer-events="none">${this.escapeXml(this.truncateText(node.title, 20))}</text>`);
+      svg.push(`<text x="8" y="${nodeH/2 + 9}" font-size="7.5" fill="${isCross ? '#7c3aed' : 'var(--muted-foreground, #64748b)'}" pointer-events="none">${isCross ? '🌐 ' : ''}${this.escapeXml(node.category || 'General')} • ${node.level}</text>`);
+      const chipFill = isComposed ? '#10b981' : '#eff6ff';
+      const chipStroke = isComposed ? '#047857' : '#1d4ed8';
+      const chipText = isComposed ? '✓' : '+';
+      const chipColor = isComposed ? '#047857' : '#1d4ed8';
+      svg.push(`<g data-cmd="toggleComposedTerm" data-cmd-arg="${this.escapeJsAttr(node.id)}" role="button" tabindex="0" transform="translate(${nodeW - 25}, 6)" style="cursor:pointer;">`);
+      svg.push(`<rect width="19" height="19" rx="4" fill="${chipFill}" stroke="${chipStroke}" stroke-width="1"/>`);
+      svg.push(`<text x="9.5" y="15" font-size="11" font-weight="bold" fill="${chipColor}" text-anchor="middle" pointer-events="none">${chipText}</text>`);
+      svg.push(`</g>`);
+      svg.push(`</g>`);
+    });
+
+    // Nodo central
+    svg.push(`<g data-cmd="navigateToTerm" data-cmd-arg="${this.escapeJsAttr(term.id)}" role="button" tabindex="0" style="cursor:pointer;" filter="url(#shadow)" transform="translate(${cx - centralW/2}, ${cy - centralH/2})">`);
+    svg.push(`<rect width="${centralW}" height="${centralH}" rx="12" fill="#1e40af" stroke="#1d4ed8" stroke-width="2.5"/>`);
+    svg.push(`<text x="${centralW/2}" y="${centralH/2 - 6}" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle" pointer-events="none">${this.escapeXml(this.truncateText(term.title, 26))}</text>`);
+    svg.push(`<text x="${centralW/2}" y="${centralH/2 + 10}" font-size="8.5" fill="#bfdbfe" text-anchor="middle" pointer-events="none">${term.category || 'General'} • ${this.getOntologyLevel(term).id}</text>`);
+    svg.push(`</g>`);
+
+    // Leyenda de familias
+    svg.push(`<g transform="translate(24, ${height - 150})">`);
+    svg.push(`<text x="0" y="-8" font-size="8.5" font-weight="700" fill="var(--foreground)">Familias de relación</text>`);
+    const families = Object.values(this.relationFamilies);
+    const cols = 4;
+    families.forEach((f, fi) => {
+      const col = fi % cols;
+      const row = Math.floor(fi / cols);
+      const x = col * 150;
+      const y = row * 16;
+      svg.push(`<circle cx="${x + 4}" cy="${y - 2}" r="3" fill="${f.color}"/>`);
+      svg.push(`<text x="${x + 10}" y="${y + 2}" font-size="7.8" fill="var(--muted-foreground, #64748b)" pointer-events="none">${this.escapeXml(f.label)}</text>`);
+    });
+    svg.push(`<text x="0" y="${4 * 16 + 6}" font-size="7.8" fill="#7c3aed" pointer-events="none">🌐 Línea punteada = relación inter-glosario</text>`);
+    svg.push(`<text x="0" y="${4 * 16 + 18}" font-size="7.8" fill="#10b981" pointer-events="none">✓ nodo ya en la composición interdominio</text>`);
+    svg.push(`</g>`);
+
+    svg.push(`</svg>`);
+    return svg.join('\n');
+  }
 }
 
 if (typeof window !== 'undefined') {
