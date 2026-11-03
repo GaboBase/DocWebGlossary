@@ -14,7 +14,11 @@
       "category": "Fundamentos de Prompts",
       "shortDefinition": "Entrada de texto o instrucción proporcionada a un modelo de IA generativa para guiar su salida hacia una respuesta o tarea específica.",
       "fullDefinition": "Un prompt es una entrada —generalmente texto, pero puede incluir imágenes, audio o código— proporcionada a un modelo generativo de IA (como un LLM) para elicit una respuesta específica o realizar una tarea. Puede incluir instrucciones, contexto, ejemplos o preguntas, y puede seguir formatos o patrones específicos. A diferencia del fine-tuning, el prompting no modifica los pesos o parámetros internos del modelo; solo elabora mejores entradas para obtener salidas deseadas del modelo existente.",
-      "synonyms": ["Prompt", "Instrucción", "Entrada de Modelo"],
+      "synonyms": [
+        "Prompt",
+        "Instrucción",
+        "Entrada de Modelo"
+      ],
       "level": "fundamental",
       "status": "canonical",
       "attributes": {
@@ -58,7 +62,11 @@
       "category": "Fundamentos de Prompts",
       "shortDefinition": "Proceso iterativo de diseñar, probar y refinar prompts para que un modelo de lenguaje produzca de forma fiable la salida deseada para una tarea.",
       "fullDefinition": "La ingeniería de prompts es la práctica de estructurar entradas de lenguaje natural (prompts) para producir salidas específicas de un modelo generativo de IA. Implica entender cómo interpreta el modelo el lenguaje e incluir técnicas como few-shot prompting, chain-of-thought prompting y asignación de roles. Es un proceso iterativo que consiste en realizar inferencia en un conjunto de datos, evaluar el rendimiento y modificar la plantilla de prompt. No modifica los pesos del modelo; solo optimiza las entradas.",
-      "synonyms": ["Prompt Engineering", "Ingeniería de Instrucciones", "Diseño de Prompts"],
+      "synonyms": [
+        "Prompt Engineering",
+        "Ingeniería de Instrucciones",
+        "Diseño de Prompts"
+      ],
       "level": "fundamental",
       "status": "canonical",
       "attributes": {
@@ -108,7 +116,11 @@
       "category": "Técnicas de Ingeniería de Prompts",
       "shortDefinition": "Técnica de prompting que proporciona ejemplos de una tarea completada (exemplares o shots) dentro del prompt para guiar al modelo hacia el resultado deseado.",
       "fullDefinition": "El few-shot prompting es una técnica en la que se incluyen uno o más ejemplos de una tarea ya resuelta dentro del prompt, para que el modelo aprenda por imitación el patrón esperado y lo aplique a la nueva entrada. Los ejemplos actúan como demostraciones que guían al modelo generativo para realizar la tarea sin modificar sus parámetros. Cuantos más ejemplos relevantes se proporcionen (hasta los límites de contexto del modelo), generalmente mejor es el rendimiento.",
-      "synonyms": ["Few-Shot Prompting", "Aprendizaje de Pocos Ejemplos", "Exemplar Prompting"],
+      "synonyms": [
+        "Few-Shot Prompting",
+        "Aprendizaje de Pocos Ejemplos",
+        "Exemplar Prompting"
+      ],
       "level": "intermedio",
       "status": "canonical",
       "attributes": {
@@ -151,7 +163,12 @@
       "category": "Técnicas de Ingeniería de Prompts",
       "shortDefinition": "Técnica de prompting que instruye al modelo a mostrar su proceso de razonamiento paso a paso antes de producir la respuesta final.",
       "fullDefinition": "El chain-of-thought (CoT) prompting es una técnica que pide al modelo de lenguaje descomponer problemas complejos en pasos intermedios de razonamiento, generando una cadena de pensamiento antes de llegar a la conclusión final. Esto mejora significativamente el rendimiento en tareas que requieren razonamiento aritmético, lógico o de sentido común, al forzar al modelo a estructurar su pensamiento de manera explícita y verificable.",
-      "synonyms": ["Chain-of-Thought", "CoT", "Razonamiento Paso a Paso", "Pensamiento en Cadena"],
+      "synonyms": [
+        "Chain-of-Thought",
+        "CoT",
+        "Razonamiento Paso a Paso",
+        "Pensamiento en Cadena"
+      ],
       "level": "intermedio",
       "status": "canonical",
       "attributes": {
@@ -194,7 +211,11 @@
       "category": "Contexto y Mensajes del Sistema",
       "shortDefinition": "Instrucción especializada proporcionada a un modelo de lenguaje que define su rol, comportamiento y parámetros de operación para la interacción subsiguiente.",
       "fullDefinition": "Un mensaje del sistema (system message) es una instrucción de contexto proporcionada al modelo de lenguaje que define su rol, comportamiento y parámetros de operación para la interacción posterior. Suele tener prioridad superior frente a los mensajes del usuario regulares y se utiliza para establecer el tono, estilo, restricciones y reglas de la conversación. Es un elemento clave de la ingeniería de contexto, que gestiona los elementos no-prompt que acompañan a las entradas del usuario.",
-      "synonyms": ["System Message", "Instrucción del Sistema", "Mensaje de Sistema"],
+      "synonyms": [
+        "System Message",
+        "Instrucción del Sistema",
+        "Mensaje de Sistema"
+      ],
       "level": "fundamental",
       "status": "canonical",
       "attributes": {
@@ -238,7 +259,11 @@
       "category": "Contexto y Mensajes del Sistemas",
       "shortDefinition": "Área de ingeniería de software enfocada en la gestión de los elementos de contexto que acompañan a los prompts, incluyendo instrucciones del sistema, conocimiento recuperado, definiciones de herramientas, resúmenes de conversación y metadatos de tarea.",
       "fullDefinition": "La ingeniería de contexto es el área relacionada con la ingeniería de prompts que se enfoca en la gestión de los elementos de contexto no-prompt suministrados al modelo generativo. Incluye mensajes del sistema, conocimiento recuperado (RAG), definiciones de herramientas, resúmenes de conversación, metadatos de tarea y tokens. El objetivo es optimizar la información relevante disponible para el modelo en cada interacción, mejorando la precisión y relevancia de las respuestas sin modificar los pesos del modelo.",
-      "synonyms": ["Context Engineering", "Ingeniería de Contexto", "Gestión de Contexto de LLM"],
+      "synonyms": [
+        "Context Engineering",
+        "Ingeniería de Contexto",
+        "Gestión de Contexto de LLM"
+      ],
       "level": "intermedio",
       "status": "canonical",
       "attributes": {
@@ -283,7 +308,11 @@
       "category": "Fundamentos de Prompts",
       "shortDefinition": "Función o estructura que contiene una o más variables que son reemplazadas por contenido específico para crear un prompt concreto.",
       "fullDefinition": "Una plantilla de prompt es una estructura que contiene una o más variables que se sustituyen por medios (generalmente texto) para crear un prompt específico. Permite crear prompts consistentes y reutilizables donde partes fijas de la instrucción se combinan con contenido variable. Las plantillas son fundamentales para la ingeniería de prompts sistemática, permitiendo aplicar la misma estructura de instrucción a diferentes entradas.",
-      "synonyms": ["Prompt Template", "Plantilla de Instrucción", "Prompt Pattern"],
+      "synonyms": [
+        "Prompt Template",
+        "Plantilla de Instrucción",
+        "Prompt Pattern"
+      ],
       "level": "fundamental",
       "status": "canonical",
       "attributes": {
@@ -316,6 +345,204 @@
           "target": "urn:term:prompt-engineering:prompt-engineering",
           "label": "Está relacionado con",
           "note": "Las plantillas de prompt son una herramienta fundamental en la ingeniería de prompts."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:in-context-learning",
+      "slug": "in-context-learning",
+      "title": "Aprendizaje en Contexto (In-Context Learning)",
+      "category": "Técnicas de Ingeniería de Prompts",
+      "shortDefinition": "Capacidad de los modelos de base para aprender patrones y tareas a partir de ejemplos provistos en la ventana de contexto sin actualizar pesos.",
+      "fullDefinition": "El aprendizaje en contexto (ICL) permite a un modelo autorregresivo inferir la función objetivo y resolver tareas complejas condicionándose en demostraciones o instrucciones presentadas en su ventana de contexto durante la inferencia. Es la base teórica que fundamenta el few-shot prompting y las instrucciones de adaptación inmediata.",
+      "synonyms": [
+        "In-Context Learning",
+        "ICL",
+        "Aprendizaje en Tiempo de Inferencia"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "actualizacionPesos": "Ninguna (inferencia pura)",
+        "mecanismo": "Atención contextual sobre demostraciones"
+      },
+      "components": [
+        "Ejemplos demostrativos (Shots)",
+        "Instrucción de formato",
+        "Entrada de consulta"
+      ],
+      "applications": [
+        "Adaptación rápida a nuevos formatos de datos",
+        "Clasificación especializada sin reentrenamiento"
+      ],
+      "examples": [
+        "Presentar tres ejemplos de correos y su clasificación para que clasifique el cuarto automáticamente."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:prompt-engineering:few-shot-prompting",
+          "label": "Se utiliza para",
+          "note": "El aprendizaje en contexto es el fenómeno cognitivo que habilita el few-shot prompting."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:structured-output-json-schema",
+      "slug": "structured-output-json-schema",
+      "title": "Salida Estructurada (JSON Schema Constrained)",
+      "category": "Cadenas y Optimización de Prompts",
+      "shortDefinition": "Técnica para forzar gramaticalmente al LLM a emitir respuestas conformes a un esquema JSON estricto sin desviaciones de sintaxis.",
+      "fullDefinition": "La salida estructurada mediante esquemas JSON garantiza que la respuesta del modelo generativo sea 100% parseable por sistemas downstream. Se implementa mediante sampling guiado por gramáticas (CFG) a nivel de decodificación de tokens en el motor de inferencia o mediante prompts de especificación estricta con validadores automáticos.",
+      "synonyms": [
+        "Structured Outputs",
+        "JSON Mode",
+        "Salida Tipada",
+        "Grammar-based Sampling"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "garantia": "Conformidad sintáctica con JSON Schema",
+        "integracion": "APIs de backend y pipelines de datos"
+      },
+      "components": [
+        "Esquema JSON Schema",
+        "Máscara de Tokens / Gramática Libre de Contexto",
+        "Deserializador Validado"
+      ],
+      "applications": [
+        "Extracción automatizada de entidades",
+        "Generación de llamadas a API",
+        "Agentes de automatización de procesos"
+      ],
+      "examples": [
+        "Forzar al modelo a devolver siempre un objeto `{ status: string, code: number, errors: string[] }`."
+      ],
+      "relations": [
+        {
+          "type": "isInputTo",
+          "target": "urn:term:prompt-engineering:prompt-template",
+          "label": "Es entrada de",
+          "note": "Las plantillas de prompt avanzadas suelen incluir la definición del esquema de salida esperado."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:prompt-injection-defensa",
+      "slug": "prompt-injection-defensa",
+      "title": "Defensa contra Inyección de Prompts",
+      "category": "Contexto y Mensajes del Sistema",
+      "shortDefinition": "Estrategias y patrones arquitectónicos para impedir que datos no confiables alteren las instrucciones del sistema en aplicaciones LLM.",
+      "fullDefinition": "La inyección de prompts (directa o indirecta) ocurre cuando un usuario malintencionado o un contenido web externo introduce comandos diseñados para secuestrar el flujo de control del modelo (jailbreaking, fuga de contexto o ejecución de herramientas no autorizadas). Las defensas incluyen delimitadores XML estrictos, filtros de entrada con modelos secundarios (guardrails) y separación hermética entre datos y código de instrucción.",
+      "synonyms": [
+        "Prompt Injection Defense",
+        "Protección contra Inyección",
+        "Anti-Jailbreak"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "vectorAtaque": "Inyección directa (usuario) e indirecta (documentos recuperados por RAG)",
+        "mitigacion": "Delimitadores XML/Markdown, Guardrails, Sandwich Defense"
+      },
+      "components": [
+        "Filtro de Entrada (Input Guard)",
+        "Delimitadores Estructurales",
+        "Detector de Desobediencia de Instrucciones"
+      ],
+      "applications": [
+        "Chatbots corporativos conectados a internet",
+        "Agentes con acceso a correo y bases de datos"
+      ],
+      "examples": [
+        "Encapsular el texto del usuario dentro de etiquetas `<user_input>` y añadir una regla inmutable en el system prompt."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:system-message",
+          "label": "Está relacionado con",
+          "note": "El mensaje del sistema es la primera línea de defensa para fijar límites inmutables frente a inyecciones."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:self-consistency-prompting",
+      "slug": "self-consistency-prompting",
+      "title": "Auto-consistencia (Self-Consistency Sampling)",
+      "category": "Técnicas de Ingeniería de Prompts",
+      "shortDefinition": "Estrategia de inferencia que muestrea múltiples rutas de razonamiento y selecciona la respuesta más consistente por votación mayoritaria.",
+      "fullDefinition": "La auto-consistencia sustituye la decodificación voraz (greedy decoding) en prompts con cadena de pensamiento (Chain-of-Thought). Genera una muestra diversa de caminos de razonamiento mediante temperatura mayor que cero y selecciona la respuesta final con mayor frecuencia o consenso, incrementando drásticamente la precisión en tareas aritméticas, lógicas y de decisión compleja.",
+      "synonyms": [
+        "Self-Consistency",
+        "Votación Mayoritaria",
+        "Muestreo de Consenso"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "temperaturaMuestreo": "Mayor que 0 (típicamente 0.5 - 0.7)",
+        "criterioConsenso": "Moda estadística / Votación por mayoría"
+      },
+      "components": [
+        "Generador Multiruta",
+        "Extractor de Respuesta Final",
+        "Módulo de Votación Mayoritaria"
+      ],
+      "applications": [
+        "Resolución de problemas matemáticos",
+        "Diagnóstico técnico complejo",
+        "Verificación formal de código"
+      ],
+      "examples": [
+        "Generar 5 razonamientos distintos para un problema de arquitectura y elegir la recomendación coincidente en 4 de ellos."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:prompt-engineering:chain-of-thought",
+          "label": "Implementa",
+          "note": "Extiende el patrón de cadena de pensamiento generando múltiples variantes probabilísticas."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:rag-triad-evaluacion",
+      "slug": "rag-triad-evaluacion",
+      "title": "Tríada de Evaluación RAG (Fidelidad, Relevancia y Respuesta)",
+      "category": "Cadenas y Optimización de Prompts",
+      "shortDefinition": "Marco metodológico para evaluar la calidad de un pipeline RAG midiendo relevancia del contexto, fidelidad factual y pertinencia de la respuesta.",
+      "fullDefinition": "La Tríada RAG descompone la evaluación de sistemas generativos en tres dimensiones ortogonales e independientes: 1) Relevancia del Contexto (si los chunks recuperados responden a la consulta), 2) Fidelidad o Groundedness (si la respuesta del LLM se apoya exclusivamente en el contexto recuperado sin alucinar), y 3) Relevancia de la Respuesta (si la salida final responde directamente a la necesidad del usuario).",
+      "synonyms": [
+        "RAG Triad",
+        "Evaluación RAG",
+        "Métricas TruLens"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "dimensiones": "Context Relevance, Groundedness (Faithfulness), Answer Relevance",
+        "metodologia": "LLM-as-a-Judge con rúbricas cuantitativas"
+      },
+      "components": [
+        "Evaluador de Relevancia de Contexto",
+        "Evaluador de Fidelidad Factual",
+        "Evaluador de Pertinencia de Respuesta"
+      ],
+      "applications": [
+        "Optimización continua de pipelines RAG",
+        "Detección temprana de degradación en producción"
+      ],
+      "examples": [
+        "Detectar que un fallo de respuesta se debe a una mala recuperación (context relevance baja) y no a un fallo del generador."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:rag-and-vector-knowledge:grounding-factual-atribucion",
+          "label": "Está relacionado con",
+          "note": "La fidelidad de la tríada RAG evalúa formalmente el grado de grounding del sistema."
         }
       ]
     }

@@ -143,8 +143,8 @@ function runM4M6AdversarialTests() {
   const allTerms = semantics.getAllTerms();
   runner.assertEqual(
     allTerms.length,
-    295,
-    `Total terms loaded across all 8 glossaries is exactly 295`,
+    317,
+    `Total terms loaded across all 9 glossaries is exactly 317`,
     { feature: 'F8', tier: 1 }
   );
 
@@ -159,7 +159,7 @@ function runM4M6AdversarialTests() {
   runner.assertEqual(
     duplicateUrns,
     0,
-    'Zero colliding or duplicate URN identifiers across all 295 terms in 8 glossaries',
+    'Zero colliding or duplicate URN identifiers across all 317 terms in 9 glossaries',
     { feature: 'F3', tier: 2 }
   );
 
@@ -263,7 +263,7 @@ function runM4M6AdversarialTests() {
   // -------------------------------------------------------------
   console.log('\n--- Deep Linking & URL Hash Routing Resilience ---');
 
-  // Verificar que el 100% de los 295 términos tienen slug único y no vacío para enrutamiento limpio
+  // Verificar que el 100% de los 317 términos tienen slug único y no vacío para enrutamiento limpio
   const slugMap = new Map();
   let duplicateSlugs = 0;
   for (const term of allTerms) {

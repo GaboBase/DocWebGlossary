@@ -14,7 +14,11 @@
       "category": "Agentes y Autonomía",
       "shortDefinition": "Entidad de software situada en un entorno capaz de acción autónoma flexible para cumplir sus objetivos de diseño.",
       "fullDefinition": "Un agente software es una entidad computacional autónoma que percibe su entorno a través de sensores, actúa sobre él mediante efectores, y puede operar de forma independiente para alcanzar objetivos específicos sin intervención continua de un usuario humano. Se caracteriza por autonomía, reactividad, proactividad y habilidad social.",
-      "synonyms": ["Agente", "Agente Software", "Software Agent"],
+      "synonyms": [
+        "Agente",
+        "Agente Software",
+        "Software Agent"
+      ],
       "level": "fundamental",
       "status": "canonical",
       "attributes": {
@@ -64,7 +68,11 @@
       "category": "Interacción Multiagente",
       "shortDefinition": "Organización compuesta por agentes autónomos y proactivos que interactúan entre sí para alcanzar objetivos comunes o privados.",
       "fullDefinition": "Un Sistema Multiagente (MAS) es una colección de entidades computacionales autónomas, posiblemente heterogéneas, cada una con capacidades propias de resolución de problemas, capaces de interactuar entre sí mediante protocolos y lenguajes de alto nivel para alcanzar una meta global. Las interacciones típicas incluyen cooperación, coordinación y negociación.",
-      "synonyms": ["Sistema de Agentes Múltiples", "MAS", "Multi-Agent System"],
+      "synonyms": [
+        "Sistema de Agentes Múltiples",
+        "MAS",
+        "Multi-Agent System"
+      ],
       "level": "arquitectura",
       "status": "canonical",
       "attributes": {
@@ -114,7 +122,11 @@
       "category": "Arquitecturas de Agentes",
       "shortDefinition": "Modelo de arquitectura de agente basado en creencias, deseos e intenciones para razonamiento práctico y toma de decisiones autónoma.",
       "fullDefinition": "El modelo BDI es una arquitectura de agente software donde el estado mental del agente se representa mediante tres componentes: creencias (lo que el agente cree sobre el mundo), deseos (objetivos o estados preferidos) e intenciones (planes comprometidos que el agente está ejecutando). Permite razonamiento práctico deliberado y ejecución de planes para alcanzar objetivos.",
-      "synonyms": ["BDI", "Beliefs-Desires-Intentions", "Agente BDI"],
+      "synonyms": [
+        "BDI",
+        "Beliefs-Desires-Intentions",
+        "Agente BDI"
+      ],
       "level": "teorico-avanzado",
       "status": "canonical",
       "attributes": {
@@ -164,7 +176,11 @@
       "category": "Arquitecturas de Agentes",
       "shortDefinition": "Agente que responde a estímulos del entorno sin razonamiento deliberativo interno, priorizando tiempo de respuesta bajo sobre planificación compleja.",
       "fullDefinition": "Un agente reactivo es una arquitectura de agente que renuncia a la representación simbólica interna y al razonamiento deliberativo, respondiendo directamente a percepciones del entorno mediante reglas condición-acción (stimulus-response). Es adecuado para entornos dinámicos donde el tiempo de respuesta es crítico y no requiere planificación a largo plazo.",
-      "synonyms": ["Agente Reactivo", "Reactive Agent", "Agente de Respuesta a Estímulos"],
+      "synonyms": [
+        "Agente Reactivo",
+        "Reactive Agent",
+        "Agente de Respuesta a Estímulos"
+      ],
       "level": "intermedio",
       "status": "canonical",
       "attributes": {
@@ -207,7 +223,11 @@
       "category": "Agentes y Autonomía",
       "shortDefinition": "Componente de un agente que percibe el entorno y proporciona datos de entrada para la toma de decisiones.",
       "fullDefinition": "Un sensor es la interfaz de percepción de un agente software que captura información del entorno externo o interno y la convierte en señales o datos interpretables por el agente. El sensor requiere un conjunto de servicios del entorno para funcionar y constituye el canal de entrada del agente en su interacción con el mundo.",
-      "synonyms": ["Sensor", "Perceptor", "Módulo de Percepción"],
+      "synonyms": [
+        "Sensor",
+        "Perceptor",
+        "Módulo de Percepción"
+      ],
       "level": "estructural",
       "status": "canonical",
       "attributes": {
@@ -250,7 +270,11 @@
       "category": "Agentes y Autonomía",
       "shortDefinition": "Componente de un agente que actúa sobre el entorno, proporcionando servicios o realizando acciones concretas.",
       "fullDefinition": "Un efectoor es la interfaz de acción de un agente software que ejecuta operaciones sobre el entorno externo. Proporciona al entorno un conjunto de servicios y constituye el canal de salida del agente. Mientras los sensores captan información, los efectores materializan las decisiones del agente en cambios del mundo.",
-      "synonyms": ["Effector", "Actuador", "Módulo de Acción"],
+      "synonyms": [
+        "Effector",
+        "Actuador",
+        "Módulo de Acción"
+      ],
       "level": "estructural",
       "status": "canonical",
       "attributes": {
@@ -293,7 +317,11 @@
       "category": "Interacción Multiagente",
       "shortDefinition": "Conjunto de servicios y responsabilidades que un agente desempeña dentro de un sistema multiagente.",
       "fullDefinition": "Un rol define las capacidades, habilidades y responsabilidades que un agente debe tener para realizar una tarea dentro de un MAS. Un agente puede desempeñar uno o varios roles simultáneamente, y los roles organizan la estructura social y funcional del sistema multiagente, definiendo quién hace qué y con qué recursos.",
-      "synonyms": ["Role", "Rol", "Función de Agente"],
+      "synonyms": [
+        "Role",
+        "Rol",
+        "Función de Agente"
+      ],
       "level": "intermedio",
       "status": "canonical",
       "attributes": {
@@ -336,7 +364,11 @@
       "category": "Agentes y Autonomía",
       "shortDefinition": "Estado deseado o meta que un agente se compromete a alcanzar mediante su comportamiento autónomo.",
       "fullDefinition": "Un objetivo representa un estado preferido del mundo que el agente desea lograr. En arquitecturas de agentes como BDI, los objetivos guían la deliberación y la selección de planes. Los objetivos pueden ser de logro (achievement), mantenimiento (maintenance) o evitación (avoidance), y pueden ser adoptados, abandonados o suspendidos según las creencias del agente sobre el entorno.",
-      "synonyms": ["Goal", "Objetivo", "Meta del Agente"],
+      "synonyms": [
+        "Goal",
+        "Objetivo",
+        "Meta del Agente"
+      ],
       "level": "fundamental",
       "status": "canonical",
       "attributes": {
@@ -379,7 +411,11 @@
       "category": "Interacción Multiagente",
       "shortDefinition": "Obligación formal que un agente asume hacia otro dentro de un sistema multiagente, modelando interacciones confiables y responsables.",
       "fullDefinition": "Un compromiso es una obligación semántica que un agente (deudor) contrae con otro agente (acreedor) sobre la realización de una acción o el logro de un estado. Los compromisos son fundamentales en ontologías de agentes como OASIS para representar interacciones confiables, permitiendo que los agentes razonen sobre las responsabilidades de sus pares sin conocer sus detalles internos de implementación.",
-      "synonyms": ["Commitment", "Compromiso", "Obligación Agente-Agente"],
+      "synonyms": [
+        "Commitment",
+        "Compromiso",
+        "Obligación Agente-Agente"
+      ],
       "level": "teorico-avanzado",
       "status": "canonical",
       "attributes": {
@@ -413,6 +449,206 @@
           "target": "urn:term:agent-architecture:multi-agent-system",
           "label": "Está relacionado con",
           "note": "Los compromisos son la base de la interacción confiable en un MAS."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:tool-calling-function-calling",
+      "slug": "tool-calling-function-calling",
+      "title": "Invocación de Herramientas (Tool / Function Calling)",
+      "category": "Interacción y Comunicación Agéntica",
+      "shortDefinition": "Capacidad de un modelo generativo para seleccionar herramientas y emitir argumentos estructurados que el entorno ejecuta en su nombre.",
+      "fullDefinition": "Tool Calling permite al agente interactuar con el mundo digital más allá de la generación de texto plano. A partir de las declaraciones de herramientas provistas en su contexto (funciones con esquemas JSON de parámetros), el modelo decide cuándo invocar una herramienta, pausa la generación, emite el payload estructurado de llamada y procesa el resultado devuelto por el entorno para formular su respuesta final.",
+      "synonyms": [
+        "Tool Calling",
+        "Function Calling",
+        "Llamada a Funciones"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "formatoArgumentos": "JSON serializable validado contra esquema",
+        "flujo": "Modelo emite llamada -> Host ejecuta -> Host devuelve salida -> Modelo continúa"
+      },
+      "components": [
+        "Declaración de Herramienta",
+        "Selector de Herramienta",
+        "Serializador de Argumentos",
+        "Manejador de Respuestas (Tool Result)"
+      ],
+      "applications": [
+        "Agentes de automatización de código",
+        "Acceso a bases de datos y APIs en tiempo real",
+        "Cálculos matemáticos deterministas"
+      ],
+      "examples": [
+        "El agente invoca `buscarDocumentacion({ query: 'API REST' })` para consultar un catálogo local antes de responder."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:agent-architecture:effector",
+          "label": "Implementa",
+          "note": "Tool Calling es el mecanismo moderno por el cual un agente LLM materializa sus efectores digitales."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:model-context-protocol-mcp",
+      "slug": "model-context-protocol-mcp",
+      "title": "Protocolo de Contexto de Modelo (MCP)",
+      "category": "Interacción y Comunicación Agéntica",
+      "shortDefinition": "Estándar abierto para conectar de forma segura asistentes de IA con fuentes de datos locales, herramientas y servidores de contexto.",
+      "fullDefinition": "MCP (Model Context Protocol) es un protocolo cliente-servidor estandarizado que desacopla los modelos de IA de los conectores específicos de datos y herramientas. Permite a las aplicaciones de IA exponer recursos de lectura, herramientas de ejecución estructurada y plantillas de prompts de manera modular, interoperable y segura entre diferentes proveedores y entornos locales.",
+      "synonyms": [
+        "MCP",
+        "Model Context Protocol",
+        "Protocolo MCP"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "arquitectura": "Cliente-Servidor mediante JSON-RPC sobre stdio o Server-Sent Events (SSE)",
+        "capacidades": "Resources, Tools, Prompts"
+      },
+      "components": [
+        "Cliente MCP",
+        "Servidor MCP",
+        "Transporte (stdio / SSE)",
+        "Registro de Herramientas y Recursos"
+      ],
+      "applications": [
+        "Integración de herramientas en IDEs de IA",
+        "Conexión segura a bases de datos corporativas",
+        "Orquestación modular de agentes"
+      ],
+      "examples": [
+        "Un IDE de desarrollo conecta a través de MCP con el servidor de Git local y con la base de datos de producción."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:tool-calling-function-calling",
+          "label": "Está relacionado con",
+          "note": "MCP estandariza el descubrimiento y la ejecución segura de tool calling entre plataformas."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:react-pattern-reason-act",
+      "slug": "react-pattern-reason-act",
+      "title": "Patrón ReAct (Razonamiento + Acción)",
+      "category": "Modelos y Arquitecturas de Agentes",
+      "shortDefinition": "Paradigma de orquestación que entrelaza pasos de razonamiento explícito con acciones concretas en el entorno para resolver problemas complejos.",
+      "fullDefinition": "El patrón ReAct (Reasoning + Acting) combina la introspección reflexiva tipo Chain-of-Thought con la ejecución de acciones en el entorno (como búsquedas o llamadas a herramientas). El ciclo 'Pensamiento -> Acción -> Observación' permite al agente ajustar dinámicamente sus hipótesis en función de los resultados intermedios observados antes de avanzar al siguiente paso.",
+      "synonyms": [
+        "ReAct",
+        "Reasoning and Acting",
+        "Ciclo Pensamiento-Acción-Observación"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "bucleEjecucion": "Thought -> Action -> Observation -> Thought",
+        "adaptabilidad": "Corrección de errores ante observaciones fallidas"
+      },
+      "components": [
+        "Paso de Pensamiento (Thought)",
+        "Paso de Acción (Action)",
+        "Paso de Observación (Observation)"
+      ],
+      "applications": [
+        "Navegación web autónoma",
+        "Depuración interactiva de código",
+        "Resolución de consultas multietapa"
+      ],
+      "examples": [
+        "Thought: 'Necesito saber la versión actual'. Action: 'run_command(git describe)'. Observation: 'v1.0.0'. Thought: 'Ahora puedo redactar el release'."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Implementa",
+          "note": "ReAct es el patrón fundamental de razonamiento deliberativo y ejecución para agentes modernos con LLMs."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:memoria-agentica-episodica",
+      "slug": "memoria-agentica-episodica",
+      "title": "Memoria Agéntica Episódica & Semántica",
+      "category": "Fundamentos de Agentes Autónomos",
+      "shortDefinition": "Mecanismo de persistencia que permite al agente retener experiencias pasadas, hechos consolidados y estados conversacionales a través de sesiones.",
+      "fullDefinition": "La memoria agéntica supera la volatilidad de la ventana de contexto de un solo turno. Se divide en memoria a corto plazo (historial de conversación activo en la ventana de contexto), memoria episódica (registro temporal de eventos pasados y acciones previas con sus resultados) y memoria semántica (conocimiento declarativo y hechos consolidados indexados en bases vectoriales o grafos de conocimiento).",
+      "synonyms": [
+        "Agent Memory",
+        "Memoria Episódica",
+        "Memoria a Largo Plazo de Agente"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "division": "Corto plazo (ventana de contexto), Episódica (secuencias pasadas), Semántica (conceptos consolidados)"
+      },
+      "components": [
+        "Buffer de Contexto Inmediato",
+        "Almacén Episódico Indexado",
+        "Mecanismo de Consolidación y Olvido"
+      ],
+      "applications": [
+        "Asistentes continuos con aprendizaje permanente",
+        "Agentes de desarrollo de software con memoria de proyectos"
+      ],
+      "examples": [
+        "El agente recuerda que hace tres sesiones el usuario prefirió usar TypeScript en vez de JavaScript."
+      ],
+      "relations": [
+        {
+          "type": "requires",
+          "target": "urn:term:rag-and-vector-knowledge:base-datos-vectorial",
+          "label": "Requiere",
+          "note": "La memoria semántica y episódica a largo plazo requiere un almacén vectorial persistente."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:semantic-router-intenciones",
+      "slug": "semantic-router-intenciones",
+      "title": "Enrutador Semántico de Intenciones (Semantic Router)",
+      "category": "Modelos y Arquitecturas de Agentes",
+      "shortDefinition": "Mecanismo ultrarrápido basado en embeddings para clasificar la intención del usuario y dirigir la consulta al agente o flujo óptimo sin invocar un LLM pesado.",
+      "fullDefinition": "Un Semantic Router calcula la similitud entre el embedding de la entrada del usuario y centroides o prototipos representativos de rutas temáticas conocidas. Permite bifurcar el flujo de trabajo en menos de 10 milisegundos hacia especialistas agénticos dedicados, evitando la latencia y el coste computacional de prompts de clasificación preliminares en modelos de lenguaje masivos.",
+      "synonyms": [
+        "Semantic Router",
+        "Enrutador Semántico",
+        "Intent Routing"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "latencia": "Menor a 15 ms",
+        "metodo": "Clasificación de vecinos cercanos sobre embeddings de intenciones"
+      },
+      "components": [
+        "Codificador de Embeddings Ligero",
+        "Conjunto de Rutas Temáticas / Prototipos",
+        "Módulo de Bifurcación Condicional"
+      ],
+      "applications": [
+        "Sistemas multi-agente de alta concurrencia",
+        "Clasificación de intenciones de soporte",
+        "Prevención de llamadas innecesarias a APIs"
+      ],
+      "examples": [
+        "Dirigir una consulta sobre facturación directamente al subagente de cobros sin pasar por el orquestador general."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:agent-architecture:multi-agent-system",
+          "label": "Se utiliza para",
+          "note": "Permite orquestar y distribuir tareas eficientemente entre agentes especialistas en un sistema multiagente."
         }
       ]
     }

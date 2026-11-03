@@ -135,8 +135,8 @@ function runDataParityTests() {
 
   runner.assertEqual(
     bundleData._totalTerms || liveTermsCount,
-    295,
-    `Total terms count verified at exactly 295 across all 8 domains`,
+    317,
+    `Total terms count verified at exactly 317 across all 9 domains`,
     { feature: 'F3', tier: 2 }
   );
 

@@ -1,0 +1,17 @@
+{
+  "id": "rag-and-vector-knowledge",
+  "title": "Sistemas RAG, Bases de Datos Vectoriales & Recuperación Semántica",
+  "slug": "rag-and-vector-knowledge",
+  "version": "1.0.0",
+  "created": "2026-11-03T00:00:00Z",
+  "updated": "2026-11-03T00:00:00Z",
+  "license": "Local Knowledge Base",
+  "author": "DocWeb Knowledge Team",
+  "domain": "RAG Systems, Vector Databases, Semantic Search, LLM Grounding & Evaluation",
+  "categories": [
+    "Fundamentos de RAG & Arquitectura",
+    "Embeddings y Espacios Vectoriales",
+    "Indexación y Almacenamiento Vectorial",
+    "Estrategias de Recuperación & Grounding"
+  ]
+}

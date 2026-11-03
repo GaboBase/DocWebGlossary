@@ -108,7 +108,7 @@
       "dataPath": "./AgentArchitecture/data/terms.json",
       "metadataPath": "./AgentArchitecture/data/glossary.json",
       "domain": "Software Agents, Multi-Agent Systems, Agent-Oriented Architecture",
-      "termCount": 9,
+      "termCount": 14,
       "categories": [
         "Agentes y Autonomía",
         "Arquitecturas de Agentes",
@@ -124,7 +124,7 @@
       "dataPath": "./AIAugmentedEngineering/data/terms.json",
       "metadataPath": "./AIAugmentedEngineering/data/glossary.json",
       "domain": "AI-Augmented Software Development, LLM-Assisted Engineering, Agentic IDEs",
-      "termCount": 7,
+      "termCount": 11,
       "categories": [
         "Desarrollo Aumentado por IA",
         "Ciclo de Vida Impulsado por IA",
@@ -140,16 +140,32 @@
       "dataPath": "./PromptEngineering/data/terms.json",
       "metadataPath": "./PromptEngineering/data/glossary.json",
       "domain": "Prompt Engineering, Foundation Models, LLM Prompting Techniques",
-      "termCount": 7,
+      "termCount": 12,
       "categories": [
         "Fundamentos de Prompts",
         "Técnicas de Ingeniería de Prompts",
         "Contexto y Mensajes del Sistema",
         "Cadenas y Optimización de Prompts"
       ]
+    },
+    {
+      "id": "rag-and-vector-knowledge",
+      "slug": "rag-and-vector-knowledge",
+      "title": "Sistemas RAG, Bases de Datos Vectoriales & Recuperación Semántica",
+      "description": "Glosario canónico de arquitecturas de recuperación aumentada por generación (RAG), bases de datos vectoriales, embeddings semánticos, búsqueda híbrida, re-ranking y grounding.",
+      "dataPath": "./RAGAndVectorKnowledge/data/terms.json",
+      "metadataPath": "./RAGAndVectorKnowledge/data/glossary.json",
+      "domain": "RAG Systems, Vector Databases, Semantic Search, Grounding & Evaluation",
+      "termCount": 8,
+      "categories": [
+        "Fundamentos de RAG & Arquitectura",
+        "Embeddings y Espacios Vectoriales",
+        "Indexación y Almacenamiento Vectorial",
+        "Estrategias de Recuperación & Grounding"
+      ]
     }
   ],
-  "_dataHash": "7ac028d8f8c2e4da61694d2bb2057414fb96d88e5755a4a89b92bd78b89818f4",
-  "_lastCompiled": "2026-11-02T12:32:14.694Z",
-  "_totalTerms": 295
+  "_dataHash": "78fa723ffc0d470ef8cc0bb38a6daa420222834566d72b53267a8c45465d02d1",
+  "_lastCompiled": "2026-11-03T21:33:50.749Z",
+  "_totalTerms": 317
 }

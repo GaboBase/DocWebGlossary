@@ -1,13 +1,13 @@
 /**
  * DOCWEB MULTIGLOSSARY — Paquete Canónico de Datos Local (Autónomo & Offline)
- * Hash SHA-256: 7ac028d8f8c2e4da61694d2bb2057414fb96d88e5755a4a89b92bd78b89818f4
- * Fecha de Compilación: 2026-11-02T12:32:14.694Z
+ * Hash SHA-256: 78fa723ffc0d470ef8cc0bb38a6daa420222834566d72b53267a8c45465d02d1
+ * Fecha de Compilación: 2026-11-03T21:33:50.749Z
  * Permite funcionamiento íntegro bajo protocolo file:/// sin restricciones CORS.
  */
 window.DocWebCanonicalData = {
-  _dataHash: "7ac028d8f8c2e4da61694d2bb2057414fb96d88e5755a4a89b92bd78b89818f4",
-  _compiledAt: "2026-11-02T12:32:14.694Z",
-  _totalTerms: 295,
+  _dataHash: "78fa723ffc0d470ef8cc0bb38a6daa420222834566d72b53267a8c45465d02d1",
+  _compiledAt: "2026-11-03T21:33:50.749Z",
+  _totalTerms: 317,
   catalog: {
   "$schema": "./schema/glossaries-manifest.json",
   "version": "1.0.0",
@@ -118,7 +118,7 @@ window.DocWebCanonicalData = {
       "dataPath": "./AgentArchitecture/data/terms.json",
       "metadataPath": "./AgentArchitecture/data/glossary.json",
       "domain": "Software Agents, Multi-Agent Systems, Agent-Oriented Architecture",
-      "termCount": 9,
+      "termCount": 14,
       "categories": [
         "Agentes y Autonomía",
         "Arquitecturas de Agentes",
@@ -134,7 +134,7 @@ window.DocWebCanonicalData = {
       "dataPath": "./AIAugmentedEngineering/data/terms.json",
       "metadataPath": "./AIAugmentedEngineering/data/glossary.json",
       "domain": "AI-Augmented Software Development, LLM-Assisted Engineering, Agentic IDEs",
-      "termCount": 7,
+      "termCount": 11,
       "categories": [
         "Desarrollo Aumentado por IA",
         "Ciclo de Vida Impulsado por IA",
@@ -150,18 +150,34 @@ window.DocWebCanonicalData = {
       "dataPath": "./PromptEngineering/data/terms.json",
       "metadataPath": "./PromptEngineering/data/glossary.json",
       "domain": "Prompt Engineering, Foundation Models, LLM Prompting Techniques",
-      "termCount": 7,
+      "termCount": 12,
       "categories": [
         "Fundamentos de Prompts",
         "Técnicas de Ingeniería de Prompts",
         "Contexto y Mensajes del Sistema",
         "Cadenas y Optimización de Prompts"
       ]
+    },
+    {
+      "id": "rag-and-vector-knowledge",
+      "slug": "rag-and-vector-knowledge",
+      "title": "Sistemas RAG, Bases de Datos Vectoriales & Recuperación Semántica",
+      "description": "Glosario canónico de arquitecturas de recuperación aumentada por generación (RAG), bases de datos vectoriales, embeddings semánticos, búsqueda híbrida, re-ranking y grounding.",
+      "dataPath": "./RAGAndVectorKnowledge/data/terms.json",
+      "metadataPath": "./RAGAndVectorKnowledge/data/glossary.json",
+      "domain": "RAG Systems, Vector Databases, Semantic Search, Grounding & Evaluation",
+      "termCount": 8,
+      "categories": [
+        "Fundamentos de RAG & Arquitectura",
+        "Embeddings y Espacios Vectoriales",
+        "Indexación y Almacenamiento Vectorial",
+        "Estrategias de Recuperación & Grounding"
+      ]
     }
   ],
-  "_dataHash": "7ac028d8f8c2e4da61694d2bb2057414fb96d88e5755a4a89b92bd78b89818f4",
-  "_lastCompiled": "2026-11-02T12:32:14.694Z",
-  "_totalTerms": 295
+  "_dataHash": "78fa723ffc0d470ef8cc0bb38a6daa420222834566d72b53267a8c45465d02d1",
+  "_lastCompiled": "2026-11-03T21:33:50.749Z",
+  "_totalTerms": 317
 },
   glossaries: {
   "render-3d-animations": [
@@ -25449,6 +25465,206 @@ window.DocWebCanonicalData = {
           "note": "Los compromisos son la base de la interacción confiable en un MAS."
         }
       ]
+    },
+    {
+      "id": "urn:term:agent-architecture:tool-calling-function-calling",
+      "slug": "tool-calling-function-calling",
+      "title": "Invocación de Herramientas (Tool / Function Calling)",
+      "category": "Interacción y Comunicación Agéntica",
+      "shortDefinition": "Capacidad de un modelo generativo para seleccionar herramientas y emitir argumentos estructurados que el entorno ejecuta en su nombre.",
+      "fullDefinition": "Tool Calling permite al agente interactuar con el mundo digital más allá de la generación de texto plano. A partir de las declaraciones de herramientas provistas en su contexto (funciones con esquemas JSON de parámetros), el modelo decide cuándo invocar una herramienta, pausa la generación, emite el payload estructurado de llamada y procesa el resultado devuelto por el entorno para formular su respuesta final.",
+      "synonyms": [
+        "Tool Calling",
+        "Function Calling",
+        "Llamada a Funciones"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "formatoArgumentos": "JSON serializable validado contra esquema",
+        "flujo": "Modelo emite llamada -> Host ejecuta -> Host devuelve salida -> Modelo continúa"
+      },
+      "components": [
+        "Declaración de Herramienta",
+        "Selector de Herramienta",
+        "Serializador de Argumentos",
+        "Manejador de Respuestas (Tool Result)"
+      ],
+      "applications": [
+        "Agentes de automatización de código",
+        "Acceso a bases de datos y APIs en tiempo real",
+        "Cálculos matemáticos deterministas"
+      ],
+      "examples": [
+        "El agente invoca `buscarDocumentacion({ query: 'API REST' })` para consultar un catálogo local antes de responder."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:agent-architecture:effector",
+          "label": "Implementa",
+          "note": "Tool Calling es el mecanismo moderno por el cual un agente LLM materializa sus efectores digitales."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:model-context-protocol-mcp",
+      "slug": "model-context-protocol-mcp",
+      "title": "Protocolo de Contexto de Modelo (MCP)",
+      "category": "Interacción y Comunicación Agéntica",
+      "shortDefinition": "Estándar abierto para conectar de forma segura asistentes de IA con fuentes de datos locales, herramientas y servidores de contexto.",
+      "fullDefinition": "MCP (Model Context Protocol) es un protocolo cliente-servidor estandarizado que desacopla los modelos de IA de los conectores específicos de datos y herramientas. Permite a las aplicaciones de IA exponer recursos de lectura, herramientas de ejecución estructurada y plantillas de prompts de manera modular, interoperable y segura entre diferentes proveedores y entornos locales.",
+      "synonyms": [
+        "MCP",
+        "Model Context Protocol",
+        "Protocolo MCP"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "arquitectura": "Cliente-Servidor mediante JSON-RPC sobre stdio o Server-Sent Events (SSE)",
+        "capacidades": "Resources, Tools, Prompts"
+      },
+      "components": [
+        "Cliente MCP",
+        "Servidor MCP",
+        "Transporte (stdio / SSE)",
+        "Registro de Herramientas y Recursos"
+      ],
+      "applications": [
+        "Integración de herramientas en IDEs de IA",
+        "Conexión segura a bases de datos corporativas",
+        "Orquestación modular de agentes"
+      ],
+      "examples": [
+        "Un IDE de desarrollo conecta a través de MCP con el servidor de Git local y con la base de datos de producción."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:agent-architecture:tool-calling-function-calling",
+          "label": "Está relacionado con",
+          "note": "MCP estandariza el descubrimiento y la ejecución segura de tool calling entre plataformas."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:react-pattern-reason-act",
+      "slug": "react-pattern-reason-act",
+      "title": "Patrón ReAct (Razonamiento + Acción)",
+      "category": "Modelos y Arquitecturas de Agentes",
+      "shortDefinition": "Paradigma de orquestación que entrelaza pasos de razonamiento explícito con acciones concretas en el entorno para resolver problemas complejos.",
+      "fullDefinition": "El patrón ReAct (Reasoning + Acting) combina la introspección reflexiva tipo Chain-of-Thought con la ejecución de acciones en el entorno (como búsquedas o llamadas a herramientas). El ciclo 'Pensamiento -> Acción -> Observación' permite al agente ajustar dinámicamente sus hipótesis en función de los resultados intermedios observados antes de avanzar al siguiente paso.",
+      "synonyms": [
+        "ReAct",
+        "Reasoning and Acting",
+        "Ciclo Pensamiento-Acción-Observación"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "bucleEjecucion": "Thought -> Action -> Observation -> Thought",
+        "adaptabilidad": "Corrección de errores ante observaciones fallidas"
+      },
+      "components": [
+        "Paso de Pensamiento (Thought)",
+        "Paso de Acción (Action)",
+        "Paso de Observación (Observation)"
+      ],
+      "applications": [
+        "Navegación web autónoma",
+        "Depuración interactiva de código",
+        "Resolución de consultas multietapa"
+      ],
+      "examples": [
+        "Thought: 'Necesito saber la versión actual'. Action: 'run_command(git describe)'. Observation: 'v1.0.0'. Thought: 'Ahora puedo redactar el release'."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:agent-architecture:agent",
+          "label": "Implementa",
+          "note": "ReAct es el patrón fundamental de razonamiento deliberativo y ejecución para agentes modernos con LLMs."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:memoria-agentica-episodica",
+      "slug": "memoria-agentica-episodica",
+      "title": "Memoria Agéntica Episódica & Semántica",
+      "category": "Fundamentos de Agentes Autónomos",
+      "shortDefinition": "Mecanismo de persistencia que permite al agente retener experiencias pasadas, hechos consolidados y estados conversacionales a través de sesiones.",
+      "fullDefinition": "La memoria agéntica supera la volatilidad de la ventana de contexto de un solo turno. Se divide en memoria a corto plazo (historial de conversación activo en la ventana de contexto), memoria episódica (registro temporal de eventos pasados y acciones previas con sus resultados) y memoria semántica (conocimiento declarativo y hechos consolidados indexados en bases vectoriales o grafos de conocimiento).",
+      "synonyms": [
+        "Agent Memory",
+        "Memoria Episódica",
+        "Memoria a Largo Plazo de Agente"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "division": "Corto plazo (ventana de contexto), Episódica (secuencias pasadas), Semántica (conceptos consolidados)"
+      },
+      "components": [
+        "Buffer de Contexto Inmediato",
+        "Almacén Episódico Indexado",
+        "Mecanismo de Consolidación y Olvido"
+      ],
+      "applications": [
+        "Asistentes continuos con aprendizaje permanente",
+        "Agentes de desarrollo de software con memoria de proyectos"
+      ],
+      "examples": [
+        "El agente recuerda que hace tres sesiones el usuario prefirió usar TypeScript en vez de JavaScript."
+      ],
+      "relations": [
+        {
+          "type": "requires",
+          "target": "urn:term:rag-and-vector-knowledge:base-datos-vectorial",
+          "label": "Requiere",
+          "note": "La memoria semántica y episódica a largo plazo requiere un almacén vectorial persistente."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:agent-architecture:semantic-router-intenciones",
+      "slug": "semantic-router-intenciones",
+      "title": "Enrutador Semántico de Intenciones (Semantic Router)",
+      "category": "Modelos y Arquitecturas de Agentes",
+      "shortDefinition": "Mecanismo ultrarrápido basado en embeddings para clasificar la intención del usuario y dirigir la consulta al agente o flujo óptimo sin invocar un LLM pesado.",
+      "fullDefinition": "Un Semantic Router calcula la similitud entre el embedding de la entrada del usuario y centroides o prototipos representativos de rutas temáticas conocidas. Permite bifurcar el flujo de trabajo en menos de 10 milisegundos hacia especialistas agénticos dedicados, evitando la latencia y el coste computacional de prompts de clasificación preliminares en modelos de lenguaje masivos.",
+      "synonyms": [
+        "Semantic Router",
+        "Enrutador Semántico",
+        "Intent Routing"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "latencia": "Menor a 15 ms",
+        "metodo": "Clasificación de vecinos cercanos sobre embeddings de intenciones"
+      },
+      "components": [
+        "Codificador de Embeddings Ligero",
+        "Conjunto de Rutas Temáticas / Prototipos",
+        "Módulo de Bifurcación Condicional"
+      ],
+      "applications": [
+        "Sistemas multi-agente de alta concurrencia",
+        "Clasificación de intenciones de soporte",
+        "Prevención de llamadas innecesarias a APIs"
+      ],
+      "examples": [
+        "Dirigir una consulta sobre facturación directamente al subagente de cobros sin pasar por el orquestador general."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:agent-architecture:multi-agent-system",
+          "label": "Se utiliza para",
+          "note": "Permite orquestar y distribuir tareas eficientemente entre agentes especialistas en un sistema multiagente."
+        }
+      ]
     }
   ],
   "ai-augmented-engineering": [
@@ -25779,6 +25995,164 @@ window.DocWebCanonicalData = {
           "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
           "label": "Es parte de",
           "note": "El SDD es una práctica dentro del desarrollo aumentado por IA."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:llm-as-a-judge",
+      "slug": "llm-as-a-judge",
+      "title": "LLM como Juez (LLM-as-a-Judge)",
+      "category": "Metodologías de Ingeniería Aumentada",
+      "shortDefinition": "Uso de un modelo de lenguaje de alta capacidad para evaluar y puntuar de forma automatizada la calidad de las respuestas emitidas por otros sistemas de IA.",
+      "fullDefinition": "La técnica LLM-as-a-Judge utiliza modelos de frontera (como Gemini Pro o GPT-4) equipados con rúbricas de evaluación detalladas para medir dimensiones complejas de lenguaje natural (coherencia, factualidad, tono, exhaustividad y alineación con requisitos de producto). Ofrece alta correlación con el juicio humano a una fracción de su coste y tiempo, permitiendo evaluar miles de salidas sintéticas en pipelines de integración continua.",
+      "synonyms": [
+        "LLM-as-a-Judge",
+        "Evaluador LLM",
+        "Evaluación Automatizada por Modelo"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "rubrica": "Criterios explícitos con escala numérica o comparativa pairwise",
+        "mitigacionSesgo": "Inversión de orden de candidatos (position bias mitigation)"
+      },
+      "components": [
+        "Rúbrica de Evaluación",
+        "Prompt del Juez Evaluador",
+        "Analizador de Puntuaciones y Justificaciones"
+      ],
+      "applications": [
+        "Evaluación comparativa de modelos A/B",
+        "CI/CD para prompts y aplicaciones RAG",
+        "Filtrado de datos sintéticos de alta calidad"
+      ],
+      "examples": [
+        "Evaluar automáticamente si la explicación generada por el agente resuelve el error del usuario según una rúbrica de 1 a 5."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:ai-augmented-engineering:spec-driven-development",
+          "label": "Se utiliza para",
+          "note": "Permite verificar automáticamente si el código o texto generado cumple con las especificaciones técnicas."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:guardrails-seguridad-llm",
+      "slug": "guardrails-seguridad-llm",
+      "title": "Guardrails y Muros de Contención de IA",
+      "category": "Herramientas y Entornos Asistidos por IA",
+      "shortDefinition": "Capa de control programable que intercepta entradas y salidas de modelos generativos para hacer cumplir políticas de seguridad, privacidad y veracidad.",
+      "fullDefinition": "Los Guardrails actúan como barreras de seguridad entre el usuario, el LLM y los sistemas corporativos. Verifican que las consultas no contengan inyecciones de código o ataques adversariales, filtran información de identificación personal (PII), bloquean lenguaje tóxico o inapropiado y garantizan que las respuestas se mantengan estrictamente dentro del dominio de negocio autorizado.",
+      "synonyms": [
+        "AI Guardrails",
+        "Muros de Contención",
+        "Barreras de Seguridad de IA"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "posicionamiento": "Input Guardrails (antes del LLM) y Output Guardrails (después del LLM)",
+        "frameworks": "NeMo Guardrails, Guardrails AI, Llama Guard"
+      },
+      "components": [
+        "Detector de PII",
+        "Validador de Tópicos Autorizados",
+        "Filtro de Toxicidad y Alucinación"
+      ],
+      "applications": [
+        "Despliegue de asistentes en sectores regulados (finanzas, salud)",
+        "Prevención de fugas de datos corporativos"
+      ],
+      "examples": [
+        "Impedir que un chatbot bancario responda a preguntas sobre política o recomiende criptomonedas no verificadas."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:ai-augmented-engineering:human-in-the-loop",
+          "label": "Está relacionado con",
+          "note": "Los guardrails automatizan controles de seguridad delegando en humanos las excepciones de alto riesgo."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:sintesis-datos-sinteticos",
+      "slug": "sintesis-datos-sinteticos",
+      "title": "Generación de Datos Sintéticos con LLMs",
+      "category": "Herramientas y Entornos Asistidos por IA",
+      "shortDefinition": "Técnica de producción algorítmica de datasets estructurados o conversacionales mediante modelos generativos para entrenamiento y pruebas.",
+      "fullDefinition": "Los datos sintéticos son ejemplos de entrenamiento, pares de preguntas-respuestas o casos de prueba generados por modelos generativos avanzados bajo condiciones controladas. Permiten solventar la escasez de datos reales etiquetados, entrenar modelos pequeños y especializados mediante destilación de conocimiento, y probar exhaustivamente aplicaciones sin exponer información sensible o datos protegidos.",
+      "synonyms": [
+        "Synthetic Data Generation",
+        "Datos Sintéticos",
+        "Destilación de Conocimiento"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "calidad": "Filtrado mediante LLM-as-a-Judge y validación de diversidad",
+        "casosUso": "Destilación de modelos, pruebas de estrés, anonimización"
+      },
+      "components": [
+        "Generador de Prompts Semilla",
+        "Filtro de Factualidad y Diversidad",
+        "Validador de Esquema de Salida"
+      ],
+      "applications": [
+        "Entrenamiento de modelos de dominio específico",
+        "Generación de suites de prueba de regresión para software"
+      ],
+      "examples": [
+        "Generar 10.000 ejemplos sintéticos de consultas de clientes para entrenar un modelo clasificador local."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:ai-augmented-engineering:ai-augmented-development",
+          "label": "Se utiliza para",
+          "note": "Acelera el desarrollo asistido al proveer casos de prueba y datos de validación instantáneos."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:ai-augmented-engineering:evaluacion-drift-regresion",
+      "slug": "evaluacion-drift-regresion",
+      "title": "Detección de Deriva y Regresión en Modelos (Drift)",
+      "category": "Metodologías de Ingeniería Aumentada",
+      "shortDefinition": "Monitoreo continuo de la degradación o variación en el comportamiento, precisión y latencia de modelos generativos a lo largo del tiempo.",
+      "fullDefinition": "El model drift (deriva de modelo) y data drift (deriva de datos) se manifiestan cuando las actualizaciones silenciosas de modelos de base o cambios en la distribución de las consultas de los usuarios provocan regresiones inesperadas en tareas críticas. Se mitiga mediante suites de evaluación continuas (eval harnesses) integradas en CI/CD que ejecutan benchmarks automatizados con conjuntos de prueba fijos antes de cada despliegue.",
+      "synonyms": [
+        "Model Drift",
+        "Detección de Regresión",
+        "Degradación de Modelo",
+        "Eval Harness"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "tipoDeriva": "Concept Drift, Data Drift, Behavioral Drift de APIs externas",
+        "frecuencia": "Monitoreo por lotes o en tiempo de ejecución"
+      },
+      "components": [
+        "Conjunto de Pruebas Canónico (Golden Dataset)",
+        "Métricas de Similitud y Aprobación",
+        "Sistema de Alertas de Regresión"
+      ],
+      "applications": [
+        "Mantenimiento de confiabilidad en productos basados en LLMs",
+        "Validación previa a la migración entre versiones de modelos"
+      ],
+      "examples": [
+        "Detectar que la actualización de un modelo redujo la tasa de éxito en generación de JSON válido de 99% a 91%."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:ai-augmented-engineering:ai-dlc",
+          "label": "Implementa",
+          "note": "Constituye la fase de observabilidad y control de calidad continuo dentro del ciclo de vida AI-DLC."
         }
       ]
     }
@@ -26122,6 +26496,542 @@ window.DocWebCanonicalData = {
           "target": "urn:term:prompt-engineering:prompt-engineering",
           "label": "Está relacionado con",
           "note": "Las plantillas de prompt son una herramienta fundamental en la ingeniería de prompts."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:in-context-learning",
+      "slug": "in-context-learning",
+      "title": "Aprendizaje en Contexto (In-Context Learning)",
+      "category": "Técnicas de Ingeniería de Prompts",
+      "shortDefinition": "Capacidad de los modelos de base para aprender patrones y tareas a partir de ejemplos provistos en la ventana de contexto sin actualizar pesos.",
+      "fullDefinition": "El aprendizaje en contexto (ICL) permite a un modelo autorregresivo inferir la función objetivo y resolver tareas complejas condicionándose en demostraciones o instrucciones presentadas en su ventana de contexto durante la inferencia. Es la base teórica que fundamenta el few-shot prompting y las instrucciones de adaptación inmediata.",
+      "synonyms": [
+        "In-Context Learning",
+        "ICL",
+        "Aprendizaje en Tiempo de Inferencia"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "actualizacionPesos": "Ninguna (inferencia pura)",
+        "mecanismo": "Atención contextual sobre demostraciones"
+      },
+      "components": [
+        "Ejemplos demostrativos (Shots)",
+        "Instrucción de formato",
+        "Entrada de consulta"
+      ],
+      "applications": [
+        "Adaptación rápida a nuevos formatos de datos",
+        "Clasificación especializada sin reentrenamiento"
+      ],
+      "examples": [
+        "Presentar tres ejemplos de correos y su clasificación para que clasifique el cuarto automáticamente."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:prompt-engineering:few-shot-prompting",
+          "label": "Se utiliza para",
+          "note": "El aprendizaje en contexto es el fenómeno cognitivo que habilita el few-shot prompting."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:structured-output-json-schema",
+      "slug": "structured-output-json-schema",
+      "title": "Salida Estructurada (JSON Schema Constrained)",
+      "category": "Cadenas y Optimización de Prompts",
+      "shortDefinition": "Técnica para forzar gramaticalmente al LLM a emitir respuestas conformes a un esquema JSON estricto sin desviaciones de sintaxis.",
+      "fullDefinition": "La salida estructurada mediante esquemas JSON garantiza que la respuesta del modelo generativo sea 100% parseable por sistemas downstream. Se implementa mediante sampling guiado por gramáticas (CFG) a nivel de decodificación de tokens en el motor de inferencia o mediante prompts de especificación estricta con validadores automáticos.",
+      "synonyms": [
+        "Structured Outputs",
+        "JSON Mode",
+        "Salida Tipada",
+        "Grammar-based Sampling"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "garantia": "Conformidad sintáctica con JSON Schema",
+        "integracion": "APIs de backend y pipelines de datos"
+      },
+      "components": [
+        "Esquema JSON Schema",
+        "Máscara de Tokens / Gramática Libre de Contexto",
+        "Deserializador Validado"
+      ],
+      "applications": [
+        "Extracción automatizada de entidades",
+        "Generación de llamadas a API",
+        "Agentes de automatización de procesos"
+      ],
+      "examples": [
+        "Forzar al modelo a devolver siempre un objeto `{ status: string, code: number, errors: string[] }`."
+      ],
+      "relations": [
+        {
+          "type": "isInputTo",
+          "target": "urn:term:prompt-engineering:prompt-template",
+          "label": "Es entrada de",
+          "note": "Las plantillas de prompt avanzadas suelen incluir la definición del esquema de salida esperado."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:prompt-injection-defensa",
+      "slug": "prompt-injection-defensa",
+      "title": "Defensa contra Inyección de Prompts",
+      "category": "Contexto y Mensajes del Sistema",
+      "shortDefinition": "Estrategias y patrones arquitectónicos para impedir que datos no confiables alteren las instrucciones del sistema en aplicaciones LLM.",
+      "fullDefinition": "La inyección de prompts (directa o indirecta) ocurre cuando un usuario malintencionado o un contenido web externo introduce comandos diseñados para secuestrar el flujo de control del modelo (jailbreaking, fuga de contexto o ejecución de herramientas no autorizadas). Las defensas incluyen delimitadores XML estrictos, filtros de entrada con modelos secundarios (guardrails) y separación hermética entre datos y código de instrucción.",
+      "synonyms": [
+        "Prompt Injection Defense",
+        "Protección contra Inyección",
+        "Anti-Jailbreak"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "vectorAtaque": "Inyección directa (usuario) e indirecta (documentos recuperados por RAG)",
+        "mitigacion": "Delimitadores XML/Markdown, Guardrails, Sandwich Defense"
+      },
+      "components": [
+        "Filtro de Entrada (Input Guard)",
+        "Delimitadores Estructurales",
+        "Detector de Desobediencia de Instrucciones"
+      ],
+      "applications": [
+        "Chatbots corporativos conectados a internet",
+        "Agentes con acceso a correo y bases de datos"
+      ],
+      "examples": [
+        "Encapsular el texto del usuario dentro de etiquetas `<user_input>` y añadir una regla inmutable en el system prompt."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:system-message",
+          "label": "Está relacionado con",
+          "note": "El mensaje del sistema es la primera línea de defensa para fijar límites inmutables frente a inyecciones."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:self-consistency-prompting",
+      "slug": "self-consistency-prompting",
+      "title": "Auto-consistencia (Self-Consistency Sampling)",
+      "category": "Técnicas de Ingeniería de Prompts",
+      "shortDefinition": "Estrategia de inferencia que muestrea múltiples rutas de razonamiento y selecciona la respuesta más consistente por votación mayoritaria.",
+      "fullDefinition": "La auto-consistencia sustituye la decodificación voraz (greedy decoding) en prompts con cadena de pensamiento (Chain-of-Thought). Genera una muestra diversa de caminos de razonamiento mediante temperatura mayor que cero y selecciona la respuesta final con mayor frecuencia o consenso, incrementando drásticamente la precisión en tareas aritméticas, lógicas y de decisión compleja.",
+      "synonyms": [
+        "Self-Consistency",
+        "Votación Mayoritaria",
+        "Muestreo de Consenso"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "temperaturaMuestreo": "Mayor que 0 (típicamente 0.5 - 0.7)",
+        "criterioConsenso": "Moda estadística / Votación por mayoría"
+      },
+      "components": [
+        "Generador Multiruta",
+        "Extractor de Respuesta Final",
+        "Módulo de Votación Mayoritaria"
+      ],
+      "applications": [
+        "Resolución de problemas matemáticos",
+        "Diagnóstico técnico complejo",
+        "Verificación formal de código"
+      ],
+      "examples": [
+        "Generar 5 razonamientos distintos para un problema de arquitectura y elegir la recomendación coincidente en 4 de ellos."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:prompt-engineering:chain-of-thought",
+          "label": "Implementa",
+          "note": "Extiende el patrón de cadena de pensamiento generando múltiples variantes probabilísticas."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:prompt-engineering:rag-triad-evaluacion",
+      "slug": "rag-triad-evaluacion",
+      "title": "Tríada de Evaluación RAG (Fidelidad, Relevancia y Respuesta)",
+      "category": "Cadenas y Optimización de Prompts",
+      "shortDefinition": "Marco metodológico para evaluar la calidad de un pipeline RAG midiendo relevancia del contexto, fidelidad factual y pertinencia de la respuesta.",
+      "fullDefinition": "La Tríada RAG descompone la evaluación de sistemas generativos en tres dimensiones ortogonales e independientes: 1) Relevancia del Contexto (si los chunks recuperados responden a la consulta), 2) Fidelidad o Groundedness (si la respuesta del LLM se apoya exclusivamente en el contexto recuperado sin alucinar), y 3) Relevancia de la Respuesta (si la salida final responde directamente a la necesidad del usuario).",
+      "synonyms": [
+        "RAG Triad",
+        "Evaluación RAG",
+        "Métricas TruLens"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "dimensiones": "Context Relevance, Groundedness (Faithfulness), Answer Relevance",
+        "metodologia": "LLM-as-a-Judge con rúbricas cuantitativas"
+      },
+      "components": [
+        "Evaluador de Relevancia de Contexto",
+        "Evaluador de Fidelidad Factual",
+        "Evaluador de Pertinencia de Respuesta"
+      ],
+      "applications": [
+        "Optimización continua de pipelines RAG",
+        "Detección temprana de degradación en producción"
+      ],
+      "examples": [
+        "Detectar que un fallo de respuesta se debe a una mala recuperación (context relevance baja) y no a un fallo del generador."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:rag-and-vector-knowledge:grounding-factual-atribucion",
+          "label": "Está relacionado con",
+          "note": "La fidelidad de la tríada RAG evalúa formalmente el grado de grounding del sistema."
+        }
+      ]
+    }
+  ],
+  "rag-and-vector-knowledge": [
+    {
+      "id": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+      "slug": "rag-recuperacion-aumentada",
+      "title": "Generación Aumentada por Recuperación (RAG)",
+      "category": "Fundamentos de RAG & Arquitectura",
+      "shortDefinition": "Patrón arquitectónico que combina la recuperación de fragmentos documentales relevantes desde fuentes externas con la generación de lenguaje por un LLM.",
+      "fullDefinition": "RAG (Retrieval-Augmented Generation) es una arquitectura de referencia para mitigar alucinaciones y mantener actualizados los modelos generativos. Ante una consulta de usuario, un recuperador semántico consulta una base de conocimiento indexada para extraer fragmentos relevantes, los cuales se inyectan en el prompt del LLM como contexto factual estructurado para fundamentar su respuesta.",
+      "synonyms": [
+        "RAG",
+        "Retrieval-Augmented Generation",
+        "Generación Aumentada"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "paradigma": "Arquitectura híbrida recuperación + generación",
+        "reduccionAlucinacion": "Anclaje en fuentes externas verificables"
+      },
+      "components": [
+        "Módulo Recuperador (Retriever)",
+        "Base de Datos de Conocimiento",
+        "Módulo Generador (LLM)",
+        "Prompt con Contexto Aumentado"
+      ],
+      "applications": [
+        "Asistentes virtuales corporativos",
+        "Sistemas de documentación técnica interactiva",
+        "Búsqueda semántica empresarial"
+      ],
+      "examples": [
+        "Sistema de soporte técnico que busca en el manual de producto antes de redactar la solución al usuario."
+      ],
+      "relations": [
+        {
+          "type": "requires",
+          "target": "urn:term:rag-and-vector-knowledge:base-datos-vectorial",
+          "label": "Requiere",
+          "note": "RAG requiere un almacén vectorial para la búsqueda semántica rápida de fragmentos."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:context-engineering",
+          "label": "Está relacionado con",
+          "note": "RAG es una implementación automatizada de ingeniería de contexto dinámico."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:embeddings-vectoriales-llm",
+      "slug": "embeddings-vectoriales-llm",
+      "title": "Embeddings Vectoriales Semánticos",
+      "category": "Embeddings y Espacios Vectoriales",
+      "shortDefinition": "Representaciones numéricas continuas en un espacio multidimensional que capturan el significado semántico y contextual de textos o medios.",
+      "fullDefinition": "Los embeddings vectoriales transforman cadenas de texto o activos multimodales en vectores matemáticos de dimensión fija (típicamente 768, 1536 o 3072 dimensiones). En dicho espacio latente, conceptos con significado similar o relación contextual se sitúan geométricamente próximos según medidas de similitud (como la distancia coseno o producto escalar).",
+      "synonyms": [
+        "Vector Embeddings",
+        "Incrustaciones Vectoriales",
+        "Representación Latente"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "metricaDistancia": "Similitud Coseno, Distancia Euclidiana (L2), Producto Punto",
+        "dimensionalidad": "Variable según modelo (768 a 3072 dimensiones)"
+      },
+      "components": [
+        "Modelo de Embeddings (Text-Embedding)",
+        "Espacio Vectorial Multidimensional",
+        "Función de Medida de Similitud"
+      ],
+      "applications": [
+        "Búsqueda semántica",
+        "Clustering temático",
+        "Detección de duplicados",
+        "Recomendación basada en contenido"
+      ],
+      "examples": [
+        "Transformar la pregunta del usuario en un vector de 1536 flotantes para compararlo contra la base de manuales técnicos."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:rag-and-vector-knowledge:base-datos-vectorial",
+          "label": "Se utiliza para",
+          "note": "Los embeddings son el tipo de dato principal indexado en bases de datos vectoriales."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:generative-ai-media:multimodal-embeddings-clip",
+          "label": "Está relacionado con",
+          "note": "Comparte los mismos principios de espacio latente vectorial extendidos a visión y lenguaje."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:base-datos-vectorial",
+      "slug": "base-datos-vectorial",
+      "title": "Base de Datos Vectorial (Vector Store)",
+      "category": "Indexación y Almacenamiento Vectorial",
+      "shortDefinition": "Sistema de gestión de bases de datos especializado en indexar y consultar vectores de alta dimensión mediante búsqueda de vecinos más cercanos (ANN).",
+      "fullDefinition": "Una base de datos vectorial almacena vectores de embeddings asociados a metadatos documentales. Emplea algoritmos de búsqueda aproximada de vecinos más cercanos (ANN como HNSW o ScaNN) para ejecutar consultas de similitud semántica en milisegundos sobre colecciones de millones de vectores, superando las limitaciones de los índices relacionales tradicionales.",
+      "synonyms": [
+        "Vector Database",
+        "Vector Store",
+        "Almacén Vectorial"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "algoritmosANN": "HNSW (Hierarchical Navigable Small World), IVF-PQ, ScaNN",
+        "filtrado": "Pre-filtering y Post-filtering de metadatos"
+      },
+      "components": [
+        "Índice ANN",
+        "Almacén de Metadatos Documentales",
+        "Motor de Búsqueda de Similitud"
+      ],
+      "applications": [
+        "Memoria a largo plazo de agentes IA",
+        "Búsqueda semántica RAG",
+        "Detección de anomalías en flujos continuos"
+      ],
+      "examples": [
+        "Indexar 50.000 artículos técnicos en Pinecone o pgvector para permitir búsquedas por significado en lenguaje natural."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+          "label": "Se utiliza para",
+          "note": "Proporciona el almacén y motor de búsqueda para el recuperador de RAG."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:chunking-semantico",
+      "slug": "chunking-semantico",
+      "title": "Chunking Semántico de Documentos",
+      "category": "Fundamentos de RAG & Arquitectura",
+      "shortDefinition": "Técnica de partición de textos extensos en bloques autocontenidos que preservan la coherencia conceptual para su posterior indexación.",
+      "fullDefinition": "El chunking semántico segmenta documentos largos respetando límites lógicos (párrafos, encabezados, transiciones de temas o similitud entre oraciones sucesivas), en contraste con el troceado rígido por número de caracteres o tokens. Garantiza que cada fragmento conserve suficiente contexto para que su embedding refleje fielmente la intención del pasaje sin fragmentar proposiciones clave.",
+      "synonyms": [
+        "Semantic Chunking",
+        "Fragmentación Semántica",
+        "Segmentación de Texto"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "estrategia": "Basada en similitud de oraciones, jerarquía Markdown o tamaño de ventana con solapamiento",
+        "overlap": "Solapamiento de 10-20% entre chunks"
+      },
+      "components": [
+        "Analizador de Estructura Documental",
+        "Detector de Transición Semántica",
+        "Generador de Fragmentos con Solapamiento"
+      ],
+      "applications": [
+        "Preparación de pipelines de ingestión RAG",
+        "Indexación de manuales técnicos y contratos"
+      ],
+      "examples": [
+        "Dividir un manual de ingeniería de 200 páginas en 1.500 chunks semánticos de 400 tokens con 50 tokens de solapamiento."
+      ],
+      "relations": [
+        {
+          "type": "isInputTo",
+          "target": "urn:term:rag-and-vector-knowledge:embeddings-vectoriales-llm",
+          "label": "Es entrada de",
+          "note": "Cada chunk individual se envía al modelo de embeddings para generar su vector numérico."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:busqueda-hibrida-densa-dispersa",
+      "slug": "busqueda-hibrida-densa-dispersa",
+      "title": "Búsqueda Híbrida (Densa + Dispersa)",
+      "category": "Estrategias de Recuperación & Grounding",
+      "shortDefinition": "Estrategia de recuperación que combina búsqueda léxica exacta (BM25) con búsqueda semántica vectorial (embeddings).",
+      "fullDefinition": "La búsqueda híbrida aúna las ventajas de la búsqueda dispersa (sparse, basada en coincidencia exacta de palabras clave, códigos o identificadores como BM25) y la búsqueda densa (dense, basada en vectores de embeddings semánticos). Emplea fusión de rangos recíprocos (RRF) o ponderación lineal para devolver resultados precisos tanto cuando el usuario busca términos técnicos textuales como cuando describe conceptos abstractos.",
+      "synonyms": [
+        "Hybrid Search",
+        "Recuperación Híbrida",
+        "BM25 + Dense Retrieval"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "metodoFusion": "Reciprocal Rank Fusion (RRF), Ponderación Alfa (Dense/Sparse balance)"
+      },
+      "components": [
+        "Motor de Búsqueda Léxica (BM25)",
+        "Motor Vectorial Denso",
+        "Función de Fusión de Clasificación (RRF)"
+      ],
+      "applications": [
+        "Búsqueda de código fuente y números de referencia",
+        "Sistemas de consulta médica y jurídica"
+      ],
+      "examples": [
+        "Buscar 'error 0xC0000142 al arrancar el servicio': BM25 localiza el código exacto y el vector localiza la causa semántica."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+          "label": "Implementa",
+          "note": "Constituye la estrategia de recuperación recomendada en producción para sistemas RAG robustos."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:re-ranking-cross-encoder",
+      "slug": "re-ranking-cross-encoder",
+      "title": "Re-ranking Semántico con Cross-Encoder",
+      "category": "Estrategias de Recuperación & Grounding",
+      "shortDefinition": "Etapa de refinamiento que reordena los candidatos recuperados evaluando conjuntamente consulta y pasaje con un modelo de alta precisión.",
+      "fullDefinition": "En un pipeline RAG en dos etapas, el recuperador inicial extrae un conjunto amplio (p. ej., 25-50 candidatos) mediante vectores bi-encoder rápidos. El re-ranker (basado en un Cross-Encoder como Cohere Rerank o BGE-Reranker) analiza simultáneamente la consulta y cada fragmento mediante capas de atención cruzada completa, calculando un puntaje de relevancia mucho más exacto para seleccionar los 3-5 mejores chunks que entrarán en el prompt.",
+      "synonyms": [
+        "Re-ranking",
+        "Cross-Encoder Reranking",
+        "Reordenamiento Semántico"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "arquitectura": "Cross-Encoder con atención bidireccional completa",
+        "costoComputacional": "Mayor latencia por elemento, aplicado sobre top-K filtrado"
+      },
+      "components": [
+        "Modelo Cross-Encoder",
+        "Selector Top-N",
+        "Función de Calificación de Relevancia Cruzada"
+      ],
+      "applications": [
+        "Optimización de la ventana de contexto de LLM",
+        "Eliminación de falsos positivos en RAG"
+      ],
+      "examples": [
+        "Tomar 30 fragmentos devueltos por la base vectorial y reordenarlos para que los 3 pasajes decisivos ocupen las primeras posiciones."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:rag-and-vector-knowledge:busqueda-hibrida-densa-dispersa",
+          "label": "Está relacionado con",
+          "note": "El re-ranking suele aplicarse inmediatamente después de la fusión de resultados de la búsqueda híbrida."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:grounding-factual-atribucion",
+      "slug": "grounding-factual-atribucion",
+      "title": "Grounding Factual & Verificación de Atribución",
+      "category": "Estrategias de Recuperación & Grounding",
+      "shortDefinition": "Proceso de anclaje de las afirmaciones generadas por el LLM a citas y fuentes explícitas comprobables dentro del contexto provisto.",
+      "fullDefinition": "El grounding factual vincula cada afirmación o deducción generada por un modelo de lenguaje a pasajes específicos de los documentos de contexto. Permite verificar la fidelidad de la respuesta (faithfulness), detectar alucinaciones extrínsecas y proporcionar citas bibliográficas o enlaces clicables al usuario final para auditoría humana.",
+      "synonyms": [
+        "Grounding",
+        "Anclaje Factual",
+        "Atribución de Fuentes",
+        "Fidelidad RAG"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "metrica": "Faithfulness (fidelidad al contexto), Answer Relevance (pertinencia)",
+        "tipoAtribucion": "Cita por párrafo, nota al pie o identificador URI"
+      },
+      "components": [
+        "Validador de Atribución",
+        "Extractor de Citas",
+        "Detector de Inconsistencia Factual"
+      ],
+      "applications": [
+        "Aplicaciones reguladas (banca, salud, legal)",
+        "Auditoría de cumplimiento normativo"
+      ],
+      "examples": [
+        "Incluir en la respuesta: 'Según la cláusula 4.2 del manual técnico [Doc #12], la presión máxima es 15 PSI'."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+          "label": "Se utiliza para",
+          "note": "Garantiza que la respuesta generada por RAG sea demostrable contra las fuentes."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:graph-rag-ontologico",
+      "slug": "graph-rag-ontologico",
+      "title": "GraphRAG (RAG Aumentado por Grafos de Conocimiento)",
+      "category": "Fundamentos de RAG & Arquitectura",
+      "shortDefinition": "Evolución de RAG que integra grafos de conocimiento estructurados y relaciones ontológicas con recuperación vectorial para razonamiento complejo.",
+      "fullDefinition": "GraphRAG combina la búsqueda por similitud vectorial con la navegación de grafos de conocimiento (entidades, aristas tipadas y jerarquías ontológicas). Permite responder preguntas globales o sintéticas que requieren conectar múltiples saltos entre conceptos dispersos en el corpus, superando las limitaciones de la recuperación vectorial simple de fragmentos aislados.",
+      "synonyms": [
+        "GraphRAG",
+        "Knowledge Graph RAG",
+        "RAG Estructurado"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "estructura": "Grafo de entidades y relaciones ontológicas + comunidades de conocimiento",
+        "capacidad": "Consultas multihop y resúmenes transversales"
+      },
+      "components": [
+        "Grafo de Conocimiento (KG)",
+        "Extractor de Entidades y Relaciones",
+        "Navegador de Subgrafos Relacionales"
+      ],
+      "applications": [
+        "Análisis de inteligencia empresarial",
+        "Descubrimiento de fármacos",
+        "Auditoría de arquitecturas de software"
+      ],
+      "examples": [
+        "Consultar: '¿Qué subsistemas de video se ven afectados por un fallo en el codec ProRes?' navegando el grafo ontológico."
+      ],
+      "relations": [
+        {
+          "type": "hasSubtype",
+          "target": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+          "label": "Tiene subtipo",
+          "note": "GraphRAG es una especialización avanzada del paradigma RAG clásico."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:software-engineering-ontology:graphrag-recuperacion-semantica",
+          "label": "Está relacionado con",
+          "note": "Conecta con el término conceptual homólogo de la ontología de software."
         }
       ]
     }

@@ -1,0 +1,347 @@
+{
+  "id": "rag-and-vector-knowledge-terms",
+  "title": "Términos Canónicos de Sistemas RAG y Bases Vectoriales",
+  "slug": "rag-and-vector-knowledge-terms",
+  "version": "1.0.0",
+  "description": "Términos ontológicos canónicos de sistemas de recuperación aumentada por generación, bases de datos vectoriales y grounding.",
+  "language": "es",
+  "license": "Local Knowledge Base",
+  "canonicalTerms": [
+    {
+      "id": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+      "slug": "rag-recuperacion-aumentada",
+      "title": "Generación Aumentada por Recuperación (RAG)",
+      "category": "Fundamentos de RAG & Arquitectura",
+      "shortDefinition": "Patrón arquitectónico que combina la recuperación de fragmentos documentales relevantes desde fuentes externas con la generación de lenguaje por un LLM.",
+      "fullDefinition": "RAG (Retrieval-Augmented Generation) es una arquitectura de referencia para mitigar alucinaciones y mantener actualizados los modelos generativos. Ante una consulta de usuario, un recuperador semántico consulta una base de conocimiento indexada para extraer fragmentos relevantes, los cuales se inyectan en el prompt del LLM como contexto factual estructurado para fundamentar su respuesta.",
+      "synonyms": [
+        "RAG",
+        "Retrieval-Augmented Generation",
+        "Generación Aumentada"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "paradigma": "Arquitectura híbrida recuperación + generación",
+        "reduccionAlucinacion": "Anclaje en fuentes externas verificables"
+      },
+      "components": [
+        "Módulo Recuperador (Retriever)",
+        "Base de Datos de Conocimiento",
+        "Módulo Generador (LLM)",
+        "Prompt con Contexto Aumentado"
+      ],
+      "applications": [
+        "Asistentes virtuales corporativos",
+        "Sistemas de documentación técnica interactiva",
+        "Búsqueda semántica empresarial"
+      ],
+      "examples": [
+        "Sistema de soporte técnico que busca en el manual de producto antes de redactar la solución al usuario."
+      ],
+      "relations": [
+        {
+          "type": "requires",
+          "target": "urn:term:rag-and-vector-knowledge:base-datos-vectorial",
+          "label": "Requiere",
+          "note": "RAG requiere un almacén vectorial para la búsqueda semántica rápida de fragmentos."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:prompt-engineering:context-engineering",
+          "label": "Está relacionado con",
+          "note": "RAG es una implementación automatizada de ingeniería de contexto dinámico."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:embeddings-vectoriales-llm",
+      "slug": "embeddings-vectoriales-llm",
+      "title": "Embeddings Vectoriales Semánticos",
+      "category": "Embeddings y Espacios Vectoriales",
+      "shortDefinition": "Representaciones numéricas continuas en un espacio multidimensional que capturan el significado semántico y contextual de textos o medios.",
+      "fullDefinition": "Los embeddings vectoriales transforman cadenas de texto o activos multimodales en vectores matemáticos de dimensión fija (típicamente 768, 1536 o 3072 dimensiones). En dicho espacio latente, conceptos con significado similar o relación contextual se sitúan geométricamente próximos según medidas de similitud (como la distancia coseno o producto escalar).",
+      "synonyms": [
+        "Vector Embeddings",
+        "Incrustaciones Vectoriales",
+        "Representación Latente"
+      ],
+      "level": "fundamental",
+      "status": "canonical",
+      "attributes": {
+        "metricaDistancia": "Similitud Coseno, Distancia Euclidiana (L2), Producto Punto",
+        "dimensionalidad": "Variable según modelo (768 a 3072 dimensiones)"
+      },
+      "components": [
+        "Modelo de Embeddings (Text-Embedding)",
+        "Espacio Vectorial Multidimensional",
+        "Función de Medida de Similitud"
+      ],
+      "applications": [
+        "Búsqueda semántica",
+        "Clustering temático",
+        "Detección de duplicados",
+        "Recomendación basada en contenido"
+      ],
+      "examples": [
+        "Transformar la pregunta del usuario en un vector de 1536 flotantes para compararlo contra la base de manuales técnicos."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:rag-and-vector-knowledge:base-datos-vectorial",
+          "label": "Se utiliza para",
+          "note": "Los embeddings son el tipo de dato principal indexado en bases de datos vectoriales."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:generative-ai-media:multimodal-embeddings-clip",
+          "label": "Está relacionado con",
+          "note": "Comparte los mismos principios de espacio latente vectorial extendidos a visión y lenguaje."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:base-datos-vectorial",
+      "slug": "base-datos-vectorial",
+      "title": "Base de Datos Vectorial (Vector Store)",
+      "category": "Indexación y Almacenamiento Vectorial",
+      "shortDefinition": "Sistema de gestión de bases de datos especializado en indexar y consultar vectores de alta dimensión mediante búsqueda de vecinos más cercanos (ANN).",
+      "fullDefinition": "Una base de datos vectorial almacena vectores de embeddings asociados a metadatos documentales. Emplea algoritmos de búsqueda aproximada de vecinos más cercanos (ANN como HNSW o ScaNN) para ejecutar consultas de similitud semántica en milisegundos sobre colecciones de millones de vectores, superando las limitaciones de los índices relacionales tradicionales.",
+      "synonyms": [
+        "Vector Database",
+        "Vector Store",
+        "Almacén Vectorial"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "algoritmosANN": "HNSW (Hierarchical Navigable Small World), IVF-PQ, ScaNN",
+        "filtrado": "Pre-filtering y Post-filtering de metadatos"
+      },
+      "components": [
+        "Índice ANN",
+        "Almacén de Metadatos Documentales",
+        "Motor de Búsqueda de Similitud"
+      ],
+      "applications": [
+        "Memoria a largo plazo de agentes IA",
+        "Búsqueda semántica RAG",
+        "Detección de anomalías en flujos continuos"
+      ],
+      "examples": [
+        "Indexar 50.000 artículos técnicos en Pinecone o pgvector para permitir búsquedas por significado en lenguaje natural."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+          "label": "Se utiliza para",
+          "note": "Proporciona el almacén y motor de búsqueda para el recuperador de RAG."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:chunking-semantico",
+      "slug": "chunking-semantico",
+      "title": "Chunking Semántico de Documentos",
+      "category": "Fundamentos de RAG & Arquitectura",
+      "shortDefinition": "Técnica de partición de textos extensos en bloques autocontenidos que preservan la coherencia conceptual para su posterior indexación.",
+      "fullDefinition": "El chunking semántico segmenta documentos largos respetando límites lógicos (párrafos, encabezados, transiciones de temas o similitud entre oraciones sucesivas), en contraste con el troceado rígido por número de caracteres o tokens. Garantiza que cada fragmento conserve suficiente contexto para que su embedding refleje fielmente la intención del pasaje sin fragmentar proposiciones clave.",
+      "synonyms": [
+        "Semantic Chunking",
+        "Fragmentación Semántica",
+        "Segmentación de Texto"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "estrategia": "Basada en similitud de oraciones, jerarquía Markdown o tamaño de ventana con solapamiento",
+        "overlap": "Solapamiento de 10-20% entre chunks"
+      },
+      "components": [
+        "Analizador de Estructura Documental",
+        "Detector de Transición Semántica",
+        "Generador de Fragmentos con Solapamiento"
+      ],
+      "applications": [
+        "Preparación de pipelines de ingestión RAG",
+        "Indexación de manuales técnicos y contratos"
+      ],
+      "examples": [
+        "Dividir un manual de ingeniería de 200 páginas en 1.500 chunks semánticos de 400 tokens con 50 tokens de solapamiento."
+      ],
+      "relations": [
+        {
+          "type": "isInputTo",
+          "target": "urn:term:rag-and-vector-knowledge:embeddings-vectoriales-llm",
+          "label": "Es entrada de",
+          "note": "Cada chunk individual se envía al modelo de embeddings para generar su vector numérico."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:busqueda-hibrida-densa-dispersa",
+      "slug": "busqueda-hibrida-densa-dispersa",
+      "title": "Búsqueda Híbrida (Densa + Dispersa)",
+      "category": "Estrategias de Recuperación & Grounding",
+      "shortDefinition": "Estrategia de recuperación que combina búsqueda léxica exacta (BM25) con búsqueda semántica vectorial (embeddings).",
+      "fullDefinition": "La búsqueda híbrida aúna las ventajas de la búsqueda dispersa (sparse, basada en coincidencia exacta de palabras clave, códigos o identificadores como BM25) y la búsqueda densa (dense, basada en vectores de embeddings semánticos). Emplea fusión de rangos recíprocos (RRF) o ponderación lineal para devolver resultados precisos tanto cuando el usuario busca términos técnicos textuales como cuando describe conceptos abstractos.",
+      "synonyms": [
+        "Hybrid Search",
+        "Recuperación Híbrida",
+        "BM25 + Dense Retrieval"
+      ],
+      "level": "professional",
+      "status": "canonical",
+      "attributes": {
+        "metodoFusion": "Reciprocal Rank Fusion (RRF), Ponderación Alfa (Dense/Sparse balance)"
+      },
+      "components": [
+        "Motor de Búsqueda Léxica (BM25)",
+        "Motor Vectorial Denso",
+        "Función de Fusión de Clasificación (RRF)"
+      ],
+      "applications": [
+        "Búsqueda de código fuente y números de referencia",
+        "Sistemas de consulta médica y jurídica"
+      ],
+      "examples": [
+        "Buscar 'error 0xC0000142 al arrancar el servicio': BM25 localiza el código exacto y el vector localiza la causa semántica."
+      ],
+      "relations": [
+        {
+          "type": "implements",
+          "target": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+          "label": "Implementa",
+          "note": "Constituye la estrategia de recuperación recomendada en producción para sistemas RAG robustos."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:re-ranking-cross-encoder",
+      "slug": "re-ranking-cross-encoder",
+      "title": "Re-ranking Semántico con Cross-Encoder",
+      "category": "Estrategias de Recuperación & Grounding",
+      "shortDefinition": "Etapa de refinamiento que reordena los candidatos recuperados evaluando conjuntamente consulta y pasaje con un modelo de alta precisión.",
+      "fullDefinition": "En un pipeline RAG en dos etapas, el recuperador inicial extrae un conjunto amplio (p. ej., 25-50 candidatos) mediante vectores bi-encoder rápidos. El re-ranker (basado en un Cross-Encoder como Cohere Rerank o BGE-Reranker) analiza simultáneamente la consulta y cada fragmento mediante capas de atención cruzada completa, calculando un puntaje de relevancia mucho más exacto para seleccionar los 3-5 mejores chunks que entrarán en el prompt.",
+      "synonyms": [
+        "Re-ranking",
+        "Cross-Encoder Reranking",
+        "Reordenamiento Semántico"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "arquitectura": "Cross-Encoder con atención bidireccional completa",
+        "costoComputacional": "Mayor latencia por elemento, aplicado sobre top-K filtrado"
+      },
+      "components": [
+        "Modelo Cross-Encoder",
+        "Selector Top-N",
+        "Función de Calificación de Relevancia Cruzada"
+      ],
+      "applications": [
+        "Optimización de la ventana de contexto de LLM",
+        "Eliminación de falsos positivos en RAG"
+      ],
+      "examples": [
+        "Tomar 30 fragmentos devueltos por la base vectorial y reordenarlos para que los 3 pasajes decisivos ocupen las primeras posiciones."
+      ],
+      "relations": [
+        {
+          "type": "relatedTo",
+          "target": "urn:term:rag-and-vector-knowledge:busqueda-hibrida-densa-dispersa",
+          "label": "Está relacionado con",
+          "note": "El re-ranking suele aplicarse inmediatamente después de la fusión de resultados de la búsqueda híbrida."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:grounding-factual-atribucion",
+      "slug": "grounding-factual-atribucion",
+      "title": "Grounding Factual & Verificación de Atribución",
+      "category": "Estrategias de Recuperación & Grounding",
+      "shortDefinition": "Proceso de anclaje de las afirmaciones generadas por el LLM a citas y fuentes explícitas comprobables dentro del contexto provisto.",
+      "fullDefinition": "El grounding factual vincula cada afirmación o deducción generada por un modelo de lenguaje a pasajes específicos de los documentos de contexto. Permite verificar la fidelidad de la respuesta (faithfulness), detectar alucinaciones extrínsecas y proporcionar citas bibliográficas o enlaces clicables al usuario final para auditoría humana.",
+      "synonyms": [
+        "Grounding",
+        "Anclaje Factual",
+        "Atribución de Fuentes",
+        "Fidelidad RAG"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "metrica": "Faithfulness (fidelidad al contexto), Answer Relevance (pertinencia)",
+        "tipoAtribucion": "Cita por párrafo, nota al pie o identificador URI"
+      },
+      "components": [
+        "Validador de Atribución",
+        "Extractor de Citas",
+        "Detector de Inconsistencia Factual"
+      ],
+      "applications": [
+        "Aplicaciones reguladas (banca, salud, legal)",
+        "Auditoría de cumplimiento normativo"
+      ],
+      "examples": [
+        "Incluir en la respuesta: 'Según la cláusula 4.2 del manual técnico [Doc #12], la presión máxima es 15 PSI'."
+      ],
+      "relations": [
+        {
+          "type": "usedFor",
+          "target": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+          "label": "Se utiliza para",
+          "note": "Garantiza que la respuesta generada por RAG sea demostrable contra las fuentes."
+        }
+      ]
+    },
+    {
+      "id": "urn:term:rag-and-vector-knowledge:graph-rag-ontologico",
+      "slug": "graph-rag-ontologico",
+      "title": "GraphRAG (RAG Aumentado por Grafos de Conocimiento)",
+      "category": "Fundamentos de RAG & Arquitectura",
+      "shortDefinition": "Evolución de RAG que integra grafos de conocimiento estructurados y relaciones ontológicas con recuperación vectorial para razonamiento complejo.",
+      "fullDefinition": "GraphRAG combina la búsqueda por similitud vectorial con la navegación de grafos de conocimiento (entidades, aristas tipadas y jerarquías ontológicas). Permite responder preguntas globales o sintéticas que requieren conectar múltiples saltos entre conceptos dispersos en el corpus, superando las limitaciones de la recuperación vectorial simple de fragmentos aislados.",
+      "synonyms": [
+        "GraphRAG",
+        "Knowledge Graph RAG",
+        "RAG Estructurado"
+      ],
+      "level": "advanced",
+      "status": "canonical",
+      "attributes": {
+        "estructura": "Grafo de entidades y relaciones ontológicas + comunidades de conocimiento",
+        "capacidad": "Consultas multihop y resúmenes transversales"
+      },
+      "components": [
+        "Grafo de Conocimiento (KG)",
+        "Extractor de Entidades y Relaciones",
+        "Navegador de Subgrafos Relacionales"
+      ],
+      "applications": [
+        "Análisis de inteligencia empresarial",
+        "Descubrimiento de fármacos",
+        "Auditoría de arquitecturas de software"
+      ],
+      "examples": [
+        "Consultar: '¿Qué subsistemas de video se ven afectados por un fallo en el codec ProRes?' navegando el grafo ontológico."
+      ],
+      "relations": [
+        {
+          "type": "hasSubtype",
+          "target": "urn:term:rag-and-vector-knowledge:rag-recuperacion-aumentada",
+          "label": "Tiene subtipo",
+          "note": "GraphRAG es una especialización avanzada del paradigma RAG clásico."
+        },
+        {
+          "type": "relatedTo",
+          "target": "urn:term:software-engineering-ontology:graphrag-recuperacion-semantica",
+          "label": "Está relacionado con",
+          "note": "Conecta con el término conceptual homólogo de la ontología de software."
+        }
+      ]
+    }
+  ]
+}
