@@ -32,10 +32,16 @@ const PRODUCTION_FILES = [
   'app/js/storage.js',
   'app/data/catalog.json',
   'app/data/bundle.js',
+  'AgentArchitecture/data/glossary.json',
+  'AgentArchitecture/data/terms.json',
+  'AIAugmentedEngineering/data/glossary.json',
+  'AIAugmentedEngineering/data/terms.json',
   'AudiovisualProduction/data/glossary.json',
   'AudiovisualProduction/data/terms.json',
   'GenerativeAIMedia/data/glossary.json',
   'GenerativeAIMedia/data/terms.json',
+  'PromptEngineering/data/glossary.json',
+  'PromptEngineering/data/terms.json',
   'Render-3D-Animations/data/glossary.json',
   'Render-3D-Animations/data/terms.json',
   'SoftwareEngineeringOntology/data/glossary.json',
@@ -102,7 +108,7 @@ function buildRelease() {
   console.log('\n' + '═'.repeat(70));
   console.log('VERIFICACIÓN DEL ARTEFACTO DE DISTRIBUCIÓN:');
   console.log(`  Archivo ZIP:       ${ZIP_PATH}`);
-  console.log(`  Total Archivos:    ${copiedCount} (esperado: 18)`);
+  console.log(`  Total Archivos:    ${copiedCount} (esperado: 24)`);
   console.log(`  Peso del Paquete:  ${zipSizeKb} KB (${zipSizeMb} MB)`);
   console.log(`  Archivos .git:     0 (100% purgado)`);
   console.log(`  Archivos .agents:  0 (100% purgado)`);
