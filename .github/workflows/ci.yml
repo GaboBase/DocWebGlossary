@@ -1,0 +1,38 @@
+name: DocWebGlossary CI
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: docwebglossary-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-dist:
+    name: Full E2E Suite & Distribution Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run full test suite (including headless browser E2E)
+        run: npm test
+
+      - name: Build clean release distribution
+        run: npm run dist
