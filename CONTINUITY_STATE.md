@@ -89,7 +89,7 @@ Preserved historical artifacts (NOT deleted):
 | Data synchronization SHA-256 test | COMPLETED AND VALIDATED |
 | Build idempotency | COMPLETED AND VALIDATED |
 | Adversarial M4–M6 suite | COMPLETED AND VALIDATED |
-| Five-domain coexistence | COMPLETED AND VALIDATED |
+| Nine-domain coexistence | COMPLETED AND VALIDATED |
 | SoftwareEngineeringOntology integrity | COMPLETED AND VALIDATED |
 | Multi-glossary diagram resolution | COMPLETED AND VALIDATED |
 | Storage stress | COMPLETED AND VALIDATED |
@@ -101,7 +101,7 @@ Preserved historical artifacts (NOT deleted):
 | Canonical autonomy test | COMPLETED AND VALIDATED |
 | .gitignore | COMPLETED AND VALIDATED (pre-existing) |
 | package.json | COMPLETED AND VALIDATED (pre-existing) |
-| Release builder (18 files) | COMPLETED AND VALIDATED |
+| Release builder (26 files) | COMPLETED AND VALIDATED |
 | Pre-commit hook | COMPLETED AND CONFIGURED |
 | Cross-domain search & term provenance (B-10 semantic foundation) | COMPLETED AND VALIDATED |
 | Multi-domain `searchTerms` (array filter) | COMPLETED AND VALIDATED |
@@ -109,7 +109,7 @@ Preserved historical artifacts (NOT deleted):
 | `getTermProvenance()` domain traceability | COMPLETED AND VALIDATED |
 | Cross-domain composition UI (multi-domain selector) | COMPLETED AND VALIDATED |
 | Interactive semantic graph viewer (B-10) | COMPLETED AND VALIDATED |
-| Browser E2E testing (B-11) | COMPLETED AND VALIDATED | Headless Chrome/Edge via --dump-dom on file:// URL; 14 assertions covering startup, CSP, offline autonomy, five-domain rendering, search, diagram, composition panel, capsule buttons, deep links, zero network calls. |
+| Browser E2E testing (B-11) | COMPLETED AND VALIDATED | Headless Chrome/Edge via DevTools Protocol on file:// URL; 15 assertions covering startup, CSP, offline autonomy, nine-domain rendering, search, diagram, composition panel, capsule buttons, deep links, zero network calls. |
 | PWA (B-11) | DEFERRED — separate deployment mode |
 
 ### Validation status
@@ -185,11 +185,10 @@ Documented as RETIRED/FROZEN in `tools/archive/README.md`; excluded from build/t
 ## 5. Validation evidence
 
 ### Test suite (`npm test` / `node tools/run_all_tests.js`)
-- 708 total assertions; 708 passed; 0 failed; 0 pending; **100.0%**
-- 11 suites: Autonomy, Data Parity, Catalog & Terms, Semantic Integrity, JSON-LD, Prompt Orientator, Storage Capsule, M4–M6 Adversarial, DOM Security, Cross-Domain Search & Provenance, Browser E2E (Headless, file://)
+- 769 total assertions; 769 passed; 0 failed; 0 pending; **100.0%** (historical v1.0.0 cycle ran 708/708 across 11 suites; expanded to 12 suites / 769 assertions after adding 4 new domains)
 
 ### Data pipeline
-- All 10 domain JSON files validate (JSON syntax, unique IDs, required fields, categories, relationships)
+- All 18 domain JSON files across 9 domains validate (JSON syntax, unique IDs, required fields, categories, relationships)
 - Deterministic `catalog.json` generation
 - Valid `bundle.js` generation with SHA-256 fingerprint
 - Independent SHA-256 synchronization test (`test_data_parity`) passes; detects stale generated data
@@ -197,7 +196,7 @@ Documented as RETIRED/FROZEN in `tools/archive/README.md`; excluded from build/t
 - No source-data mutations (verified via git diff)
 
 ### Release
-- ZIP contains exactly 18 files; no `.git/`, `.agents/`, tools, tests, reports
+- ZIP contains exactly 26 files (historical v1.0.0 was 18 files); no `.git/`, `.agents/`, tools, tests, reports
 - Extracted release retains offline/file:// operation
 
 ### Pre-commit hook
