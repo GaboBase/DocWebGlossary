@@ -42,17 +42,21 @@ DocWebGlosary/
 │   │   ├── prompt-orientator.js   # Orientador técnico de prompts y directivas IA
 │   │   └── storage.js             # Motor de persistencia IndexedDB y cápsulas JSON
 │   └── data/
-│       ├── catalog.json           # Catálogo central y metadatos de los 5 glosarios
+│       ├── catalog.json           # Catálogo central y metadatos de los 9 glosarios
 │       └── bundle.js              # Paquete ejecutable compilado con hash SHA-256
+├── AgentArchitecture/data/        # Fuente canónica inmutable (glossary.json + terms.json)
+├── AIAugmentedEngineering/data/   # Fuente canónica inmutable (glossary.json + terms.json)
 ├── AudiovisualProduction/data/    # Fuente canónica inmutable (glossary.json + terms.json)
 ├── GenerativeAIMedia/data/        # Fuente canónica inmutable (glossary.json + terms.json)
+├── PromptEngineering/data/        # Fuente canónica inmutable (glossary.json + terms.json)
+├── RAGAndVectorKnowledge/data/    # Fuente canónica inmutable (glossary.json + terms.json)
 ├── Render-3D-Animations/data/     # Fuente canónica inmutable (glossary.json + terms.json)
 ├── SoftwareEngineeringOntology/data/ # Fuente canónica inmutable (glossary.json + terms.json)
 ├── VideoImage/data/               # Fuente canónica inmutable (glossary.json + terms.json)
 ├── tools/
 │   ├── build_data_bundle.js       # Compilador declarativo de datos con validación e idempotencia
-│   ├── build_release.js           # Generador de distribución limpia (< 20 archivos, < 0.6 MB)
-│   ├── run_all_tests.js           # Master Test Runner E2E (8 suites, 310 aserciones)
+│   ├── build_release.js           # Generador de distribución limpia (26 archivos, ~0.58 MB)
+│   ├── run_all_tests.js           # Master Test Runner E2E (12 suites, 769 aserciones)
 │   ├── test_autonomy.js           # Suite de preservación y autonomía offline
 │   ├── test_catalog_and_terms.js  # Integridad de catálogo y términos
 │   ├── test_data_parity.js        # Detección determinista de desincronización (Split-Brain)
@@ -76,7 +80,7 @@ El proyecto se gestiona mediante comandos estándar de Node.js (cero dependencia
 npm run build
 # o bien: node tools/build_data_bundle.js
 
-# 2. Ejecutar la suite completa de pruebas E2E (8 suites modulares)
+# 2. Ejecutar la suite completa de pruebas E2E (12 suites modulares)
 npm test
 # o bien: node tools/run_all_tests.js
 
@@ -90,18 +94,14 @@ npm run test:adversarial
 
 # 5. Generar paquete de release de producción listo para distribución
 npm run dist
-# Genera: dist/DocWebGlosary-v1.0.0-dist.zip (< 20 archivos, peso ~0.5 MB)
+# Genera: dist/DocWebGlosary-v1.0.0-dist.zip (26 archivos, peso ~0.58 MB)
 ```
 
 ---
 
 ## 4. Garantías de Calidad y Certificación
 
-- **Pass Rate:** 100.0% (310 aserciones ejecutadas en < 400 ms).
-- **Tiers Verificados:**
-  - **Tier 1:** Verificación Unitaria y Smoke (118 pruebas).
-  - **Tier 2:** Análisis de Robustez y Valores Límite (131 pruebas).
-  - **Tier 3:** Integración Cruzada e Interconexión de Glosarios (40 pruebas).
-  - **Tier 4:** Escenarios de Aplicación del Mundo Real (21 pruebas).
+- **Pass Rate:** 100.0% (769 aserciones ejecutadas en 12 suites E2E, incluyendo navegador headless `file://`).
+- **Suites Verificadas:** Data Parity & Freshness (34), Autonomy & Preservation (38), Catalog & Terms (42), Semantic Integrity (29), JSON-LD & Semantic HTML5 (49), AI Prompt Intention Orientator (38), Persistence & Storage Capsule (34), Adversarial Hardening M4–M6 (386), DOM Security & Sanitization (62), Cross-Domain Search & Provenance (34), Browser E2E Headless `file://` (15) y Master E2E Verification & Hardening (8).
 - **Cobertura de Características:** 25/25 features (F1 a F25) certificadas.
 - **Gobernanza Git:** Hook `pre-commit` activo que bloquea cualquier commit que altere datos sin recompilar o que falle una sola prueba.
