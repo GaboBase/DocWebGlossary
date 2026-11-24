@@ -21,25 +21,46 @@
  *   node tools/test_browser_e2e.js
  */
 
-const { spawn } = require('child_process');
+const { spawn, execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { pathToFileURL } = require('url');
 
 const { COLORS } = require('./test_utils');
 
 const CHROME_CANDIDATES = [
+  process.env.CHROME_BIN,
+  process.env.CHROMIUM_BIN,
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-];
+  '/usr/bin/google-chrome',
+  '/usr/bin/google-chrome-stable',
+  '/usr/bin/chromium',
+  '/usr/bin/chromium-browser',
+  '/snap/bin/chromium',
+  '/usr/bin/microsoft-edge',
+  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+].filter(Boolean);
 
 const APP_ROOT = path.resolve(__dirname, '..');
-const INDEX_URL = 'file:///' + APP_ROOT.replace(/\\/g, '/') + '/index.html';
+const INDEX_URL = pathToFileURL(path.join(APP_ROOT, 'index.html')).href;
 
 function findBrowser() {
   for (const cand of CHROME_CANDIDATES) {
     if (fs.existsSync(cand)) return cand;
+  }
+  if (process.platform !== 'win32') {
+    for (const bin of ['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', 'microsoft-edge']) {
+      try {
+        const resolved = execFileSync('which', [bin], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+        if (resolved && fs.existsSync(resolved)) return resolved;
+      } catch {
+        // continue
+      }
+    }
   }
   return null;
 }
