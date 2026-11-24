@@ -8,12 +8,16 @@ Sistema de gestión ontológica multi-dominio y orientador de prompts técnicos 
 
 - **100% Autónomo y Local (Zero-Dependency Runtime):** Opera sin conexión a internet ni llamadas de red, garantizando funcionamiento bajo el protocolo local `file:///` sin bloqueos CORS gracias a su estrategia de compilación estática (`app/data/bundle.js`).
 - **Gobernanza Criptográfica de Datos:** Verificación determinista de paridad mediante hash SHA-256 entre los archivos fuente de dominio y el paquete compilado en el cliente, eliminando riesgos de desincronización silenciosa (split-brain).
-- **Cobertura Ontológica Convergente (5 Dominios / 272 Términos Canónicos):**
+- **Cobertura Ontológica Convergente (9 Dominios / 317 Términos Canónicos):**
   1. **Producción Audiovisual & Terminología de Video (`AudiovisualProduction`):** 212 conceptos técnicos estructurados en 13 categorías profesionales.
   2. **Ingeniería de Software & Ontología de Sistemas (`SoftwareEngineeringOntology`):** 30 conceptos que modelan la jerarquía ontológica de seis niveles (L1 a L6).
-  3. **Render & Animación 3D (`Render-3D-Animations`):** 10 conceptos de pipeline gráfico, sombreado y algoritmos de iluminación.
-  4. **Video, Imagen & Gráficos Digitales (`VideoImage`):** 10 conceptos fundamentales de procesamiento, espacios de color y compresión.
-  5. **IA Generativa & Modelos Multimodales para Medios (`GenerativeAIMedia`):** 10 conceptos de difusión, espacio latente y acondicionamiento.
+  3. **Arquitectura de Agentes & Sistemas Multiagente (`AgentArchitecture`):** 14 conceptos de agentes software, BDI, sensores/efectores y ontologías multiagente.
+  4. **Ingeniería de Prompts (`PromptEngineering`):** 12 conceptos de prompting, contexto, plantillas y optimización de instrucciones.
+  5. **Ingeniería de Software Aumentada por IA (`AIAugmentedEngineering`):** 11 conceptos de desarrollo aumentado por IA, copilotos y validación humana.
+  6. **Render & Animación 3D (`Render-3D-Animations`):** 10 conceptos de pipeline gráfico, sombreado y algoritmos de iluminación.
+  7. **Video, Imagen & Gráficos Digitales (`VideoImage`):** 10 conceptos fundamentales de procesamiento, espacios de color y compresión.
+  8. **IA Generativa & Modelos Multimodales para Medios (`GenerativeAIMedia`):** 10 conceptos de difusión, espacio latente y acondicionamiento.
+  9. **Sistemas RAG, Bases de Datos Vectoriales & Recuperación Semántica (`RAGAndVectorKnowledge`):** 8 conceptos de RAG, embeddings, indexación y grounding.
 - **Orientador de Prompts Técnicos (33 Productos Objetivo):** Transforma la consulta ontológica en directivas imperativas de producción y especificaciones para modelos generativos o especificaciones de ingeniería.
 - **Diagramas Contextuales Nativos en SVG:** Generación en memoria de grafos focales, jerárquicos (L1-L6), secuenciales (pipeline) y atlas relacional sin dependencias de librerías externas.
 - **Seguridad en Cliente Endurecida:** Cabecera `Content-Security-Policy` estricta (`default-src 'self'`) en `index.html` y renderizado DOM completamente sanitizado contra inyecciones XSS.

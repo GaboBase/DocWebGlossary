@@ -15,13 +15,17 @@ This record allows a completely different editor to understand the project and r
 **Overall product purpose**
 DocWeb MultiGlossary is a static, autonomous, offline-capable web application for multi-domain ontological glossary management and technical prompt orientation. It runs 100% client-side, with no remote servers, no cloud databases, no CDNs, no external frameworks, and works under the local `file://` protocol.
 
-**Five domains**
+**Nine domains (317 canonical terms)**
 1. AudiovisualProduction (212 terms)
-2. GenerativeAIMedia (10 terms)
-3. Render-3D-Animations (10 terms)
-4. SoftwareEngineeringOntology (30 terms)
-5. VideoImage (10 terms)
-Total: 272 canonical terms across 10 source JSON files (`<Domain>/data/glossary.json` + `<Domain>/data/terms.json`).
+2. SoftwareEngineeringOntology (30 terms)
+3. AgentArchitecture (14 terms)
+4. PromptEngineering (12 terms)
+5. AIAugmentedEngineering (11 terms)
+6. Render-3D-Animations (10 terms)
+7. VideoImage (10 terms)
+8. GenerativeAIMedia (10 terms)
+9. RAGAndVectorKnowledge (8 terms)
+Total: 317 canonical terms across 18 source JSON files (`<Domain>/data/glossary.json` + `<Domain>/data/terms.json`), SHA-256 `78fa723ffc0d470ef8cc0bb38a6daa420222834566d72b53267a8c45465d02d1`, verified with 769/769 passing E2E assertions.
 
 **Active development objective**
 Phase 2 — Cross-Domain Synthesis and Interactive Knowledge Graph v1.1.0 (B-10).
